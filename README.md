@@ -65,6 +65,13 @@ your own computer for testing and publishes it to Cloudflare.
   manager, and the Worker's secret store in the Cloudflare dashboard.
 - `wrangler.jsonc` is public. Only non-secret settings go in it.
 
+## What gets logged
+
+Almost nothing, on purpose. Cloudflare can keep a record of every request, including
+each visitor's IP address, rough location and browser. That is switched off. The only
+things logged are lines this code writes deliberately, and those are limited to
+counts, cost and speed. Text a visitor pastes is never stored.
+
 ## Working on it
 
 You need [Node.js](https://nodejs.org) installed. Then, in this folder:

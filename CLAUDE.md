@@ -17,7 +17,12 @@ terms the first time you use them, and use an analogy where it helps.
    Kyle to paste a key into a chat. If you see one, tell him to delete and recreate it.
 2. **Pasted visitor text is never stored or logged.** Logs hold metadata only: time,
    token counts, cost, speed, which guardrail fired. Not the text, not a snippet of it,
-   not in error messages.
+   not in error messages. Three things follow from this:
+   - Visitor text travels in the request body, never in the URL or a header.
+   - Cloudflare's automatic invocation logs and traces stay off. They record each
+     visitor's IP address, location and browser. Do not switch them back on.
+   - Never log an IP address, a location, a user agent or a full URL. If a guardrail
+     needs to tell visitors apart, it uses the value at runtime and does not store it.
 3. **The model provider is swappable.** All model calls go through one provider
    function (the "wall socket"). Endpoints and tools ask it for a model by a name set
    in configuration. Nothing outside that function may import a provider SDK, call a
@@ -35,6 +40,20 @@ terms the first time you use them, and use an analogy where it helps.
    origin in `ALLOWED_ORIGIN`.
 7. **No client material** in test sets, examples or fixtures.
 8. **Kyle approves every deploy.** Do not deploy without asking in that session.
+
+## Deploying
+
+Deploy only from `main`, after the pull request is merged and both checks pass.
+
+- With Wrangler (`npm run deploy`), secrets set in the dashboard are kept
+  automatically.
+- When uploading through the Cloudflare API instead, the upload **must** include
+  `"keep_bindings": ["secret_text", "secret_key"]` in its metadata. Without it the
+  upload replaces every binding and deletes `MODEL_API_KEY`.
+- The uploaded settings must match `wrangler.jsonc`: bindings, compatibility date and
+  the observability block.
+- After every deploy, confirm: `/hello` answers, a foreign `Origin` gets 403, the
+  `workers.dev` address returns 404, and `MODEL_API_KEY` is still listed as a secret.
 
 ## Conventions
 
