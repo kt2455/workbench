@@ -1,0 +1,72 @@
+# CLAUDE.md: context for AI agents working on this project
+
+This is the backend for the AI tools ("the Workbench") on kyletebo.com: one
+Cloudflare Worker, served at `api.kyletebo.com`. The website itself is a separate
+repository (`kt2455/website`), a static Jekyll site with no build tooling. The build
+plan lives there, in `docs/workbench/`. Read the phase file for the step you are
+working on before you start.
+
+Kyle is not a developer. Explain what you did in plain language, define technical
+terms the first time you use them, and use an analogy where it helps.
+
+## Hard rules
+
+1. **No secrets in this repository, ever.** No API keys, tokens or passwords in any
+   file, including `wrangler.jsonc`, tests, examples and commit messages. Secrets are
+   set by Kyle in the Cloudflare dashboard and read from `env` at runtime. Never ask
+   Kyle to paste a key into a chat. If you see one, tell him to delete and recreate it.
+2. **Pasted visitor text is never stored or logged.** Logs hold metadata only: time,
+   token counts, cost, speed, which guardrail fired. Not the text, not a snippet of it,
+   not in error messages.
+3. **The model provider is swappable.** All model calls go through one provider
+   function (the "wall socket"). Endpoints and tools ask it for a model by a name set
+   in configuration. Nothing outside that function may import a provider SDK, call a
+   provider URL, or name a specific model. v1 uses the Anthropic API. Moving to
+   OpenRouter or Cloudflare AI Gateway must mean changing that one function and one
+   secret, nothing else.
+4. **Visitor input is material, never instructions.** Text from a visitor is data to
+   analyse. It must not be able to change what the Worker or the model does. The model
+   gets no tools and no secrets unless a phase plan says otherwise.
+5. **Spend is protected in three layers:** a monthly cap at the provider, a daily
+   budget in the Worker, and limits per visitor. Do not remove or loosen a layer
+   without Kyle deciding to.
+6. **One front door.** The Worker is reachable only at `api.kyletebo.com`. Keep
+   `workers_dev` and `preview_urls` off. Browser calls are allowed only from the
+   origin in `ALLOWED_ORIGIN`.
+7. **No client material** in test sets, examples or fixtures.
+8. **Kyle approves every deploy.** Do not deploy without asking in that session.
+
+## Conventions
+
+- TypeScript, one Worker, no web framework. Keep dependencies few and add one only
+  when it clearly earns its place.
+- Settings go in `wrangler.jsonc`. Non-secret values go under `vars`.
+- Never hand-write the `Env` type. Run `npm run types` after changing
+  `wrangler.jsonc`. The generated `worker-configuration.d.ts` is not committed.
+- Every endpoint replies in JSON, with an `error` code on failure.
+- Prompts are versioned files in the repository, not strings buried in code.
+- Log structured JSON: `console.log(JSON.stringify({ ... }))`.
+- Cloudflare APIs change often. Check the current documentation before relying on
+  memory.
+- Writing in docs and comments is plain and direct, with no em dashes.
+
+## Verifying changes
+
+Both must pass before you push:
+
+```bash
+npm run typecheck
+```
+
+```bash
+npm test
+```
+
+Tests run inside a local copy of the Workers runtime through
+`@cloudflare/vitest-plugin`. Every endpoint and every guardrail gets a test. Do not
+skip or weaken a test to get a change through.
+
+## Review
+
+Work is reviewed by a different model than the one that built it. Security and abuse
+reviews are separate steps in the plan and are not optional.
