@@ -1,0 +1,31 @@
+// Settings for the Worker. Comments are allowed in this file.
+// Nothing secret ever goes here: this file is public. Secrets live in
+// Cloudflare's secret store and are set in the Cloudflare dashboard.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "workbench",
+  "main": "src/index.ts",
+
+  // Which version of the Workers runtime rules this code was written against.
+  "compatibility_date": "2026-11-11",
+
+  // The Worker's public address. Cloudflare creates the DNS record for
+  // api.kyletebo.com on the first deploy. The free workers.dev address is
+  // switched off so there is one front door to guard, not two.
+  "routes": [{ "pattern": "api.kyletebo.com", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false,
+
+  // Non-secret settings the code can read.
+  "vars": {
+    // The website allowed to call this Worker from a browser (used from step 0.9).
+    "ALLOWED_ORIGIN": "https://kyletebo.com"
+  },
+
+  // Keep logs and timing traces so problems can be looked up afterwards.
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 1 }
+  }
+}

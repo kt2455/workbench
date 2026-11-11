@@ -1,0 +1,10 @@
+node_modules/
+.wrangler/
+dist/
+
+# Local secrets. Never commit these.
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+worker-configuration.d.ts
