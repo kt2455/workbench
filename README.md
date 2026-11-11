@@ -31,11 +31,23 @@ No model is called yet. The point is to prove the plumbing before adding any AI.
 | `GET https://api.kyletebo.com/hello` | Returns `{"ok": true, "message": "Hello from the Workbench. The plumbing works.", "phase": 0}` |
 | Anything else | Returns `{"error": "not_found"}` |
 
+### Who may call it
+
+The Worker checks which website a browser request came from. Only pages on
+`https://kyletebo.com` are let in. A page on any other website gets
+`{"error": "origin_not_allowed"}`. This check is called CORS.
+
+Think of it as a guest list at the door. It stops other websites from using the
+Worker through their visitors' browsers. It does not stop someone calling the Worker
+directly with a script, because scripts do not have to say where they came from.
+Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
+
 ## What is in this folder
 
 | File or folder | What it is | Analogy |
 |---|---|---|
 | `src/index.ts` | The Worker's code | The bouncer's instructions |
+| `src/cors.ts` | The check on which website a request came from | The guest list |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
 | `wrangler.jsonc` | Settings: the Worker's name, address and non-secret options | The venue's licence on the wall |
 | `package.json` | The list of tools this project needs | A shopping list |

@@ -18,7 +18,8 @@
 
   // Non-secret settings the code can read.
   "vars": {
-    // The website allowed to call this Worker from a browser (used from step 0.9).
+    // The one website allowed to call this Worker from a browser. An exact match:
+    // www.kyletebo.com is not listed because it redirects to this address.
     "ALLOWED_ORIGIN": "https://kyletebo.com"
   },
 
