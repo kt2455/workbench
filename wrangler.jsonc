@@ -23,10 +23,16 @@
     "ALLOWED_ORIGIN": "https://kyletebo.com"
   },
 
-  // Keep logs and timing traces so problems can be looked up afterwards.
+  // Logging. The privacy rule is that logs hold counts, cost and speed only.
+  // Cloudflare's automatic per-request logs and traces record far more than
+  // that: each visitor's IP address, city, postcode and browser, plus the full
+  // address requested. So both are switched off. The only log lines kept are
+  // the ones this code writes on purpose with console.log, which must be
+  // metadata only. Query strings are also stripped as a second safety net.
   "observability": {
     "enabled": true,
-    "logs": { "enabled": true, "head_sampling_rate": 1 },
-    "traces": { "enabled": true, "head_sampling_rate": 1 }
+    "redact_query_string": true,
+    "logs": { "enabled": true, "head_sampling_rate": 1, "invocation_logs": false },
+    "traces": { "enabled": false }
   }
 }
