@@ -56,7 +56,7 @@ rule that starts producing false flags is removed, not tuned until it passes.
 
 One call that reads the whole draft and returns a verdict plus up to five findings.
 Its instructions carry Kyle's taste: rhythm over vocabulary, and generic is not the
-same as AI-sounding. The prompt is a versioned file (step 1.6).
+same as AI-sounding. The prompt is a versioned file: `prompts/tells-checker/v1.md`.
 
 The draft is material to analyse, never instructions. The model gets no tools and no
 secrets. Examples in the prompt never come from the test set, or the scores would be
@@ -238,5 +238,8 @@ Never the draft, a quote, the summary, an IP address, a location or a browser.
 ## Open questions for later steps
 
 - The length cap, rate limits and daily budget figures (step 1.10).
-- Which model, and the wording of its instructions (steps 1.6 and 1.8).
+- Which model runs the prompt (step 1.8).
+- A cap on the length of a quote. The prompt asks for about 300 characters at most.
+  Step 1.9 decides whether the Worker enforces it.
+- What the Worker does if a draft contains the text `</draft>` (step 1.9).
 - Whether the three rules still earn their place on new samples (Phase 2).
