@@ -19,10 +19,16 @@ export const BASE_HEADERS: Record<string, string> = {
 
 /** Builds a JSON reply. Every endpoint answers in JSON so the site's scripts
  * can always read the response the same way. */
-export function json(body: unknown, status: number, origin: OriginCheck): Response {
+export function json(
+  body: unknown,
+  status: number,
+  origin: OriginCheck,
+  extraHeaders: Record<string, string> = {},
+): Response {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
+      ...extraHeaders,
       ...BASE_HEADERS,
       "content-type": "application/json; charset=utf-8",
       ...corsHeaders(origin),

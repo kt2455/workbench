@@ -252,9 +252,55 @@ Never the draft, a quote, the summary, an IP address, a location or a browser.
 The model is called with a JSON schema (the provider's "structured output"), so its
 reply is valid JSON of the right shape nearly always. The Worker checks it anyway.
 
+## The guardrails (step 1.10)
+
+A request passes these in order, cheapest first. Failing one stops it there.
+
+| # | Guardrail | Setting | If it fails |
+|---|---|---|---|
+| 1 | The guest list (CORS) and JSON only | `ALLOWED_ORIGIN` | 403 or 400 |
+| 2 | Rate limit: 5 checks a minute for each visitor | `ratelimits` in `wrangler.jsonc` | 429, with how long to wait |
+| 3 | Size cap: 8,000 characters, about 1,300 words | `MAX_DRAFT_CHARS` | 413 |
+| 4 | Bot check (Cloudflare Turnstile), confirmed with Cloudflare | `TURNSTILE_SECRET_KEY` (a secret) | 403 |
+| 5 | Daily budget: $1.00 a day | `DAILY_BUDGET_USD` | The quick check, with a notice |
+
+Behind all of them sits the monthly cap at the model provider, which the Worker
+cannot change.
+
+**Analogy:** a venue. The guest list at the door, a limit on how often one person can
+go to the bar, a bag size limit, a check that you are a person, and a bar tab that
+closes when the night's float is spent. After that it is tap water: the free rules.
+
+How each one is built:
+
+- **Rate limit.** Visitors are told apart by IP address. The address is handed to
+  Cloudflare's rate limiter, which keeps a short count in memory. The Worker does not
+  store or log it. Requests that are refused later still count.
+- **Size cap.** Counted while the request is being read, and reading stops at the
+  cap. The size a sender claims is used only to refuse early.
+- **Bot check.** The page gets a token when a visitor passes. The Worker asks
+  Cloudflare to confirm it on every request, and also checks that it was issued on
+  kyletebo.com for the action `check`. The visitor's IP address is not sent. A token
+  works once, so the page must get a new one for each check.
+- **Daily budget.** One counter (`src/budget.ts`) holds the day's spend. Before a
+  model call the worst-case cost is set aside. After it, that is replaced with the
+  real cost. If the day cannot cover the worst case, no call is made. The day is
+  counted in UTC.
+
+**Every guardrail fails closed.** If the rate limiter breaks, requests are refused.
+If Cloudflare cannot confirm a token, the request is refused. If the budget counter
+cannot be reached, or a budget setting is unreadable, no model call is made. A broken
+guardrail never becomes an open door.
+
+The amount set aside for one check on the starting model is about $0.003. Its real
+cost is about $0.001. So $1.00 a day pays for roughly 800 full checks, and the day
+can never end more than one reservation over.
+
 ## Open questions for later steps
 
-- The length cap, rate limits and daily budget figures (step 1.10). The cap in the
-  code, 10,000 characters, is a placeholder.
 - Whether the three rules still earn their place on new samples (Phase 2).
 - Whether to publish the house style list and build the panel.
+- A daily limit for each visitor. Today one determined visitor could use up the
+  day's budget for everyone, at 5 checks a minute. A daily limit would need the
+  Worker to remember visitors for a day, which the privacy rule argues against.
+  Revisit if the stats ever show it happening.

@@ -25,7 +25,7 @@ The full build plan lives in the website repository under `docs/workbench/`.
 
 **Phase 1: the Tells Checker, part built.** The Worker has its first real endpoint,
 `/check`. It is not switched on for visitors yet: the model stays off until the
-spending guardrails are built, and there is no page on the website that calls it.
+security review is done, and there is no page on the website that calls it.
 
 | Address | What it does |
 |---|---|
@@ -51,6 +51,18 @@ quotes text which is not in the draft is thrown away.
 **The master switch.** `MODEL_ENABLED` in `wrangler.jsonc` is `"false"`. While it is,
 `/check` runs the rules alone, says so in its reply, and never touches the paid key.
 
+### What protects the budget
+
+| Guardrail | What it does |
+|---|---|
+| Rate limit | 5 checks a minute for each visitor |
+| Size cap | Drafts up to 8,000 characters, about 1,300 words |
+| Bot check | Cloudflare Turnstile, confirmed on every request |
+| Daily budget | $1.00 a day. When it is spent, checks use the free rules until midnight UTC |
+| Monthly cap | Set at the model provider, outside this code |
+
+If any of these breaks, it refuses rather than lets everything through.
+
 ### Who may call it
 
 The Worker checks which website a browser request came from. Only pages on
@@ -74,6 +86,8 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `src/provider.ts` | The only code that talks to a model provider | The wall socket |
 | `src/merge.ts` | Checks the model's reply and combines the two layers | The editor's red pen |
 | `src/tells.ts` | The list of kinds of tell and the shape of a reply | The glossary |
+| `src/guardrails.ts` | The size cap, the rate limit and the bot check | The door staff |
+| `src/budget.ts` | The daily budget counter | The bar tab |
 | `.github/workflows/checks.yml` | Runs the tests automatically on every pull request | The inspector who signs off before opening |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
 | `testset/` | 38 writing samples and Kyle's hand-marked answer key | The marked exam paper |

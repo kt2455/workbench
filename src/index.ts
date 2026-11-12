@@ -72,3 +72,6 @@ async function handle(request: Request, env: Env): Promise<Response> {
 export default {
   fetch: withErrorHandling(handle),
 } satisfies ExportedHandler<Env>;
+
+// The daily budget counter. Cloudflare needs it exported from this file.
+export { BudgetKeeper } from "./budget";
