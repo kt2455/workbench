@@ -235,6 +235,12 @@ Metadata only: the time, `mode`, `verdict`, the number of findings by `type` and
 `foundBy`, tokens used, cost, how long it took, and which guardrail fired if one did.
 Never the draft, a quote, the summary, an IP address, a location or a browser.
 
+Built in step 1.11, in `src/log.ts`. One JSON line per request, with a fixed set of
+fields listed in the README. Refusals get a line too, with the error code and the
+guardrail. The model step says why the model was not called when it was not
+(`switched_off`, `settings_broken`, `budget_reached`, `budget_unavailable`), or how
+the call went (`ok`, `refused`, `truncated`, `unavailable`, `unreadable_reply`).
+
 ## Decisions made while building (step 1.9)
 
 | Question | Decision | Why |

@@ -88,6 +88,7 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `src/tells.ts` | The list of kinds of tell and the shape of a reply | The glossary |
 | `src/guardrails.ts` | The size cap, the rate limit and the bot check | The door staff |
 | `src/budget.ts` | The daily budget counter | The bar tab |
+| `src/log.ts` | The one log line per request: time, tokens, cost, speed, guardrail | The till receipt |
 | `.github/workflows/checks.yml` | Runs the tests automatically on every pull request | The inspector who signs off before opening |
 | `.github/workflows/deploy.yml` | Publishes the Worker to Cloudflare when started by hand | The loading dock |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
@@ -116,10 +117,37 @@ Almost nothing, on purpose. Cloudflare can keep a record of every request, inclu
 each visitor's IP address, rough location and browser. That is switched off.
 
 Two things can still reach the log: lines this code writes deliberately, and errors.
-The deliberate lines are limited to counts, cost and speed. Errors are caught by a
-safety net that records one fixed line, "unhandled_error", and throws the details
-away, because an error message can contain whatever the code was handling at the
-time. Text a visitor pastes is never stored.
+
+**The deliberate lines** (`src/log.ts`). Each request to `/check` writes one line,
+like a till receipt: it says what was bought and what it cost, never what was said
+at the counter. A line holds:
+
+| Field | What it says |
+|---|---|
+| `at`, `durationMs` | When the request finished and how long it took |
+| `result`, `status` | `full` or `quick`, or the error code the visitor got |
+| `guardrail` | Which guardrail fired: `rate_limit`, `size_cap`, `bot_check` or `daily_budget`, or none |
+| `characters` | How long the draft was. A count, not the text |
+| `modelStep` | What happened with the model: called and `ok`, or why not (`switched_off`, `budget_reached`, `unavailable` and so on) |
+| `model`, `promptVersion` | Which model and which prompt file, both from the settings |
+| `modelMs`, `inputTokens`, `outputTokens`, `costUsd` | How long the model took, how much it read and wrote, and what that cost |
+| `verdict`, `findings` | The verdict sent back, and how many findings of each kind. Counts only, never the quotes |
+
+A page on another website that is turned away gets a shorter line: `event`
+`refused`, `guardrail` `origin`. The address it asked for is not recorded.
+
+Every field is a number or a word from a fixed list, so there is no slot a draft
+could end up in. The code that writes the line copies those fields one by one, so
+anything else handed to it is left behind. Tests send a draft with a made-up word in
+it and check that the word, the visitor's address and the bot check token appear in
+no line.
+
+To read the lines: Cloudflare dashboard, Workers, `workbench`, Logs. Filter by
+`event` or `guardrail`.
+
+**Errors** are caught by a safety net that records one fixed line,
+"unhandled_error", and throws the details away, because an error message can contain
+whatever the code was handling at the time. Text a visitor pastes is never stored.
 
 ## Working on it
 

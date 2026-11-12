@@ -8,6 +8,7 @@
 import { checkEndpoint } from "./check";
 import { checkOrigin, preflightHeaders, type OriginCheck } from "./cors";
 import { BASE_HEADERS, json, withErrorHandling } from "./http";
+import { logRefused } from "./log";
 
 type Endpoint = (request: Request, env: Env, origin: OriginCheck) => Response | Promise<Response>;
 
@@ -35,6 +36,7 @@ async function handle(request: Request, env: Env): Promise<Response> {
   // The guest list comes first, before any endpoint runs.
   const origin = checkOrigin(request, env.ALLOWED_ORIGIN);
   if (origin.kind === "refused") {
+    logRefused("origin", 403);
     return json({ error: "origin_not_allowed" }, 403, origin);
   }
 
