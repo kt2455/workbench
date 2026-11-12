@@ -59,6 +59,9 @@ is green on it.
   the observability block.
 - After every deploy, confirm: `/hello` answers, a foreign `Origin` gets 403, the
   `workers.dev` address returns 404, and `MODEL_API_KEY` is still listed as a secret.
+- `MODEL_ENABLED` is the master switch for model calls. It stays `"false"` until the
+  guardrails in plan step 1.10 (rate limit, daily budget, bot check, size cap) are
+  built, reviewed and deployed. Turning it on is Kyle's decision.
 
 ## Conventions
 
@@ -67,6 +70,10 @@ is green on it.
 - Settings go in `wrangler.jsonc`. Non-secret values go under `vars`.
 - Never hand-write the `Env` type. Run `npm run types` after changing
   `wrangler.jsonc`. The generated `worker-configuration.d.ts` is not committed.
+  Secrets are declared by name under `secrets.required` so they appear in `Env`.
+- The model provider's library is imported in `src/provider.ts` and nowhere else.
+- Code that needs a model takes a `ModelCaller` as an argument, so tests pass a
+  stand-in. No test may reach a real provider.
 - Every endpoint replies in JSON, with an `error` code on failure.
 - Endpoints are listed in the `ROUTES` table in `src/index.ts` with the methods each
   accepts. Preflight answers are built from that table, so they never advertise a

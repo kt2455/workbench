@@ -20,8 +20,24 @@
   "vars": {
     // The one website allowed to call this Worker from a browser. An exact match:
     // www.kyletebo.com is not listed because it redirects to this address.
-    "ALLOWED_ORIGIN": "https://kyletebo.com"
+    "ALLOWED_ORIGIN": "https://kyletebo.com",
+
+    // The master switch for model calls. While this is "false" the Tells
+    // Checker runs its free rules only and the paid key is never used. It
+    // stays "false" until the spending guardrails (plan step 1.10) are built.
+    "MODEL_ENABLED": "false",
+
+    // Which model the Tells Checker asks for. Changing model is a change to
+    // this line and nothing else.
+    "TELLS_CHECKER_MODEL": "claude-haiku-5-5"
   },
+
+  // Secrets the code expects. Names only: the values are set in the
+  // Cloudflare dashboard and never appear in this repository.
+  "secrets": { "required": ["MODEL_API_KEY"] },
+
+  // Lets the code read a prompt file (prompts/) as plain text.
+  "rules": [{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }],
 
   // Logging. The privacy rule is that logs hold counts, cost and speed only.
   // Cloudflare's automatic per-request logs and traces record far more than

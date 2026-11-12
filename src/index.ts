@@ -5,6 +5,7 @@
  * returns a fixed reply. No model is called and no secret is read yet.
  */
 
+import { checkEndpoint } from "./check";
 import { checkOrigin, preflightHeaders, type OriginCheck } from "./cors";
 import { BASE_HEADERS, json, withErrorHandling } from "./http";
 
@@ -27,6 +28,7 @@ const ROUTES: Record<string, Record<string, Endpoint>> = {
         origin,
       ),
   },
+  "/check": { POST: checkEndpoint },
 };
 
 async function handle(request: Request, env: Env): Promise<Response> {

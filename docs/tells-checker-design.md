@@ -235,11 +235,26 @@ Metadata only: the time, `mode`, `verdict`, the number of findings by `type` and
 `foundBy`, tokens used, cost, how long it took, and which guardrail fired if one did.
 Never the draft, a quote, the summary, an IP address, a location or a browser.
 
+## Decisions made while building (step 1.9)
+
+| Question | Decision | Why |
+|---|---|---|
+| A draft that contains the text `</draft>` | Sent unaltered. | Changing the draft would break exact quote matching. The prompt says closing tags are material, the model has no tools, and every quote is checked against the draft, so the worst outcome is poor feedback on that visitor's own draft. Step 1.14 tests this. |
+| A kind of tell that is not on the list | Becomes `other`. | The finding may still be good. |
+| A `why` or `fix` over 200 characters | Shortened at a word boundary. | Better than losing the finding. |
+| Two model findings that overlap | The first is kept. | The page highlights passages, and highlights cannot overlap. |
+| A cap on quote length | Asked for in the prompt, not enforced. | A long quote that is in the draft does no harm. Revisit if the evals show whole-paragraph quotes. |
+| A verdict other than `clean` whose findings were all dropped | Verdict and summary are kept, with an empty list. | Rare, and Phase 2 counts how often it happens. |
+| `start` and `end` | Counted the way JavaScript counts (UTF-16 code units). | The page is JavaScript, so `draft.slice(start, end)` is the quote on both sides. The offsets in `testset/labels.json` were counted by Python, which differs after an emoji. The evals must compare by quoted text or convert. |
+| House style words | Accepted in the request, not built. `houseStyle` in the reply is always `null`. | The list is Kyle's and lives in the private website repository. Putting it in this public one is his decision. |
+| The model on or off | A setting, `MODEL_ENABLED`, off by default. | The endpoint can be merged and deployed before the spending guardrails exist without the key being usable. |
+
+The model is called with a JSON schema (the provider's "structured output"), so its
+reply is valid JSON of the right shape nearly always. The Worker checks it anyway.
+
 ## Open questions for later steps
 
-- The length cap, rate limits and daily budget figures (step 1.10).
-- Which model runs the prompt (step 1.8).
-- A cap on the length of a quote. The prompt asks for about 300 characters at most.
-  Step 1.9 decides whether the Worker enforces it.
-- What the Worker does if a draft contains the text `</draft>` (step 1.9).
+- The length cap, rate limits and daily budget figures (step 1.10). The cap in the
+  code, 10,000 characters, is a placeholder.
 - Whether the three rules still earn their place on new samples (Phase 2).
+- Whether to publish the house style list and build the panel.
