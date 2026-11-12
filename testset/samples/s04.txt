@@ -1,0 +1,5 @@
+In post No. 3, I covered the AI limitations that are expiring, but there's one in particular that seems to have staying power. In that same Stanford report, AI judges favoring their own answers was one of only three findings (out of 50) that got stronger in newer models.
+
+My take on why: part of it is obvious. A review in the same session reuses the reasoning that produced the work. (It's like proofreading your own essay: you read what you meant to write, not what's on the page.) The other part (less obvious, and lower risk) is familiarity. Models rate text higher when it sounds like something they'd write.
+
+One mitigation for this is simple. Ask the agent session you're in to spin up a fresh, read-only sub-agent (a second AI helper that can look but not touch). It starts with a clean slate (no memory of your conversation) and one job: review the work.

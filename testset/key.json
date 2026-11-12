@@ -1,0 +1,192 @@
+{
+  "s01": {
+    "source": "human-pre-ai",
+    "origin": "article: collaboration in the virtual world",
+    "words": 121
+  },
+  "s02": {
+    "source": "human",
+    "origin": "post: figuring-sht-out",
+    "words": 86
+  },
+  "s03": {
+    "source": "ai-raw",
+    "origin": "claude: service description: consulting offer",
+    "words": 133
+  },
+  "s04": {
+    "source": "human",
+    "origin": "post: grading-its-own-homework",
+    "words": 156
+  },
+  "s05": {
+    "source": "human-pre-ai",
+    "origin": "article: collaboration in the virtual world",
+    "words": 138
+  },
+  "s06": {
+    "source": "human-pre-ai",
+    "origin": "article: collaboration in the virtual world",
+    "words": 117
+  },
+  "s07": {
+    "source": "human",
+    "origin": "post: ai-memes-out-of-date",
+    "words": 114
+  },
+  "s08": {
+    "source": "ai-raw",
+    "origin": "claude: opinion piece: hybrid work",
+    "words": 137
+  },
+  "s09": {
+    "source": "ai-raw",
+    "origin": "gemini: blog intro on feedback",
+    "words": 143
+  },
+  "s10": {
+    "source": "ai-edited",
+    "origin": "claude: blog paragraph: choosing an AI tool (light edit)",
+    "words": 103
+  },
+  "s11": {
+    "source": "human",
+    "origin": "post: ai-intuition",
+    "words": 52
+  },
+  "s12": {
+    "source": "human-pre-ai",
+    "origin": "article: collaboration in the virtual world",
+    "words": 141
+  },
+  "s13": {
+    "source": "human-pre-ai",
+    "origin": "article: collaboration in the virtual world",
+    "words": 92
+  },
+  "s14": {
+    "source": "ai-edited",
+    "origin": "claude: linkedin post: hiring (moderate edit)",
+    "words": 100
+  },
+  "s15": {
+    "source": "ai-raw",
+    "origin": "gemini: customer feature announcement",
+    "words": 136
+  },
+  "s16": {
+    "source": "ai-raw",
+    "origin": "claude: event recap",
+    "words": 138
+  },
+  "s17": {
+    "source": "ai-raw",
+    "origin": "claude: internal email: new tool rollout",
+    "words": 136
+  },
+  "s18": {
+    "source": "ai-edited",
+    "origin": "claude: linkedin post: learning to code (heavy edit)",
+    "words": 95
+  },
+  "s19": {
+    "source": "ai-raw",
+    "origin": "claude: linkedin post: AI adoption",
+    "words": 131
+  },
+  "s20": {
+    "source": "human",
+    "origin": "post: grading-its-own-homework",
+    "words": 88
+  },
+  "s21": {
+    "source": "human",
+    "origin": "post: ai-intuition",
+    "words": 150
+  },
+  "s22": {
+    "source": "ai-raw",
+    "origin": "claude: professional bio",
+    "words": 123
+  },
+  "s23": {
+    "source": "ai-raw",
+    "origin": "claude: linkedin post: project lessons",
+    "words": 128
+  },
+  "s24": {
+    "source": "ai-edited",
+    "origin": "claude: newsletter intro (light edit)",
+    "words": 105
+  },
+  "s25": {
+    "source": "ai-raw",
+    "origin": "claude: blog intro: prompt engineering",
+    "words": 137
+  },
+  "s26": {
+    "source": "human",
+    "origin": "post: grading-its-own-homework",
+    "words": 155
+  },
+  "s27": {
+    "source": "ai-raw",
+    "origin": "gemini: linkedin new job",
+    "words": 140
+  },
+  "s28": {
+    "source": "ai-edited",
+    "origin": "claude: email: project delay (moderate edit)",
+    "words": 119
+  },
+  "s29": {
+    "source": "ai-raw",
+    "origin": "gemini: email proposing no-meeting day",
+    "words": 140
+  },
+  "s30": {
+    "source": "human",
+    "origin": "post: ai-memes-out-of-date",
+    "words": 126
+  },
+  "s31": {
+    "source": "ai-edited",
+    "origin": "claude: linkedin post: meeting notes with AI (light edit)",
+    "words": 100
+  },
+  "s32": {
+    "source": "human",
+    "origin": "post: figuring-sht-out",
+    "words": 77
+  },
+  "s33": {
+    "source": "human",
+    "origin": "post: figuring-sht-out",
+    "words": 158
+  },
+  "s34": {
+    "source": "ai-edited",
+    "origin": "claude: blog paragraph: spreadsheets (heavy edit)",
+    "words": 102
+  },
+  "s35": {
+    "source": "ai-raw",
+    "origin": "chatgpt: email proposing no-meeting day",
+    "words": 125
+  },
+  "s36": {
+    "source": "ai-raw",
+    "origin": "chatgpt: blog intro on feedback",
+    "words": 135
+  },
+  "s37": {
+    "source": "ai-raw",
+    "origin": "chatgpt: customer feature announcement",
+    "words": 130
+  },
+  "s38": {
+    "source": "ai-raw",
+    "origin": "chatgpt: linkedin new job",
+    "words": 125
+  }
+}

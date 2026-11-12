@@ -1,0 +1,5 @@
+These are observations, not instructions. I'm not writing "use these exact prompts" or "here are the five tools you need" posts. Anything that specific has the shelf life of milk right now. What lasts is the thinking underneath: where AI helps, where it falls flat, and how to build the intuition to tell the difference.
+
+Every post is dated, on purpose. These are snapshots of what I think right now, and I expect some of them to age badly. Watching my thinking change over time is half the point of writing it down.
+
+This is mostly for me. Writing is how I process. If you do knowledge work, keep hearing you should "use AI more," and aren't sure what that means, maybe it'll help you too. These posts also turn out to be good reference material for the AI agents I work with. The clearest way to teach an agent how you think is to write it down.

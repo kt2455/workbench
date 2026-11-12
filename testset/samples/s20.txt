@@ -1,0 +1,3 @@
+A fresh sub-agent fixes the reasoning-path problem. It doesn't fix the familiarity problem, because it's still the same model with the same taste. That's where a different model helps. For the high-stakes stuff, it's worth adding one to your workflow, but I don't find it necessary for most work. What is always necessary is that you're spot checking the work with your human eyes and brain. No one likes a slop cannon.
+
+Follow along, tell me where I'm wrong, or tell me how you check your AI's work.

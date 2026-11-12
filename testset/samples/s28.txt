@@ -1,0 +1,13 @@
+Hi Priya,
+
+Quick update on the reporting dashboard. We're going to miss the March 14 date. The new estimate is March 28.
+
+The cause is the data migration. The vendor's export had duplicate customer records, about 4,000 of them, and we can't build accurate reports until those are cleaned up. Sam's team is working through them now.
+
+I want to be transparent about the risks. If the cleanup takes longer than expected, the date could slip again. I'll have a clearer picture by Friday and will share an update then.
+
+In the meantime, please let me know if this timeline creates any challenges on your end, and we can explore options together.
+
+Thanks for your patience and understanding.
+
+Dan

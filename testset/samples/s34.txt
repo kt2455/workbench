@@ -1,0 +1,5 @@
+Most of the "AI projects" I get asked about are spreadsheet problems. Someone is copying numbers between three files every Monday, and it takes them half a day. They've heard AI can fix it.
+
+Sometimes it can. More often the fix is a lookup formula and a shared folder, and nobody needs a model at all. I've started asking one question before anything else: what would you do with the time? If the answer is vague, the project usually dies in a month.
+
+The Monday copying is rarely the real complaint anyway. It's that nobody trusts the numbers once they've been copied.

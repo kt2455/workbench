@@ -1,0 +1,7 @@
+I'm 41 and I wrote my first working script on Saturday. It renames files. That's all it does.
+
+It took four hours, most of them spent on an error that turned out to be a missing bracket. The AI assistant found it in one go once I thought to paste the whole file instead of describing it badly.
+
+I don't think this makes me a developer. I do think I understand my engineering colleagues about ten percent better, which was worth the Saturday.
+
+Next up is something that renames files and also moves them. Ambitious.
