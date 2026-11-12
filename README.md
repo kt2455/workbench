@@ -54,6 +54,8 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `src/http.ts` | Headers sent on every reply, and the safety net for unexpected errors | The house rules |
 | `.github/workflows/checks.yml` | Runs the tests automatically on every pull request | The inspector who signs off before opening |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
+| `testset/` | 38 writing samples and Kyle's hand-marked answer key | The marked exam paper |
+| `docs/tells-checker-design.md` | How the first tool works and the exact shape of its replies | The blueprint |
 | `wrangler.jsonc` | Settings: the Worker's name, address and non-secret options | The venue's licence on the wall |
 | `package.json` | The list of tools this project needs | A shopping list |
 | `package-lock.json` | The exact versions of those tools | The receipt |
