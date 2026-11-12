@@ -1,0 +1,5 @@
+What has held up? Models flattering you and agreeing with you. My take: that's a product decision made by humans. People like being told they're right. Letter-counting fails are just bugs and bad headlines.
+
+So I'd worry less about whether it can count the E's in "seventeen" (those things will likely be fixed in the next product cycle) and more about whether it's just telling you what you want to hear (and how to navigate it). And if your mental model of what AI can't do is more than six months old, it might be time to challenge your own assumptions (or ask your friendly neighborhood AI agent to do it for you).
+
+Still figuring out: why every draft of this post got called "really strong."

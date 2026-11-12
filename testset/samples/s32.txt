@@ -1,0 +1,3 @@
+Expect two loose threads. One is the day-to-day practice of working with AI: building intuition, fitting it into real workflows, and noticing what's useful versus what just demos well. The other is bigger-picture takes from consulting work, like why enterprise AI is hard, what adoption looks like outside the headlines, and what good AI products should feel like.
+
+No posting schedule and nothing to sell. Just figuring sh*t out in public while it's still worth figuring out.

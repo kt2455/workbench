@@ -1,0 +1,5 @@
+In my experience, fresh reviewers regularly catch what the original session missed: logic gaps in writing and recommendations, and bugs that would've broken the code. Sub-agent tip: give each one a narrow job, have it rank findings by severity, and include a "no issues found" option so it doesn't invent problems. (Because remember… they like to suck up.)
+
+Bonus for more advanced users: if you have specific types of reviews you do often or want the agent to look for certain things, you can create pre-defined sub-agents that will execute more consistent reviews. (Think a fact-checker, a security reviewer, or a skeptical client.) Just ask your agent how to do this.
+
+Fresh "eyes" are helpful, but they also have a blind spot. A new reviewer doesn't know which judgment calls you may have made on purpose, so it may try to re-litigate them. Treat its feedback as a list of suggestions, not a to-do list.

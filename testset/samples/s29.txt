@@ -1,0 +1,13 @@
+Subject: Proposal: Testing "No-Meeting Wednesdays" for November
+
+Hi team,
+
+As our Q4 project deadlines ramp up, I’ve noticed that fragmented calendars are making it harder for everyone to carve out uninterrupted blocks of time for deep work. To help give us all more breathing room, I’d like to propose a one-month experiment: No-Meeting Wednesdays.
+
+Starting next week and running through the end of the month, we would keep Wednesdays completely free of internal recurring syncs, check-ins, and brainstorming sessions. External client calls and urgent escalations can still happen if strictly necessary, but our default will be asynchronous updates via Slack or email.
+
+At the end of the four weeks, we’ll review how it impacted our productivity and decide whether to make it permanent. Please reply with your thoughts by Friday afternoon so we can adjust our calendars accordingly!
+
+Best,
+
+Alex

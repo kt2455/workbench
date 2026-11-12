@@ -1,0 +1,5 @@
+In post No. 2, I said AI intuition has a shelf life. A colleague just shared a Stanford report that measured just that.
+
+The team retested 50 well-known findings about how LLMs behave on 20 newer models. Almost half (44%) no longer hold. The fastest to expire were the meme material: counting letters, making up citations, losing facts buried in a long document. On average, those lasted about 16 months.
+
+Rules are outliving the problems they were written for. Major AI conferences still treat fake citations as a key giveaway of AI-written work, even though most current models barely make citations up anymore. Your company's AI policy probably has a few of those too.

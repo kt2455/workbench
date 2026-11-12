@@ -1,0 +1,7 @@
+Welcome back to the newsletter. This month, we're looking at a question that comes up in almost every client conversation: how do you know if an AI project is working?
+
+It sounds simple. In practice, it's anything but. Many teams track activity, such as logins and prompts sent, rather than outcomes. Others rely on anecdotes. Few have a clear baseline to compare against.
+
+In this issue, we'll look at three practical ways to measure impact, share a short case study from a mid-sized logistics firm, and highlight a few tools worth watching.
+
+As always, we'd love to hear what's working for you. Just hit reply.

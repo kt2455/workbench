@@ -1,0 +1,5 @@
+We’re excited to introduce Custom Analytics Dashboards, our newest reporting feature designed to give you complete visibility into your team's performance.
+
+Previously, pulling cross-project metrics meant exporting multiple spreadsheets and manually stitching your data together. Now, you can build tailored, real-time reports directly inside your workspace in just a few clicks. Track completion rates, monitor resource allocation, and spot workflow bottlenecks using visual widgets that update automatically as your team works. You can also schedule automated weekly PDF summaries to land straight in your stakeholders' inboxes every Monday morning.
+
+Custom Analytics Dashboards are available today for all Pro and Enterprise plans at no additional cost. Head over to the "Reports" tab in your left-hand navigation menu to explore our pre-built templates, or check out our Help Center guide to start building your first dashboard from scratch.

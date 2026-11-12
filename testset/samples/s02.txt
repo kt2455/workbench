@@ -1,0 +1,3 @@
+I spend my days helping companies figure out what to do with AI. Here's what that job looks like right now: everyone (consultants, clients, the frontier labs themselves) is figuring sh*t out as they go. Me included. The technology moves faster than anyone can build settled expertise on top of it.
+
+So that's what I'm calling this series. Figuring Sh*t Out is a set of short notes on what I'm learning about using AI at work as a non-developer. A few ground rules, mostly for myself:
