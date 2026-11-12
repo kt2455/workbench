@@ -56,6 +56,7 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
 | `testset/` | 38 writing samples and Kyle's hand-marked answer key | The marked exam paper |
 | `docs/tells-checker-design.md` | How the first tool works and the exact shape of its replies | The blueprint |
+| `prompts/` | The instructions given to the model, one numbered file per version | Recipe cards |
 | `wrangler.jsonc` | Settings: the Worker's name, address and non-secret options | The venue's licence on the wall |
 | `package.json` | The list of tools this project needs | A shopping list |
 | `package-lock.json` | The exact versions of those tools | The receipt |
