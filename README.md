@@ -89,6 +89,7 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `src/guardrails.ts` | The size cap, the rate limit and the bot check | The door staff |
 | `src/budget.ts` | The daily budget counter | The bar tab |
 | `.github/workflows/checks.yml` | Runs the tests automatically on every pull request | The inspector who signs off before opening |
+| `.github/workflows/deploy.yml` | Publishes the Worker to Cloudflare, after Kyle approves | The loading dock |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
 | `testset/` | 38 writing samples and Kyle's hand-marked answer key | The marked exam paper |
 | `docs/tells-checker-design.md` | How the first tool works and the exact shape of its replies | The blueprint |
@@ -135,7 +136,14 @@ That downloads the tools on the shopping list. After that:
 | `npm test` | Runs the automated checks |
 | `npm run typecheck` | Checks the code for mistakes without running it |
 | `npm run dev` | Runs the Worker on your own computer at `http://localhost:8787` |
-| `npm run deploy` | Publishes the Worker to Cloudflare |
+
+### Publishing
+
+Publishing happens on GitHub, not from anyone's computer. The "Deploy" workflow in
+the Actions tab is started by hand, waits for Kyle to approve it, runs the tests,
+publishes, and then checks the live Worker. The access token it uses is kept in
+GitHub's encrypted secrets store, which is separate from the files in this
+repository.
 
 Most of the time Claude runs these in a session and Kyle reviews the pull request.
 GitHub also runs the type check and the tests on every pull request, and shows a
