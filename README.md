@@ -23,16 +23,33 @@ The full build plan lives in the website repository under `docs/workbench/`.
 
 ## Where it is today
 
-**Phase 0: foundations.** The Worker has one endpoint and it returns a fixed reply.
-No model is called yet. The point is to prove the plumbing before adding any AI.
+**Phase 1: the Tells Checker, part built.** The Worker has its first real endpoint,
+`/check`. It is not switched on for visitors yet: the model stays off until the
+spending guardrails are built, and there is no page on the website that calls it.
 
 | Address | What it does |
 |---|---|
-| `GET https://api.kyletebo.com/hello` | Returns `{"ok": true, "message": "Hello from the Workbench. The plumbing works.", "phase": 0}` |
+| `POST https://api.kyletebo.com/check` | Checks a draft for passages that sound machine-written. See `docs/tells-checker-design.md` for the exact reply. |
+| `GET https://api.kyletebo.com/hello` | Returns a fixed reply. A health check: proof the Worker is up. |
 | Any other address | Returns `{"error": "not_found"}` |
-| `/hello` with the wrong kind of request | Returns `{"error": "method_not_allowed"}` |
+| An address with the wrong kind of request | Returns `{"error": "method_not_allowed"}` |
 | A call from a page on another website | Returns `{"error": "origin_not_allowed"}` |
 | Something unexpected going wrong inside | Returns `{"error": "internal_error"}` and nothing else |
+
+### How a check works
+
+Two layers read the draft independently, and their results are combined.
+
+1. **The rules** (`src/rules.ts`): three fixed patterns found by ordinary code. Free
+   and instant.
+2. **The model** (`src/provider.ts`): one call that reads the whole draft with Kyle's
+   taste written into its instructions (`prompts/`).
+
+Nothing the model says reaches a visitor unchecked (`src/merge.ts`). A finding that
+quotes text which is not in the draft is thrown away.
+
+**The master switch.** `MODEL_ENABLED` in `wrangler.jsonc` is `"false"`. While it is,
+`/check` runs the rules alone, says so in its reply, and never touches the paid key.
 
 ### Who may call it
 
@@ -52,6 +69,11 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `src/index.ts` | The Worker's code | The bouncer's instructions |
 | `src/cors.ts` | The check on which website a request came from | The guest list |
 | `src/http.ts` | Headers sent on every reply, and the safety net for unexpected errors | The house rules |
+| `src/check.ts` | The `/check` endpoint: reads the request and runs both layers | The front desk |
+| `src/rules.ts` | Layer 1: the three rhythm rules | The metal detector |
+| `src/provider.ts` | The only code that talks to a model provider | The wall socket |
+| `src/merge.ts` | Checks the model's reply and combines the two layers | The editor's red pen |
+| `src/tells.ts` | The list of kinds of tell and the shape of a reply | The glossary |
 | `.github/workflows/checks.yml` | Runs the tests automatically on every pull request | The inspector who signs off before opening |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
 | `testset/` | 38 writing samples and Kyle's hand-marked answer key | The marked exam paper |
