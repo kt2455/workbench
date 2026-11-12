@@ -10,7 +10,6 @@
  * several: rate limits, the daily budget and the bot check cover the rest.
  */
 
-const ALLOWED_METHODS = "GET, POST, OPTIONS";
 const ALLOWED_HEADERS = "content-type";
 /** How long a browser may remember the answer to a preflight check: one day. */
 const PREFLIGHT_MAX_AGE_SECONDS = "86400";
@@ -44,17 +43,15 @@ export function corsHeaders(check: OriginCheck): Record<string, string> {
 }
 
 /**
- * Answers a "preflight": the question a browser asks, as an OPTIONS request,
- * before sending anything more than a simple GET.
+ * The extra headers for a "preflight": the question a browser asks, as an
+ * OPTIONS request, before sending anything more than a simple GET. The answer
+ * lists only the methods the endpoint really accepts.
  */
-export function preflightResponse(check: OriginCheck): Response {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      ...corsHeaders(check),
-      "access-control-allow-methods": ALLOWED_METHODS,
-      "access-control-allow-headers": ALLOWED_HEADERS,
-      "access-control-max-age": PREFLIGHT_MAX_AGE_SECONDS,
-    },
-  });
+export function preflightHeaders(check: OriginCheck, methods: readonly string[]): Record<string, string> {
+  return {
+    ...corsHeaders(check),
+    "access-control-allow-methods": [...methods, "OPTIONS"].join(", "),
+    "access-control-allow-headers": ALLOWED_HEADERS,
+    "access-control-max-age": PREFLIGHT_MAX_AGE_SECONDS,
+  };
 }

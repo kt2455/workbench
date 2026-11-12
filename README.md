@@ -29,7 +29,10 @@ No model is called yet. The point is to prove the plumbing before adding any AI.
 | Address | What it does |
 |---|---|
 | `GET https://api.kyletebo.com/hello` | Returns `{"ok": true, "message": "Hello from the Workbench. The plumbing works.", "phase": 0}` |
-| Anything else | Returns `{"error": "not_found"}` |
+| Any other address | Returns `{"error": "not_found"}` |
+| `/hello` with the wrong kind of request | Returns `{"error": "method_not_allowed"}` |
+| A call from a page on another website | Returns `{"error": "origin_not_allowed"}` |
+| Something unexpected going wrong inside | Returns `{"error": "internal_error"}` and nothing else |
 
 ### Who may call it
 
@@ -48,6 +51,8 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 |---|---|---|
 | `src/index.ts` | The Worker's code | The bouncer's instructions |
 | `src/cors.ts` | The check on which website a request came from | The guest list |
+| `src/http.ts` | Headers sent on every reply, and the safety net for unexpected errors | The house rules |
+| `.github/workflows/checks.yml` | Runs the tests automatically on every pull request | The inspector who signs off before opening |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
 | `wrangler.jsonc` | Settings: the Worker's name, address and non-secret options | The venue's licence on the wall |
 | `package.json` | The list of tools this project needs | A shopping list |
@@ -68,9 +73,13 @@ your own computer for testing and publishes it to Cloudflare.
 ## What gets logged
 
 Almost nothing, on purpose. Cloudflare can keep a record of every request, including
-each visitor's IP address, rough location and browser. That is switched off. The only
-things logged are lines this code writes deliberately, and those are limited to
-counts, cost and speed. Text a visitor pastes is never stored.
+each visitor's IP address, rough location and browser. That is switched off.
+
+Two things can still reach the log: lines this code writes deliberately, and errors.
+The deliberate lines are limited to counts, cost and speed. Errors are caught by a
+safety net that records one fixed line, "unhandled_error", and throws the details
+away, because an error message can contain whatever the code was handling at the
+time. Text a visitor pastes is never stored.
 
 ## Working on it
 
@@ -90,3 +99,5 @@ That downloads the tools on the shopping list. After that:
 | `npm run deploy` | Publishes the Worker to Cloudflare |
 
 Most of the time Claude runs these in a session and Kyle reviews the pull request.
+GitHub also runs the type check and the tests on every pull request, and shows a
+green tick or a red cross next to it.

@@ -1,5 +1,6 @@
 import { exports } from "cloudflare:workers";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { withErrorHandling } from "../src/http";
 
 const BASE = "https://api.kyletebo.com";
 
@@ -70,7 +71,8 @@ describe("CORS: which websites may call the Worker from a browser", () => {
 
     expect(response.status).toBe(204);
     expect(response.headers.get("access-control-allow-origin")).toBe(SITE);
-    expect(response.headers.get("access-control-allow-methods")).toContain("POST");
+    // Only what /hello really accepts. It used to advertise POST as well.
+    expect(response.headers.get("access-control-allow-methods")).toBe("GET, OPTIONS");
     expect(response.headers.get("access-control-allow-headers")).toBe("content-type");
   });
 
@@ -89,5 +91,94 @@ describe("CORS: which websites may call the Worker from a browser", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("access-control-allow-origin")).toBeNull();
+  });
+});
+
+describe("preflight checks", () => {
+  it("does not answer for an address that does not exist", async () => {
+    const response = await exports.default.fetch(`${BASE}/nope`, {
+      method: "OPTIONS",
+      headers: { origin: "https://kyletebo.com", "access-control-request-method": "POST" },
+    });
+
+    expect(response.status).toBe(404);
+    expect(response.headers.get("access-control-allow-methods")).toBeNull();
+  });
+
+  it("answers without an Origin header, but grants no website access", async () => {
+    const response = await exports.default.fetch(`${BASE}/hello`, { method: "OPTIONS" });
+
+    expect(response.status).toBe(204);
+    expect(response.headers.get("access-control-allow-origin")).toBeNull();
+  });
+});
+
+describe("HEAD /hello", () => {
+  it("returns the same headers as GET, with no body", async () => {
+    const response = await exports.default.fetch(`${BASE}/hello`, { method: "HEAD" });
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toContain("application/json");
+    expect(await response.text()).toBe("");
+  });
+});
+
+describe("headers on every reply", () => {
+  const cases: Array<[string, string, RequestInit]> = [
+    ["a normal reply", "/hello", {}],
+    ["an allowed website", "/hello", { headers: { origin: "https://kyletebo.com" } }],
+    ["a refused website", "/hello", { headers: { origin: "https://evil.example" } }],
+    ["a wrong method", "/hello", { method: "POST" }],
+    ["an unknown address", "/nope", {}],
+    ["a preflight", "/hello", { method: "OPTIONS", headers: { origin: "https://kyletebo.com" } }],
+  ];
+
+  it.each(cases)("%s carries the security headers", async (_name, path, init) => {
+    const response = await exports.default.fetch(`${BASE}${path}`, init);
+
+    expect(response.headers.get("x-content-type-options")).toBe("nosniff");
+    expect(response.headers.get("strict-transport-security")).toBe("max-age=15552000");
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(response.headers.get("vary")).toBe("Origin");
+  });
+
+  it.each(cases)("%s never allows cookies or logins to be sent", async (_name, path, init) => {
+    const response = await exports.default.fetch(`${BASE}${path}`, init);
+
+    expect(response.headers.get("access-control-allow-credentials")).toBeNull();
+    expect(response.headers.get("access-control-allow-origin")).not.toBe("*");
+  });
+});
+
+describe("the error safety net", () => {
+  const SECRET_TEXT = "a visitor's private draft";
+  const env = { ALLOWED_ORIGIN: "https://kyletebo.com" } as Env;
+
+  it("turns an unexpected failure into a fixed reply that reveals nothing", async () => {
+    const logged = vi.spyOn(console, "error").mockImplementation(() => {});
+    const failing = withErrorHandling(async () => {
+      throw new Error(SECRET_TEXT);
+    });
+
+    const response = await failing(new Request(`${BASE}/hello`), env);
+    const body = await response.text();
+
+    expect(response.status).toBe(500);
+    expect(JSON.parse(body)).toEqual({ error: "internal_error" });
+    expect(body).not.toContain(SECRET_TEXT);
+    expect(response.headers.get("x-content-type-options")).toBe("nosniff");
+
+    // The log gets one fixed line and nothing from the error itself.
+    expect(logged).toHaveBeenCalledTimes(1);
+    expect(logged).toHaveBeenCalledWith(JSON.stringify({ event: "unhandled_error" }));
+    logged.mockRestore();
+  });
+
+  it("passes a normal reply through untouched", async () => {
+    const working = withErrorHandling(async () => new Response("fine", { status: 200 }));
+
+    const response = await working(new Request(`${BASE}/hello`), env);
+
+    expect(await response.text()).toBe("fine");
   });
 });

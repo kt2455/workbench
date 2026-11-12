@@ -23,6 +23,10 @@ terms the first time you use them, and use an analogy where it helps.
      visitor's IP address, location and browser. Do not switch them back on.
    - Never log an IP address, a location, a user agent or a full URL. If a guardrail
      needs to tell visitors apart, it uses the value at runtime and does not store it.
+   - Cloudflare stores uncaught errors automatically, message included. Every request
+     runs inside `withErrorHandling` in `src/http.ts`, which logs one fixed line and
+     discards the error. Never log `error.message` or an error object, least of all
+     one from a model provider, which can echo the request back.
 3. **The model provider is swappable.** All model calls go through one provider
    function (the "wall socket"). Endpoints and tools ask it for a model by a name set
    in configuration. Nothing outside that function may import a provider SDK, call a
@@ -43,7 +47,8 @@ terms the first time you use them, and use an analogy where it helps.
 
 ## Deploying
 
-Deploy only from `main`, after the pull request is merged and both checks pass.
+Deploy only from `main`, after the pull request is merged and the "Checks" workflow
+is green on it.
 
 - With Wrangler (`npm run deploy`), secrets set in the dashboard are kept
   automatically.
@@ -63,6 +68,10 @@ Deploy only from `main`, after the pull request is merged and both checks pass.
 - Never hand-write the `Env` type. Run `npm run types` after changing
   `wrangler.jsonc`. The generated `worker-configuration.d.ts` is not committed.
 - Every endpoint replies in JSON, with an `error` code on failure.
+- Endpoints are listed in the `ROUTES` table in `src/index.ts` with the methods each
+  accepts. Preflight answers are built from that table, so they never advertise a
+  method that does not exist.
+- Every reply carries the headers in `BASE_HEADERS`. Build replies with `json()`.
 - Prompts are versioned files in the repository, not strings buried in code.
 - Log structured JSON: `console.log(JSON.stringify({ ... }))`.
 - Cloudflare APIs change often. Check the current documentation before relying on
@@ -71,7 +80,8 @@ Deploy only from `main`, after the pull request is merged and both checks pass.
 
 ## Verifying changes
 
-Both must pass before you push:
+Both must pass before you push. GitHub runs the same two on every pull request
+(`.github/workflows/checks.yml`):
 
 ```bash
 npm run typecheck
