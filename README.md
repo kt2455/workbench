@@ -89,7 +89,7 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `src/guardrails.ts` | The size cap, the rate limit and the bot check | The door staff |
 | `src/budget.ts` | The daily budget counter | The bar tab |
 | `.github/workflows/checks.yml` | Runs the tests automatically on every pull request | The inspector who signs off before opening |
-| `.github/workflows/deploy.yml` | Publishes the Worker to Cloudflare, after Kyle approves | The loading dock |
+| `.github/workflows/deploy.yml` | Publishes the Worker to Cloudflare when started by hand | The loading dock |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
 | `testset/` | 38 writing samples and Kyle's hand-marked answer key | The marked exam paper |
 | `docs/tells-checker-design.md` | How the first tool works and the exact shape of its replies | The blueprint |
@@ -140,8 +140,8 @@ That downloads the tools on the shopping list. After that:
 ### Publishing
 
 Publishing happens on GitHub, not from anyone's computer. The "Deploy" workflow in
-the Actions tab is started by hand, waits for Kyle to approve it, runs the tests,
-publishes, and then checks the live Worker. The access token it uses is kept in
+the Actions tab is started by hand, runs the tests, publishes, and then checks the
+live Worker. It can be set to wait for Kyle's approval first. That is off for now. The access token it uses is kept in
 GitHub's encrypted secrets store, which is separate from the files in this
 repository.
 
