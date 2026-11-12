@@ -1,0 +1,453 @@
+{
+  "s01": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s02": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 445,
+        "end": 482,
+        "text": "A few ground rules, mostly for myself"
+      }
+    ]
+  },
+  "s03": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 495,
+        "end": 576,
+        "text": "We don't just deliver recommendations — we partner with you every step of the way"
+      }
+    ]
+  },
+  "s04": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 289,
+        "end": 310,
+        "text": "part of it is obvious"
+      },
+      {
+        "start": 616,
+        "end": 649,
+        "text": "One mitigation for this is simple"
+      },
+      {
+        "start": 839,
+        "end": 864,
+        "text": "one job: review the work."
+      }
+    ]
+  },
+  "s05": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s06": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s07": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 95,
+        "end": 119,
+        "text": "that measured just that."
+      },
+      {
+        "start": 614,
+        "end": 671,
+        "text": "Your company's AI policy probably has a few of those too."
+      }
+    ]
+  },
+  "s08": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 141,
+        "end": 200,
+        "text": "one thing is clear: there is no one-size-fits-all solution."
+      },
+      {
+        "start": 202,
+        "end": 456,
+        "text": "On one hand, remote work offers unparalleled flexibility, improved work-life balance, and access to a broader talent pool. On the other hand, in-person collaboration fosters spontaneous innovation, stronger relationships, and a deeper sense of belonging."
+      }
+    ]
+  },
+  "s09": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 611,
+        "end": 717,
+        "text": "The secret is shifting your focus from judging the person to observing specific behaviors and their impact"
+      },
+      {
+        "start": 854,
+        "end": 875,
+        "text": "genuinely appreciate."
+      }
+    ]
+  },
+  "s10": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 351,
+        "end": 385,
+        "text": "This approach has several benefits"
+      },
+      {
+        "start": 589,
+        "end": 618,
+        "text": "Everything else is secondary."
+      }
+    ]
+  },
+  "s11": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s12": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s13": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s14": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 0,
+        "end": 93,
+        "text": "We hired eleven people last year. I interviewed most of them, and I got at least three wrong."
+      },
+      {
+        "start": 95,
+        "end": 264,
+        "text": "Looking back, the pattern is obvious. I over-weighted confidence and under-weighted curiosity. The people who interviewed best weren't always the people who worked best."
+      },
+      {
+        "start": 388,
+        "end": 431,
+        "text": "No slides. No brainteasers. Just real work."
+      },
+      {
+        "start": 433,
+        "end": 512,
+        "text": "It's slower. It's more expensive. And it's the best hiring decision we've made."
+      }
+    ]
+  },
+  "s15": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s16": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 452,
+        "end": 758,
+        "text": "A few highlights stood out. The panel on supply chain visibility underscored the vital role of real-time data. The workshop on change management offered a nuanced perspective on stakeholder engagement. And the networking sessions provided invaluable opportunities to connect with like-minded professionals."
+      }
+    ]
+  },
+  "s17": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 383,
+        "end": 462,
+        "text": "By leveraging its powerful features, we'll be able to work smarter, not harder."
+      }
+    ]
+  },
+  "s18": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 0,
+        "end": 93,
+        "text": "I'm 41 and I wrote my first working script on Saturday. It renames files. That's all it does."
+      },
+      {
+        "start": 95,
+        "end": 293,
+        "text": "It took four hours, most of them spent on an error that turned out to be a missing bracket. The AI assistant found it in one go once I thought to paste the whole file instead of describing it badly."
+      },
+      {
+        "start": 295,
+        "end": 441,
+        "text": "I don't think this makes me a developer. I do think I understand my engineering colleagues about ten percent better, which was worth the Saturday."
+      },
+      {
+        "start": 443,
+        "end": 514,
+        "text": "Next up is something that renames files and also moves them. Ambitious."
+      }
+    ]
+  },
+  "s19": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 42,
+        "end": 120,
+        "text": "AI adoption isn't just a technology decision — it's a cultural transformation."
+      },
+      {
+        "start": 529,
+        "end": 598,
+        "text": "Empower your people. Tools don't transform organizations — people do."
+      },
+      {
+        "start": 601,
+        "end": 654,
+        "text": "Measure what matters. Focus on outcomes, not outputs."
+      },
+      {
+        "start": 656,
+        "end": 728,
+        "text": "The journey isn't always easy, but the rewards are truly transformative."
+      },
+      {
+        "start": 730,
+        "end": 825,
+        "text": "What's been your experience with AI adoption? I'd love to hear your thoughts in the comments! 👇"
+      }
+    ]
+  },
+  "s20": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 0,
+        "end": 146,
+        "text": "A fresh sub-agent fixes the reasoning-path problem. It doesn't fix the familiarity problem, because it's still the same model with the same taste."
+      }
+    ]
+  },
+  "s21": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 217,
+        "end": 285,
+        "text": "noticing where it saves you an hour and where it reliably wastes one"
+      }
+    ]
+  },
+  "s22": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s23": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 99,
+        "end": 155,
+        "text": "It wasn't about the technology. It was about the people."
+      },
+      {
+        "start": 157,
+        "end": 315,
+        "text": "When we started, I thought success meant shipping on time. I was wrong. Success meant building trust — with stakeholders, with end users, and with each other."
+      },
+      {
+        "start": 520,
+        "end": 565,
+        "text": "Celebrate small wins. Momentum is everything."
+      }
+    ]
+  },
+  "s24": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 32,
+        "end": 167,
+        "text": "This month, we're looking at a question that comes up in almost every client conversation: how do you know if an AI project is working?"
+      },
+      {
+        "start": 169,
+        "end": 372,
+        "text": "It sounds simple. In practice, it's anything but. Many teams track activity, such as logins and prompts sent, rather than outcomes. Others rely on anecdotes. Few have a clear baseline to compare against."
+      },
+      {
+        "start": 544,
+        "end": 611,
+        "text": "As always, we'd love to hear what's working for you. Just hit reply"
+      }
+    ]
+  },
+  "s25": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 292,
+        "end": 445,
+        "text": "In this post, we'll delve into the fundamentals of prompt engineering, explore best practices, and provide actionable strategies you can implement today."
+      },
+      {
+        "start": 882,
+        "end": 896,
+        "text": "Let's dive in."
+      }
+    ]
+  },
+  "s26": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s27": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s28": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 122,
+        "end": 154,
+        "text": "The cause is the data migration."
+      }
+    ]
+  },
+  "s29": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s30": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s31": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 0,
+        "end": 84,
+        "text": "I started using AI to take meeting notes three months ago. The results surprised me."
+      },
+      {
+        "start": 86,
+        "end": 264,
+        "text": "The notes themselves were fine. What changed was how I showed up in meetings. I stopped typing and started listening. I asked better questions. I noticed when someone went quiet."
+      },
+      {
+        "start": 266,
+        "end": 350,
+        "text": "It turns out the value wasn't in the transcript. It was in the attention I got back."
+      },
+      {
+        "start": 500,
+        "end": 546,
+        "text": "But for internal meetings, I'm not going back."
+      }
+    ]
+  },
+  "s32": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 0,
+        "end": 25,
+        "text": "Expect two loose threads."
+      },
+      {
+        "start": 366,
+        "end": 406,
+        "text": "No posting schedule and nothing to sell."
+      }
+    ]
+  },
+  "s33": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 190,
+        "end": 320,
+        "text": "What lasts is the thinking underneath: where AI helps, where it falls flat, and how to build the intuition to tell the difference."
+      },
+      {
+        "start": 322,
+        "end": 354,
+        "text": "Every post is dated, on purpose."
+      }
+    ]
+  },
+  "s34": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 70,
+        "end": 189,
+        "text": "Someone is copying numbers between three files every Monday, and it takes them half a day. They've heard AI can fix it."
+      },
+      {
+        "start": 191,
+        "end": 450,
+        "text": "Sometimes it can. More often the fix is a lookup formula and a shared folder, and nobody needs a model at all. I've started asking one question before anything else: what would you do with the time? If the answer is vague, the project usually dies in a month."
+      },
+      {
+        "start": 452,
+        "end": 569,
+        "text": "The Monday copying is rarely the real complaint anyway. It's that nobody trusts the numbers once they've been copied."
+      }
+    ]
+  },
+  "s35": {
+    "verdict": "A FEW TELLS",
+    "marks": [
+      {
+        "start": 534,
+        "end": 708,
+        "text": "At the end of the month, we'll gather feedback to see whether the change has improved productivity, reduced distractions, and helped us manage our workloads more effectively."
+      }
+    ]
+  },
+  "s36": {
+    "verdict": "OBVIOUSLY AI",
+    "marks": [
+      {
+        "start": 0,
+        "end": 56,
+        "text": "How to Give Feedback That Actually Helps Your Colleagues"
+      },
+      {
+        "start": 185,
+        "end": 343,
+        "text": "Whether you're addressing a missed deadline, recognizing excellent work, or suggesting a better approach, the way you communicate can make all the difference."
+      },
+      {
+        "start": 345,
+        "end": 575,
+        "text": "Useful feedback isn't about pointing out mistakes or telling someone what they're doing wrong. It's about helping colleagues understand their strengths, identify opportunities to improve, and feel confident about their next steps."
+      },
+      {
+        "start": 641,
+        "end": 753,
+        "text": "The key is to focus on specific examples, choose the right moment, and approach every conversation with respect."
+      }
+    ]
+  },
+  "s37": {
+    "verdict": "CLEAN",
+    "marks": []
+  },
+  "s38": {
+    "verdict": "CLEAN",
+    "marks": []
+  }
+}
