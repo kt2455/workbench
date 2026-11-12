@@ -29,12 +29,35 @@
 
     // Which model the Tells Checker asks for. Changing model is a change to
     // this line and nothing else.
-    "TELLS_CHECKER_MODEL": "claude-haiku-5-5"
+    "TELLS_CHECKER_MODEL": "claude-haiku-5-5",
+
+    // What that model costs, in US dollars per million tokens. Used to keep
+    // the daily budget. Update these whenever the model above changes.
+    "MODEL_INPUT_USD_PER_MTOK": "0.10",
+    "MODEL_OUTPUT_USD_PER_MTOK": "0.50",
+
+    // The most the Worker may spend on model calls in one day (UTC), in US
+    // dollars. Once it is reached, checks use the free rules only until
+    // midnight UTC. $1.00 a day is at most about $31 a month.
+    "DAILY_BUDGET_USD": "1.00",
+
+    // The longest draft accepted, in characters. About 1,300 words.
+    "MAX_DRAFT_CHARS": "8000"
   },
+
+  // The per-visitor rate limit: 5 checks a minute for each visitor. Cloudflare
+  // keeps the count. "namespace_id" is just a label that keeps this counter
+  // separate from any other.
+  "ratelimits": [{ "name": "CHECK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+
+  // The daily budget counter: a small piece of the Worker with its own
+  // storage, so that every request sees the same running total.
+  "durable_objects": { "bindings": [{ "name": "BUDGET", "class_name": "BudgetKeeper" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["BudgetKeeper"] }],
 
   // Secrets the code expects. Names only: the values are set in the
   // Cloudflare dashboard and never appear in this repository.
-  "secrets": { "required": ["MODEL_API_KEY"] },
+  "secrets": { "required": ["MODEL_API_KEY", "TURNSTILE_SECRET_KEY"] },
 
   // Lets the code read a prompt file (prompts/) as plain text.
   "rules": [{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }],

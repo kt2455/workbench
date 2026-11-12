@@ -38,7 +38,8 @@ terms the first time you use them, and use an analogy where it helps.
    gets no tools and no secrets unless a phase plan says otherwise.
 5. **Spend is protected in three layers:** a monthly cap at the provider, a daily
    budget in the Worker, and limits per visitor. Do not remove or loosen a layer
-   without Kyle deciding to.
+   without Kyle deciding to. Every guardrail fails closed: if it
+   breaks or cannot be read, the request is refused or the model is not called.
 6. **One front door.** The Worker is reachable only at `api.kyletebo.com`. Keep
    `workers_dev` and `preview_urls` off. Browser calls are allowed only from the
    origin in `ALLOWED_ORIGIN`.
@@ -55,13 +56,18 @@ is green on it.
 - When uploading through the Cloudflare API instead, the upload **must** include
   `"keep_bindings": ["secret_text", "secret_key"]` in its metadata. Without it the
   upload replaces every binding and deletes `MODEL_API_KEY`.
-- The uploaded settings must match `wrangler.jsonc`: bindings, compatibility date and
-  the observability block.
+- The uploaded settings must match `wrangler.jsonc`: every `vars` entry, the rate
+  limit binding (`CHECK_LIMITER`), the Durable Object binding (`BUDGET`) and its
+  migration, the compatibility date and the observability block.
+- There are two secrets: `MODEL_API_KEY` and `TURNSTILE_SECRET_KEY`. Both must still
+  be listed after a deploy.
 - After every deploy, confirm: `/hello` answers, a foreign `Origin` gets 403, the
   `workers.dev` address returns 404, and `MODEL_API_KEY` is still listed as a secret.
 - `MODEL_ENABLED` is the master switch for model calls. It stays `"false"` until the
-  guardrails in plan step 1.10 (rate limit, daily budget, bot check, size cap) are
-  built, reviewed and deployed. Turning it on is Kyle's decision.
+  guardrails have been deployed and the security review (plan step 1.14) is done.
+  Turning it on is Kyle's decision.
+- The prices in `wrangler.jsonc` must match the model named there. Change them in the
+  same commit as the model.
 
 ## Conventions
 

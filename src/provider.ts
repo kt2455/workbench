@@ -28,8 +28,10 @@ export interface ModelRequest {
 export type ModelResult =
   | { ok: true; text: string; inputTokens: number; outputTokens: number }
   /** `refused`: the provider declined the request. `truncated`: the reply hit the
-   * ceiling. `unavailable`: anything else, such as an outage or a timeout. */
-  | { ok: false; reason: "unavailable" | "refused" | "truncated" };
+   * ceiling. Both are still charged for, so they carry token counts. */
+  | { ok: false; reason: "refused" | "truncated"; inputTokens: number; outputTokens: number }
+  /** Anything else, such as an outage or a timeout. Nothing is charged. */
+  | { ok: false; reason: "unavailable" };
 
 export type ModelCaller = (request: ModelRequest) => Promise<ModelResult>;
 
@@ -60,19 +62,16 @@ export async function callModel(apiKey: string, request: ModelRequest): Promise<
       },
     });
 
-    if (response.stop_reason === "refusal") return { ok: false, reason: "refused" };
-    if (response.stop_reason === "max_tokens") return { ok: false, reason: "truncated" };
+    const inputTokens = response.usage.input_tokens;
+    const outputTokens = response.usage.output_tokens;
+    if (response.stop_reason === "refusal") return { ok: false, reason: "refused", inputTokens, outputTokens };
+    if (response.stop_reason === "max_tokens") return { ok: false, reason: "truncated", inputTokens, outputTokens };
 
     let text = "";
     for (const block of response.content) {
       if (block.type === "text") text += block.text;
     }
-    return {
-      ok: true,
-      text,
-      inputTokens: response.usage.input_tokens,
-      outputTokens: response.usage.output_tokens,
-    };
+    return { ok: true, text, inputTokens, outputTokens };
   } catch {
     // The error is discarded on purpose. See the privacy rules in CLAUDE.md.
     return { ok: false, reason: "unavailable" };
