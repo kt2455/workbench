@@ -478,13 +478,21 @@ describe("the whole path with the model switched on", () => {
     ["a rejected key", { type: "error", error: { type: "authentication_error", message: "bad key" } }, 401],
     ["a refusal", providerMessage("", "refusal"), 200],
     ["a reply cut short", providerMessage('{"verdict":"cle', "max_tokens"), 200],
-  ])("falls back to the quick check on %s, once, and logs nothing", async (_name, model, modelStatus) => {
+  ])("falls back to the quick check on %s, once, and logs only its own metadata line", async (_name, model, modelStatus) => {
     const { calls } = fakeNetwork({ model, modelStatus });
-    const logs = [vi.spyOn(console, "log"), vi.spyOn(console, "warn"), vi.spyOn(console, "error"), vi.spyOn(console, "debug"), vi.spyOn(console, "info")];
+    const log = vi.spyOn(console, "log").mockImplementation(() => {});
+    const others = [vi.spyOn(console, "warn"), vi.spyOn(console, "error"), vi.spyOn(console, "debug"), vi.spyOn(console, "info")];
     const response = await checkEndpoint(post({ text: DRAFT }), on, allowed);
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({ mode: "quick", notice: "model_unavailable" });
     expect(calls.model).toHaveLength(1);
-    for (const log of logs) expect(log).not.toHaveBeenCalled();
+    // The provider's library writes nothing. The one line is the Worker's own,
+    // and it holds no part of the draft or of the provider's error.
+    for (const other of others) expect(other).not.toHaveBeenCalled();
+    expect(log).toHaveBeenCalledTimes(1);
+    const line = String(log.mock.calls[0][0]);
+    expect(JSON.parse(line)).toMatchObject({ event: "check", result: "quick" });
+    expect(line).not.toContain("status reports");
+    expect(line).not.toMatch(/down|bad key/);
   });
 });

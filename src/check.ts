@@ -14,12 +14,15 @@
  *   4. The bot check, confirmed with Cloudflare.
  *   5. The daily budget, checked just before the model is called.
  *
- * The draft is never stored and never logged.
+ * Each request writes one log line (src/log.ts): what happened, how long it
+ * took, the token counts and the cost. The draft is never stored and never
+ * logged.
  */
 
 import promptV1 from "../prompts/tells-checker/v1.md";
 import {
   costMicros,
+  MICROS_PER_DOLLAR,
   readBudgetSettings,
   sharedBudget,
   tokenCeiling,
@@ -29,6 +32,7 @@ import {
 import type { OriginCheck } from "./cors";
 import { passedBotCheck, RATE_LIMIT_WINDOW_SECONDS, readJsonCapped, withinRateLimit } from "./guardrails";
 import { json } from "./http";
+import { countFindings, emptyCheckLog, logCheck, type CheckLog, type Guardrail, type ModelStep } from "./log";
 import { locate, merge, MODEL_OUTPUT_SCHEMA, parseModelOutput } from "./merge";
 import { callModel, type ModelCaller } from "./provider";
 import { runRules } from "./rules";
@@ -60,6 +64,12 @@ export interface CheckOutcome {
   body: CheckResponse;
   /** What the model call used, for the cost log. Null when no call was made. */
   usage: { inputTokens: number; outputTokens: number } | null;
+  /** What happened with the model, for the log. */
+  modelStep: ModelStep;
+  /** What the call cost in micro-dollars. Zero when nothing was charged. */
+  costMicros: number;
+  /** How long the model took to answer. Null when it was not called. */
+  modelMs: number | null;
 }
 
 /**
@@ -72,12 +82,17 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
 
   // The quick check: rules only. It reports what the rules found but gives no
   // verdict, because a verdict from rules alone would claim more than they know.
-  const quick = (notice: Notice, usage: CheckOutcome["usage"]): CheckOutcome => ({
+  const quick = (
+    notice: Notice,
+    modelStep: ModelStep,
+    call: Pick<CheckOutcome, "usage" | "costMicros" | "modelMs"> = { usage: null, costMicros: 0, modelMs: null },
+  ): CheckOutcome => ({
     body: { mode: "quick", verdict: null, summary: null, findings: ruleFindings, houseStyle: null, notice, meta },
-    usage,
+    modelStep,
+    ...call,
   });
 
-  if (access === null) return quick("model_unavailable", null);
+  if (access === null) return quick("model_unavailable", "switched_off");
   const { model, caller, budget, prices } = access;
 
   // The draft goes in whole and unaltered, so quotes can be matched exactly.
@@ -92,10 +107,13 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
     granted = await budget.reserve(reserved);
   } catch {
     // If the counter cannot be reached, spend nothing.
-    return quick("model_unavailable", null);
+    return quick("model_unavailable", "budget_unavailable");
   }
-  if (!granted) return quick("daily_budget_reached", null);
+  if (!granted) return quick("daily_budget_reached", "budget_reached");
 
+  // The Workers clock moves forward while waiting on the network, which is
+  // all this call does, so the difference is the time the model took.
+  const started = Date.now();
   const result = await caller({
     model,
     system: promptV1,
@@ -103,6 +121,7 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
     maxOutputTokens: MAX_OUTPUT_TOKENS,
     jsonSchema: MODEL_OUTPUT_SCHEMA,
   });
+  const modelMs = Date.now() - started;
 
   // Swap the reservation for the real cost. A call that never reached the
   // provider cost nothing.
@@ -114,9 +133,10 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
     // The reservation stays in place, which only makes the budget stricter.
   }
 
-  if (!result.ok) return quick("model_unavailable", usage);
+  const call = { usage, costMicros: actual, modelMs };
+  if (!result.ok) return quick("model_unavailable", result.reason, call);
   const output = parseModelOutput(result.text);
-  if (output === null) return quick("model_unavailable", usage);
+  if (output === null) return quick("model_unavailable", "unreadable_reply", call);
 
   const { verdict, findings } = merge(
     { verdict: output.verdict, findings: locate(text, output.findings) },
@@ -124,7 +144,8 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
   );
   return {
     body: { mode: "full", verdict, summary: output.summary, findings, houseStyle: null, notice: null, meta },
-    usage,
+    modelStep: "ok",
+    ...call,
   };
 }
 
@@ -138,34 +159,71 @@ function readMaxDraftChars(value: string): number | null {
   return Number.isSafeInteger(number) && number > 0 && number <= 100_000 ? number : null;
 }
 
-/** Works out whether a paid model call is allowed, and with what. */
-function modelAccess(env: Env): ModelAccess | null {
+/**
+ * Works out whether a paid model call is allowed, and with what. When it is
+ * not, says why, for the log.
+ */
+function modelAccess(env: Env): { access: ModelAccess } | { skipped: "switched_off" | "settings_broken" } {
   // The master switch. With it off, the paid key is never touched.
-  if (env.MODEL_ENABLED !== "true") return null;
-  if (typeof env.MODEL_API_KEY !== "string" || env.MODEL_API_KEY === "") return null;
+  if (env.MODEL_ENABLED !== "true") return { skipped: "switched_off" };
+  if (typeof env.MODEL_API_KEY !== "string" || env.MODEL_API_KEY === "") return { skipped: "settings_broken" };
   // Without readable budget settings there is no budget, so there is no call.
   const prices = readBudgetSettings(env);
-  if (prices === null) return null;
+  if (prices === null) return { skipped: "settings_broken" };
   return {
-    model: env.TELLS_CHECKER_MODEL,
-    caller: (request) => callModel(env.MODEL_API_KEY, request),
-    budget: sharedBudget(env.BUDGET, prices.limitMicros),
-    prices,
+    access: {
+      model: env.TELLS_CHECKER_MODEL,
+      caller: (request) => callModel(env.MODEL_API_KEY, request),
+      budget: sharedBudget(env.BUDGET, prices.limitMicros),
+      prices,
+    },
   };
 }
 
+/** A reply, plus what the log line should say about it. */
+interface Handled {
+  response: Response;
+  log: Omit<CheckLog, "status" | "durationMs">;
+}
+
+/**
+ * POST /check. Handles the request, then writes its one log line.
+ *
+ * If something unexpected goes wrong, no line is written here: the error
+ * safety net in src/http.ts writes its own fixed line instead.
+ */
 export async function checkEndpoint(request: Request, env: Env, origin: OriginCheck): Promise<Response> {
+  const started = Date.now();
+  const { response, log } = await handleCheck(request, env, origin);
+  logCheck({ ...log, status: response.status, durationMs: Date.now() - started });
+  return response;
+}
+
+async function handleCheck(request: Request, env: Env, origin: OriginCheck): Promise<Handled> {
+  // A refusal: the visitor gets the error code, the log gets the same code.
+  const refuse = (
+    error: "invalid_request" | "rate_limited" | "text_too_long" | "bot_check_failed",
+    status: number,
+    guardrail: Guardrail | null,
+    characters: number | null = null,
+    extra: { body?: Record<string, unknown>; headers?: Record<string, string> } = {},
+  ): Handled => ({
+    response: json({ error, ...extra.body }, status, origin, extra.headers),
+    log: { ...emptyCheckLog(), result: error, guardrail, characters },
+  });
+
   // 1. Only JSON is accepted. A page on another website cannot send JSON here
   // without the browser asking permission first, which the guest list refuses.
   const contentType = request.headers.get("content-type") ?? "";
   if (!contentType.toLowerCase().startsWith("application/json")) {
-    return json({ error: "invalid_request" }, 400, origin);
+    return refuse("invalid_request", 400, null);
   }
 
   // 2. The rate limit, before anything that costs effort.
   if (!(await withinRateLimit(request, env.CHECK_LIMITER))) {
-    return json({ error: "rate_limited", retryAfterSeconds: RATE_LIMIT_WINDOW_SECONDS }, 429, origin, {
-      "retry-after": String(RATE_LIMIT_WINDOW_SECONDS),
+    return refuse("rate_limited", 429, "rate_limit", null, {
+      body: { retryAfterSeconds: RATE_LIMIT_WINDOW_SECONDS },
+      headers: { "retry-after": String(RATE_LIMIT_WINDOW_SECONDS) },
     });
   }
 
@@ -175,25 +233,47 @@ export async function checkEndpoint(request: Request, env: Env, origin: OriginCh
   const read = await readJsonCapped(request, maxDraftChars * MAX_BYTES_PER_CHAR + BODY_OVERHEAD_BYTES);
   if (!read.ok) {
     return read.reason === "too_large"
-      ? json({ error: "text_too_long" }, 413, origin)
-      : json({ error: "invalid_request" }, 400, origin);
+      ? refuse("text_too_long", 413, "size_cap")
+      : refuse("invalid_request", 400, null);
   }
   const body = read.value;
-  if (!isRecord(body)) return json({ error: "invalid_request" }, 400, origin);
+  if (!isRecord(body)) return refuse("invalid_request", 400, null);
 
   const { text, houseStyle, botCheckToken } = body;
-  if (typeof text !== "string" || text.trim() === "") return json({ error: "invalid_request" }, 400, origin);
+  if (typeof text !== "string" || text.trim() === "") return refuse("invalid_request", 400, null);
   if (houseStyle !== undefined && typeof houseStyle !== "boolean") {
-    return json({ error: "invalid_request" }, 400, origin);
+    return refuse("invalid_request", 400, null, text.length);
   }
-  if (text.length > maxDraftChars) return json({ error: "text_too_long" }, 413, origin);
+  if (text.length > maxDraftChars) return refuse("text_too_long", 413, "size_cap", text.length);
 
   // 4. The bot check. Required for every check, quick or full.
   if (!(await passedBotCheck(botCheckToken, env.TURNSTILE_SECRET_KEY, env.ALLOWED_ORIGIN))) {
-    return json({ error: "bot_check_failed" }, 403, origin);
+    return refuse("bot_check_failed", 403, "bot_check", text.length);
   }
 
   // 5. The daily budget is checked inside, just before the model is called.
-  const outcome = await checkDraft(text, modelAccess(env));
-  return json(outcome.body, 200, origin);
+  const gate = modelAccess(env);
+  const access = "access" in gate ? gate.access : null;
+  const outcome = await checkDraft(text, access);
+  return {
+    response: json(outcome.body, 200, origin),
+    log: {
+      result: outcome.body.mode,
+      // The budget guardrail fired if it said no, and also if its counter could
+      // not be reached and it refused the call to stay safe.
+      guardrail:
+        outcome.modelStep === "budget_reached" || outcome.modelStep === "budget_unavailable" ? "daily_budget" : null,
+      characters: text.length,
+      modelStep: "skipped" in gate ? gate.skipped : outcome.modelStep,
+      model: outcome.modelMs === null ? null : (access?.model ?? null),
+      promptVersion: PROMPT_VERSION,
+      modelMs: outcome.modelMs,
+      inputTokens: outcome.usage?.inputTokens ?? null,
+      outputTokens: outcome.usage?.outputTokens ?? null,
+      costMicros: outcome.costMicros,
+      costUsd: outcome.costMicros / MICROS_PER_DOLLAR,
+      verdict: outcome.body.verdict,
+      findings: countFindings(outcome.body.findings),
+    },
+  };
 }

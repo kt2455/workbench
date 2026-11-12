@@ -1,13 +1,15 @@
 /**
  * The Workbench Worker: the "bouncer" between kyletebo.com and the model.
  *
- * Phase 0 only proves the plumbing. There is one endpoint, GET /hello, and it
- * returns a fixed reply. No model is called and no secret is read yet.
+ * It answers two addresses, listed in ROUTES below: GET /hello, a fixed reply
+ * that proves the Worker is up, and POST /check, the Tells Checker
+ * (src/check.ts). Every request first passes the guest list (src/cors.ts).
  */
 
 import { checkEndpoint } from "./check";
 import { checkOrigin, preflightHeaders, type OriginCheck } from "./cors";
 import { BASE_HEADERS, json, withErrorHandling } from "./http";
+import { logRefused } from "./log";
 
 type Endpoint = (request: Request, env: Env, origin: OriginCheck) => Response | Promise<Response>;
 
@@ -35,6 +37,7 @@ async function handle(request: Request, env: Env): Promise<Response> {
   // The guest list comes first, before any endpoint runs.
   const origin = checkOrigin(request, env.ALLOWED_ORIGIN);
   if (origin.kind === "refused") {
+    logRefused("origin", 403);
     return json({ error: "origin_not_allowed" }, 403, origin);
   }
 

@@ -231,9 +231,23 @@ A spent daily budget is **not** an error. The visitor still gets a quick check, 
 
 ## What is logged for each check
 
-Metadata only: the time, `mode`, `verdict`, the number of findings by `type` and
-`foundBy`, tokens used, cost, how long it took, and which guardrail fired if one did.
-Never the draft, a quote, the summary, an IP address, a location or a browser.
+Metadata only: the time, the result and HTTP status, `verdict`, the number of
+findings by `type` and `foundBy`, the draft's length rounded up to the next 100, the
+model and prompt version, tokens used, cost, how long it took, and which guardrail
+fired if one did. Never the draft, a quote, the summary, an IP address, a location or
+a browser.
+
+Built in step 1.11, in `src/log.ts`. One JSON line per request, with a fixed set of
+fields listed in the README. Refusals get a line too, with the error code and the
+guardrail. The model step says why the model was not called when it was not
+(`switched_off`, `settings_broken`, `budget_reached`, `budget_unavailable`), or how
+the call went (`ok`, `refused`, `truncated`, `unavailable`, `unreadable_reply`).
+
+Left for the step 1.14 review: requests from another website, and requests that are
+not JSON, each write a line before the rate limit runs. A script sending many of them
+could fill the day's log allowance and crowd out real lines. They cost nothing else.
+The Worker cannot read its own log back, so the public stats (step 1.12) need their
+own counters.
 
 ## Decisions made while building (step 1.9)
 
