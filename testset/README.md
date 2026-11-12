@@ -11,8 +11,9 @@ once by hand. After that, the tool's marking is compared with his.
 | File | What it is |
 |---|---|
 | `samples/s01.txt` to `s38.txt` | The 38 samples, in shuffled order. Plain text, exactly as a visitor would paste it. These files are never edited. |
-| `marking-sheet.md` | All 38 samples in one file, with instructions. Kyle marks the tells here. |
-| `key.json` | Where each sample came from. **Kyle does not open this until marking is finished.** |
+| `marking-sheet.md` | All 38 samples in one file, with the marking instructions. The blank form Kyle marked from. |
+| `key.json` | Where each sample came from. Kept apart from the samples so the marking could be done blind. |
+| `labels.json` | **The answer key.** Kyle's verdict for each sample and every passage he marked, with its exact position in the sample. |
 
 ## The mix
 
@@ -31,6 +32,41 @@ The older article earns its place for a second reason. It uses words such as
 checks, yet no AI was involved. It tests whether the tool can tell a word a person
 chose from a pattern a model fell into.
 
+## What the marking showed
+
+Kyle marked all 38 samples blind in November 2026: 55 marked passages, and one verdict
+per sample.
+
+| Source | Samples | Clean | A few tells | Obviously AI |
+|---|---|---|---|---|
+| Kyle's older article | 5 | 5 | 0 | 0 |
+| Kyle's recent posts | 10 | 3 | 7 | 0 |
+| Raw drafts, Claude | 8 | 1 | 4 | 3 |
+| Raw drafts, Gemini | 4 | 3 | 1 | 0 |
+| Raw drafts, ChatGPT | 4 | 2 | 1 | 1 |
+| Edited drafts, Claude | 7 | 0 | 2 | 5 |
+
+Three findings shape how the tool is built and scored:
+
+1. **Rhythm matters more than vocabulary.** Words on the website's banned list appear
+   49 times in the samples, and only about a quarter fall inside a marked passage.
+   What Kyle marked was cadence: runs of short punchy sentences, the "it wasn't X, it
+   was Y" turn, the tidy one-line closer.
+2. **Generic is not the same as AI-sounding.** Several raw AI drafts in a bland
+   corporate register were marked clean. In Kyle's words, that is "how people write
+   these types of things". The tool should not flag writing only for being generic.
+3. **Kyle's recent posts are not all clean.** Seven of ten excerpts got "a few tells".
+   They are a sample of his voice, not a definition of clean writing. The older
+   article is the cleaner baseline.
+
+## How to score against it
+
+- Score the **verdict per sample** first. It is the most reliable signal.
+- Treat marked passages as regions, not exact strings. Kyle often marked a whole
+  paragraph where one sentence carried the pattern, so a finding that overlaps a
+  marked passage counts as a match.
+- A finding in a sample marked clean is a false flag. These matter most.
+
 ## Known limits
 
 - The AI samples come from three assistants: Claude, Gemini and ChatGPT. The Gemini
@@ -47,5 +83,7 @@ chose from a pattern a model fell into.
 ## Rules
 
 - No client material, ever.
-- Samples are frozen once marking starts. To change one, add a new sample instead.
+- Samples and labels are frozen. To change the set, add new samples and mark them.
+- The verdicts stand as first marked, blind. They were not revised after the sources
+  were revealed.
 - Names in the AI samples are invented.
