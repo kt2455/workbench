@@ -48,21 +48,25 @@ terms the first time you use them, and use an analogy where it helps.
 
 ## Deploying
 
-Deploy only from `main`, after the pull request is merged and the "Checks" workflow
-is green on it.
+Deploys run on GitHub, through the "Deploy" workflow (`.github/workflows/deploy.yml`).
 
-- With Wrangler (`npm run deploy`), secrets set in the dashboard are kept
-  automatically.
-- When uploading through the Cloudflare API instead, the upload **must** include
-  `"keep_bindings": ["secret_text", "secret_key"]` in its metadata. Without it the
-  upload replaces every binding and deletes `MODEL_API_KEY`.
-- The uploaded settings must match `wrangler.jsonc`: every `vars` entry, the rate
-  limit binding (`CHECK_LIMITER`), the Durable Object binding (`BUDGET`) and its
-  migration, the compatibility date and the observability block.
-- There are two secrets: `MODEL_API_KEY` and `TURNSTILE_SECRET_KEY`. Both must still
-  be listed after a deploy.
-- After every deploy, confirm: `/hello` answers, a foreign `Origin` gets 403, the
-  `workers.dev` address returns 404, and `MODEL_API_KEY` is still listed as a secret.
+1. The pull request is merged and the "Checks" workflow is green on `main`.
+2. Kyle says to deploy, in that session.
+3. Start the "Deploy" workflow on `main` (Actions tab, or the GitHub tools).
+4. Kyle approves the run in GitHub. The `production` environment waits for him.
+5. The workflow tests, publishes, then confirms the live Worker: both secrets still
+   listed, `/hello` answers, a foreign `Origin` gets 403, `/check` without a bot
+   token gets 403, and plain http redirects. A failed confirmation fails the run.
+
+Rules:
+
+- Never deploy any other way. Do not upload through the Cloudflare API: a manual
+  upload replaces every binding and can delete the secrets.
+- The Cloudflare access token lives only in the `production` environment's secrets in
+  GitHub. Never ask Kyle to paste it into a chat, and never print it in a workflow.
+- Do not add triggers to the deploy workflow, and do not use the `production`
+  environment or its secrets in any other workflow.
+- There are two secrets on the Worker: `MODEL_API_KEY` and `TURNSTILE_SECRET_KEY`.
 - `MODEL_ENABLED` is the master switch for model calls. It stays `"false"` until the
   guardrails have been deployed and the security review (plan step 1.14) is done.
   Turning it on is Kyle's decision.
