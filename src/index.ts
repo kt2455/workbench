@@ -1,8 +1,9 @@
 /**
  * The Workbench Worker: the "bouncer" between kyletebo.com and the model.
  *
- * Phase 0 only proves the plumbing. There is one endpoint, GET /hello, and it
- * returns a fixed reply. No model is called and no secret is read yet.
+ * It answers two addresses, listed in ROUTES below: GET /hello, a fixed reply
+ * that proves the Worker is up, and POST /check, the Tells Checker
+ * (src/check.ts). Every request first passes the guest list (src/cors.ts).
  */
 
 import { checkEndpoint } from "./check";

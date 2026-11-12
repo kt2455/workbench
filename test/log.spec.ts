@@ -1,6 +1,7 @@
 import { env, exports } from "cloudflare:workers";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { checkDraft, checkEndpoint, type ModelAccess } from "../src/check";
+import { withErrorHandling } from "../src/http";
 import { logCheck, type CheckLog } from "../src/log";
 import { BOT_CHECK_PASS, CHECK_URL, fakeNetwork, newVisitor, ORIGIN, post, providerMessage } from "./helpers";
 
@@ -23,6 +24,7 @@ const CHECK_FIELDS = [
   "modelMs",
   "inputTokens",
   "outputTokens",
+  "costMicros",
   "costUsd",
   "verdict",
   "findings",
@@ -69,13 +71,15 @@ describe("the log line for each check", () => {
       result: "quick",
       status: 200,
       guardrail: null,
-      characters: DRAFT.length,
+      // The length is rounded up to the next 100.
+      characters: 100,
       modelStep: "switched_off",
       model: null,
       promptVersion: "v1",
       modelMs: null,
       inputTokens: null,
       outputTokens: null,
+      costMicros: 0,
       costUsd: 0,
       verdict: null,
       // The rules found "It turns out".
@@ -104,6 +108,7 @@ describe("the log line for each check", () => {
       inputTokens: 2400,
       outputTokens: 300,
       // 2,400 tokens at $0.10 a million plus 300 at $0.50 a million.
+      costMicros: 390,
       costUsd: 0.00039,
       verdict: "a_few_tells",
       findings: { total: 1, byType: { signpost: 1 }, byLayer: { rule: 1, model: 0, both: 0 } },
@@ -120,6 +125,7 @@ describe("the log line for each check", () => {
       guardrail: "daily_budget",
       modelStep: "budget_reached",
       model: null,
+      costMicros: 0,
       costUsd: 0,
     });
   });
@@ -150,7 +156,7 @@ describe("the log line for each check", () => {
     const visitor = newVisitor();
     await checkEndpoint(post({ text: DRAFT }, {}, visitor), on, allowed);
     expectPrivate(log.lines()[0], visitor);
-    expect(log.entries()[0]).toMatchObject({ modelStep: step, inputTokens: 2400, outputTokens: 300, costUsd: 0.00039 });
+    expect(log.entries()[0]).toMatchObject({ modelStep: step, inputTokens: 2400, outputTokens: 300, costMicros: 390 });
   });
 
   it("records an unreachable budget counter", async () => {
@@ -177,6 +183,7 @@ describe("the log line for each refusal", () => {
     ["the size cap", () => post({ text: "a".repeat(Number(env.MAX_DRAFT_CHARS) + 1) }), "text_too_long", 413, "size_cap"],
     ["the bot check", () => post({ text: DRAFT }), "bot_check_failed", 403, "bot_check"],
     ["a malformed request", () => post({ text: 42 }), "invalid_request", 400, null],
+    ["a bad houseStyle", () => post({ text: DRAFT, houseStyle: "yes" }), "invalid_request", 400, null],
     ["the wrong content type", () => post({ text: DRAFT }, { "content-type": "text/plain" }), "invalid_request", 400, null],
   ])("records %s", async (_name, build, result, status, guardrail) => {
     fakeNetwork({ botCheck: { success: false } });
@@ -204,6 +211,7 @@ describe("the log line for each refusal", () => {
     expect(log.entries()).toEqual([
       expect.objectContaining({ result: "rate_limited", status: 429, guardrail: "rate_limit", characters: null }),
     ]);
+    expect(Object.keys(log.entries()[0]).sort()).toEqual(CHECK_FIELDS);
   });
 
   it("records a page on another website, without the address it asked for", async () => {
@@ -225,6 +233,85 @@ describe("the log line for each refusal", () => {
   });
 });
 
+describe("the log line in harder cases", () => {
+  it("records an unreachable budget counter as the daily budget guardrail", async () => {
+    fakeNetwork({ model: modelReply });
+    const log = captureLog();
+    const offline = {
+      idFromName: () => ({}),
+      get: () => ({
+        reserve: async () => {
+          throw new Error("counter offline");
+        },
+        settle: async () => {},
+      }),
+    };
+    const response = await checkEndpoint(post({ text: DRAFT }), { ...on, BUDGET: offline } as unknown as Env, allowed);
+    expect(await response.json()).toMatchObject({ mode: "quick", notice: "model_unavailable" });
+    expect(log.entries()[0]).toMatchObject({
+      result: "quick",
+      guardrail: "daily_budget",
+      modelStep: "budget_unavailable",
+      model: null,
+      costMicros: 0,
+    });
+  });
+
+  it("still records the cost when settling the budget fails", async () => {
+    const access: ModelAccess = {
+      model: "some-model",
+      prices: { limitMicros: 1_000_000, inputMicrosPerToken: 0.1, outputMicrosPerToken: 0.5 },
+      budget: {
+        reserve: async () => true,
+        settle: async () => {
+          throw new Error("counter offline");
+        },
+      },
+      caller: async () => ({ ok: true, text: JSON.stringify({ verdict: "clean", summary: "Fine.", findings: [] }), inputTokens: 900, outputTokens: 120 }),
+    };
+    const outcome = await checkDraft(DRAFT, access);
+    // 900 at 0.1 plus 120 at 0.5.
+    expect(outcome).toMatchObject({ modelStep: "ok", costMicros: 150 });
+  });
+
+  it("records a huge body refused before it was read, with no length", async () => {
+    fakeNetwork();
+    const log = captureLog();
+    const response = await exports.default.fetch(post({ text: "a".repeat(200_000) }));
+    expect(response.status).toBe(413);
+    expect(log.entries()).toEqual([expect.objectContaining({ result: "text_too_long", guardrail: "size_cap", characters: null })]);
+  });
+
+  it("rounds the length up to the next 100", async () => {
+    fakeNetwork();
+    const log = captureLog();
+    await exports.default.fetch(post({ text: "a".repeat(101) }));
+    await exports.default.fetch(post({ text: "a".repeat(200) }));
+    expect(log.entries().map((entry) => entry.characters)).toEqual([200, 200]);
+  });
+
+  it("writes no check line when something unexpected fails, only the safety net's fixed line", async () => {
+    fakeNetwork();
+    const log = captureLog();
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {});
+    const broken = withErrorHandling((request, brokenEnv) => checkEndpoint(request, brokenEnv, allowed));
+    const response = await broken(post({ text: DRAFT }), { ...env, MAX_DRAFT_CHARS: "lots" });
+    expect(response.status).toBe(500);
+    expect(log.lines()).toHaveLength(0);
+    expect(errors.mock.calls).toEqual([[JSON.stringify({ event: "unhandled_error" })]]);
+  });
+
+  it("still answers the visitor if writing the log fails", async () => {
+    fakeNetwork();
+    vi.spyOn(console, "log").mockImplementation(() => {
+      throw new Error("log unavailable");
+    });
+    const response = await exports.default.fetch(post({ text: DRAFT }));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ mode: "quick" });
+  });
+});
+
 describe("logCheck", () => {
   it("writes only the allowed fields, even if handed more", () => {
     const log = captureLog();
@@ -240,12 +327,13 @@ describe("logCheck", () => {
       modelMs: null,
       inputTokens: null,
       outputTokens: null,
+      costMicros: 0,
       costUsd: 0,
       verdict: "clean",
       findings: { total: 1, byType: { staccato: 1, [MARKER]: 1 }, byLayer: { rule: 1, model: 0, both: 0, note: MARKER } },
       text: MARKER,
       ip: "203.0.113.9",
-    } as CheckLog;
+    } as unknown as CheckLog;
     logCheck(sneaky);
     expect(log.lines()[0]).not.toContain(MARKER);
     expect(log.lines()[0]).not.toContain("203.0.113.9");
@@ -267,10 +355,39 @@ describe("logCheck", () => {
       modelMs: null,
       inputTokens: null,
       outputTokens: null,
+      costMicros: null,
       costUsd: null,
       verdict: "definitely_a_robot" as CheckLog["verdict"],
       findings: null,
     });
     expect(log.entries()[0]).toMatchObject({ durationMs: null, characters: null, verdict: null });
+  });
+  it("checks every word field against its list while running, not only when written", () => {
+    const log = captureLog();
+    logCheck({
+      result: `quick ${MARKER}`,
+      status: 200,
+      guardrail: MARKER,
+      durationMs: 3,
+      characters: 10,
+      modelStep: `upstream said: ${MARKER}`,
+      model: `model ${MARKER}`,
+      promptVersion: "v1\nwith a second line",
+      modelMs: null,
+      inputTokens: null,
+      outputTokens: null,
+      costMicros: 0,
+      costUsd: 0,
+      verdict: null,
+      findings: null,
+    } as unknown as CheckLog);
+    expect(log.lines()[0]).not.toContain(MARKER);
+    expect(log.entries()[0]).toMatchObject({
+      result: null,
+      guardrail: null,
+      modelStep: null,
+      model: null,
+      promptVersion: null,
+    });
   });
 });

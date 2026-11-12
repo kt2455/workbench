@@ -259,7 +259,10 @@ async function handleCheck(request: Request, env: Env, origin: OriginCheck): Pro
     response: json(outcome.body, 200, origin),
     log: {
       result: outcome.body.mode,
-      guardrail: outcome.modelStep === "budget_reached" ? "daily_budget" : null,
+      // The budget guardrail fired if it said no, and also if its counter could
+      // not be reached and it refused the call to stay safe.
+      guardrail:
+        outcome.modelStep === "budget_reached" || outcome.modelStep === "budget_unavailable" ? "daily_budget" : null,
       characters: text.length,
       modelStep: "skipped" in gate ? gate.skipped : outcome.modelStep,
       model: outcome.modelMs === null ? null : (access?.model ?? null),
@@ -267,6 +270,7 @@ async function handleCheck(request: Request, env: Env, origin: OriginCheck): Pro
       modelMs: outcome.modelMs,
       inputTokens: outcome.usage?.inputTokens ?? null,
       outputTokens: outcome.usage?.outputTokens ?? null,
+      costMicros: outcome.costMicros,
       costUsd: outcome.costMicros / MICROS_PER_DOLLAR,
       verdict: outcome.body.verdict,
       findings: countFindings(outcome.body.findings),

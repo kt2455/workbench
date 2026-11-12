@@ -6,14 +6,18 @@
  * visitor pasted, never a quote from it, and never an IP address, location,
  * browser or full web address.
  *
- * That rule is enforced here in two ways:
+ * That rule is enforced here, while the code runs, not only when it is
+ * written:
  *
- *   1. Every field has a fixed type. Apart from two names taken from the
- *      settings (the model and the prompt version), each one is a number or a
- *      word from a short fixed list. There is no field that could hold free
- *      text, so there is nowhere to put a draft by mistake.
+ *   1. Every field is a number or a word from a short fixed list. Each word is
+ *      checked against its list as the line is built, and anything not on the
+ *      list is written as null. The two names taken from the settings (the
+ *      model and the prompt version) must look like a name: short, with no
+ *      spaces. There is no field that could hold free text.
  *   2. `logCheck` copies the allowed fields one by one into a new object. If
  *      anything else is handed to it, it is left behind.
+ *   3. The draft's length is rounded up to the next 100 characters, so a
+ *      length cannot be matched to one particular draft.
  *
  * Each line is one JSON object, so Cloudflare's log viewer can filter and
  * count by field.
@@ -22,16 +26,19 @@
 import { TELL_TYPES, VERDICTS, type Finding, type TellType, type Verdict } from "./tells";
 
 /** The guardrails that can turn a request away or limit what it gets. */
-export type Guardrail = "origin" | "rate_limit" | "size_cap" | "bot_check" | "daily_budget";
+export const GUARDRAILS = ["origin", "rate_limit", "size_cap", "bot_check", "daily_budget"] as const;
+export type Guardrail = (typeof GUARDRAILS)[number];
 
 /** How a check ended: the kind of reply, or the error code the visitor got. */
-export type CheckResult =
-  | "full"
-  | "quick"
-  | "invalid_request"
-  | "rate_limited"
-  | "text_too_long"
-  | "bot_check_failed";
+export const CHECK_RESULTS = [
+  "full",
+  "quick",
+  "invalid_request",
+  "rate_limited",
+  "text_too_long",
+  "bot_check_failed",
+] as const;
+export type CheckResult = (typeof CHECK_RESULTS)[number];
 
 /**
  * What happened with the model on one check.
@@ -44,16 +51,18 @@ export type CheckResult =
  * Called: `ok`, `refused`, `truncated`, `unavailable` (an outage or a
  * timeout), `unreadable_reply` (the reply was not in the agreed format).
  */
-export type ModelStep =
-  | "switched_off"
-  | "settings_broken"
-  | "budget_reached"
-  | "budget_unavailable"
-  | "ok"
-  | "refused"
-  | "truncated"
-  | "unavailable"
-  | "unreadable_reply";
+export const MODEL_STEPS = [
+  "switched_off",
+  "settings_broken",
+  "budget_reached",
+  "budget_unavailable",
+  "ok",
+  "refused",
+  "truncated",
+  "unavailable",
+  "unreadable_reply",
+] as const;
+export type ModelStep = (typeof MODEL_STEPS)[number];
 
 /** One line per request to /check. */
 export interface CheckLog {
@@ -64,7 +73,10 @@ export interface CheckLog {
   guardrail: Guardrail | null;
   /** How long the whole request took, in milliseconds. */
   durationMs: number;
-  /** The draft's length in characters. Null if the request was refused before it was read. */
+  /**
+   * The draft's length in characters. Logged rounded up to the next 100.
+   * Null if the request was refused before the draft was read.
+   */
   characters: number | null;
   /** Null if the request never got as far as the model step. */
   modelStep: ModelStep | null;
@@ -75,7 +87,12 @@ export interface CheckLog {
   modelMs: number | null;
   inputTokens: number | null;
   outputTokens: number | null;
-  /** What the call cost, in US dollars. Zero when no call was charged. */
+  /**
+   * What the call cost, in millionths of a dollar. A whole number, so totals
+   * add up exactly. Zero when no call was charged.
+   */
+  costMicros: number | null;
+  /** The same cost in US dollars, for reading by eye. */
   costUsd: number | null;
   /** The verdict sent back. Null for a quick check or a refusal. */
   verdict: Verdict | null;
@@ -129,6 +146,7 @@ export function emptyCheckLog(): Omit<CheckLog, "result" | "status" | "guardrail
     modelMs: null,
     inputTokens: null,
     outputTokens: null,
+    costMicros: null,
     costUsd: null,
     verdict: null,
     findings: null,
@@ -140,26 +158,47 @@ function count(value: number | null): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-/** Writes the one log line for a check. */
+/** The word, if it is on the list. Otherwise null. */
+function oneOf<T extends string>(list: readonly T[], value: unknown): T | null {
+  return typeof value === "string" && (list as readonly string[]).includes(value) ? (value as T) : null;
+}
+
+/** A name from the settings, if it looks like one: short, letters, digits, dots, dashes. */
+function settingName(value: unknown): string | null {
+  return typeof value === "string" && /^[A-Za-z0-9._-]{1,64}$/.test(value) ? value : null;
+}
+
+/** Rounds a length up to the next 100, so it describes a size, not a draft. */
+function roughLength(value: number | null): number | null {
+  const exact = count(value);
+  return exact === null ? null : Math.ceil(exact / 100) * 100;
+}
+
+/** Writes the one log line for a check. Never throws. */
 export function logCheck(entry: CheckLog): void {
-  write({
-    event: "check",
-    at: new Date().toISOString(),
-    result: entry.result,
-    status: count(entry.status),
-    guardrail: entry.guardrail,
-    durationMs: count(entry.durationMs),
-    characters: count(entry.characters),
-    modelStep: entry.modelStep,
-    model: entry.model,
-    promptVersion: entry.promptVersion,
-    modelMs: count(entry.modelMs),
-    inputTokens: count(entry.inputTokens),
-    outputTokens: count(entry.outputTokens),
-    costUsd: count(entry.costUsd),
-    verdict: VERDICTS.includes(entry.verdict as Verdict) ? entry.verdict : null,
-    findings: cleanCounts(entry.findings),
-  });
+  try {
+    write({
+      event: "check",
+      at: new Date().toISOString(),
+      result: oneOf(CHECK_RESULTS, entry.result),
+      status: count(entry.status),
+      guardrail: oneOf(GUARDRAILS, entry.guardrail),
+      durationMs: count(entry.durationMs),
+      characters: roughLength(entry.characters),
+      modelStep: oneOf(MODEL_STEPS, entry.modelStep),
+      model: settingName(entry.model),
+      promptVersion: settingName(entry.promptVersion),
+      modelMs: count(entry.modelMs),
+      inputTokens: count(entry.inputTokens),
+      outputTokens: count(entry.outputTokens),
+      costMicros: count(entry.costMicros),
+      costUsd: count(entry.costUsd),
+      verdict: oneOf(VERDICTS, entry.verdict),
+      findings: cleanCounts(entry.findings),
+    });
+  } catch {
+    // A log line is never worth failing a visitor's request over.
+  }
 }
 
 /**
@@ -168,7 +207,11 @@ export function logCheck(entry: CheckLog): void {
  * not recorded.
  */
 export function logRefused(guardrail: Guardrail, status: number): void {
-  write({ event: "refused", at: new Date().toISOString(), guardrail, status: count(status) });
+  try {
+    write({ event: "refused", at: new Date().toISOString(), guardrail: oneOf(GUARDRAILS, guardrail), status: count(status) });
+  } catch {
+    // As above.
+  }
 }
 
 function write(line: Record<string, unknown>): void {
