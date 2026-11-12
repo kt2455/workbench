@@ -1,10 +1,14 @@
 # Publishes the Worker to Cloudflare.
 #
 # It never runs by itself. Someone has to start it from the Actions tab (or ask
-# Claude to), and then Kyle has to approve it: the "production" environment
-# below is set up in GitHub to wait for his approval and to accept the main
-# branch only. The Cloudflare access token is stored in that environment, so
-# no other workflow, branch or pull request can read it.
+# Claude to). It publishes the main branch only.
+#
+# The Cloudflare access token is stored in the "production" environment below,
+# which accepts the main branch only, so no other workflow, branch or pull
+# request can read it. That environment can also be set to wait for Kyle's
+# approval before each run (Settings, Environments, production, Required
+# reviewers). That is switched off for now, by his choice, while deploys are
+# frequent.
 name: Deploy
 
 on:
