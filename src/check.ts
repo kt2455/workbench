@@ -194,12 +194,21 @@ interface Handled {
  * If something unexpected goes wrong, no line is written here: the error
  * safety net in src/http.ts writes its own fixed line instead.
  */
-export async function checkEndpoint(request: Request, env: Env, origin: OriginCheck): Promise<Response> {
+export async function checkEndpoint(
+  request: Request,
+  env: Env,
+  origin: OriginCheck,
+  ctx?: Pick<ExecutionContext, "waitUntil">,
+): Promise<Response> {
   const started = Date.now();
   const { response, log } = await handleCheck(request, env, origin);
   logCheck({ ...log, status: response.status, durationMs: Date.now() - started });
-  // Add it to the public totals (src/stats.ts). Never fails the request.
-  await recordCheck(env.STATS, log);
+  // Add it to the public totals (src/stats.ts). This never fails the request.
+  // With `ctx`, it happens after the reply is sent, so a slow counter never
+  // keeps a visitor waiting. Tests leave `ctx` out and wait for it.
+  const recording = recordCheck(env.STATS, log);
+  if (ctx) ctx.waitUntil(recording);
+  else await recording;
   return response;
 }
 

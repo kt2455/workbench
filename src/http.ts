@@ -36,7 +36,8 @@ export function json(
   });
 }
 
-type Handler = (request: Request, env: Env) => Promise<Response>;
+/** `ctx` lets work carry on after the reply is sent. Tests may leave it out. */
+type Handler = (request: Request, env: Env, ctx?: ExecutionContext) => Promise<Response>;
 
 /**
  * The safety net. If anything inside the Worker fails unexpectedly, the
@@ -48,9 +49,9 @@ type Handler = (request: Request, env: Env) => Promise<Response>;
  * is what keeps the privacy rule true.
  */
 export function withErrorHandling(handler: Handler): Handler {
-  return async (request, env) => {
+  return async (request, env, ctx) => {
     try {
-      return await handler(request, env);
+      return await handler(request, env, ctx);
     } catch {
       console.error(JSON.stringify({ event: "unhandled_error" }));
       return new Response(JSON.stringify({ error: "internal_error" }), {
