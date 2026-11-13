@@ -143,9 +143,9 @@ Fixed in the pull request that added this report:
 |---|---|
 | 1. Timed-out call counted as free | Fixed. A call that fails without a bill now keeps its whole reservation, in the budget, the log and the stats. |
 | 2. Reservation not a true worst case | Fixed. The estimate is now three tokens per character, and the real cost is always recorded in full, even above the reservation. |
-| 3. Rate limit approximate | IPv6 visitors are now counted by /64 network. Kyle to confirm a 429 from one fixed address before launch. Documented as a speed bump. |
+| 3. Rate limit approximate | IPv6 visitors are now counted by /64 network. Tested live on 2026-11-13: 8 requests on one connection got 6 through and then 429. Kyle's 7 requests on separate connections from one address all got through, because each Cloudflare machine keeps its own count. Confirmed as a speed bump; the dashboard rule (finding 5) covers the gap. |
 | 4. Request address in stored logs | Rule 2 reworded with Kyle's agreement. Unknown addresses now get 404 before anything is logged. Comment corrected. |
-| 5. Writes before any limit | Kyle to add a rate limiting rule in the Cloudflare dashboard. |
+| 5. Writes before any limit | Done by Kyle: a Cloudflare rate limiting rule on `/check`, `/stats` and `/hello`, 10 requests per 10 seconds per IP address, block for 10 seconds. Expression `(http.request.uri.path in {"/check" "/stats" "/hello"})` (the free plan does not offer the hostname field). Tested live: 80 requests got 10 through, then 429 until the window reset, repeating. |
 | 6. Slow rules on a crafted draft | Fixed. The draft is split into sentences once. The crafted draft went from about 250 ms to about 6 ms. |
 | 7. Model text may hold markup | Requirements for the page written into `docs/tells-checker-design.md` for step 1.15. |
 | 8. Actions pinned by tag | Fixed. Pinned to full commit hashes (v4.4.0). Kyle to confirm the `production` environment allows `main` only. |
