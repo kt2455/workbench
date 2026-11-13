@@ -201,14 +201,36 @@ export function logCheck(entry: CheckLog): void {
   }
 }
 
+/** Endpoints that log their refusals as "refused" lines. */
+export const REFUSING_ENDPOINTS = ["stats"] as const;
+
 /**
- * Writes a line for a request turned away before it reached an endpoint,
- * which today means a page on another website. The address it asked for is
- * not recorded.
+ * Writes a line for a request turned away without a "check" line of its own:
+ * a page on another website (no endpoint), or a reader of /stats over the
+ * rate limit (endpoint "stats"). The address asked for is not recorded.
  */
-export function logRefused(guardrail: Guardrail, status: number): void {
+export function logRefused(guardrail: Guardrail, status: number, endpoint?: (typeof REFUSING_ENDPOINTS)[number]): void {
   try {
-    write({ event: "refused", at: new Date().toISOString(), guardrail: oneOf(GUARDRAILS, guardrail), status: count(status) });
+    write({
+      event: "refused",
+      at: new Date().toISOString(),
+      guardrail: oneOf(GUARDRAILS, guardrail),
+      status: count(status),
+      ...(endpoint === undefined ? {} : { endpoint: oneOf(REFUSING_ENDPOINTS, endpoint) }),
+    });
+  } catch {
+    // As above.
+  }
+}
+
+/** Things that can fail without affecting a visitor, each logged as a fixed word. */
+export const FAILURES = ["stats_write_failed", "stats_read_failed"] as const;
+export type Failure = (typeof FAILURES)[number];
+
+/** Writes a fixed line saying something failed. The error itself is never logged. */
+export function logFailure(failure: Failure): void {
+  try {
+    write({ event: "failure", at: new Date().toISOString(), failure: oneOf(FAILURES, failure) });
   } catch {
     // As above.
   }

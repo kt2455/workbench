@@ -1,17 +1,24 @@
 /**
  * The Workbench Worker: the "bouncer" between kyletebo.com and the model.
  *
- * It answers two addresses, listed in ROUTES below: GET /hello, a fixed reply
- * that proves the Worker is up, and POST /check, the Tells Checker
- * (src/check.ts). Every request first passes the guest list (src/cors.ts).
+ * It answers three addresses, listed in ROUTES below: GET /hello, a fixed
+ * reply that proves the Worker is up; POST /check, the Tells Checker
+ * (src/check.ts); and GET /stats, the public totals (src/stats.ts). Every
+ * request first passes the guest list (src/cors.ts).
  */
 
 import { checkEndpoint } from "./check";
 import { checkOrigin, preflightHeaders, type OriginCheck } from "./cors";
 import { BASE_HEADERS, json, withErrorHandling } from "./http";
 import { logRefused } from "./log";
+import { statsEndpoint } from "./stats";
 
-type Endpoint = (request: Request, env: Env, origin: OriginCheck) => Response | Promise<Response>;
+type Endpoint = (
+  request: Request,
+  env: Env,
+  origin: OriginCheck,
+  ctx?: ExecutionContext,
+) => Response | Promise<Response>;
 
 /**
  * Every address the Worker answers, and the methods each one accepts.
@@ -31,9 +38,10 @@ const ROUTES: Record<string, Record<string, Endpoint>> = {
       ),
   },
   "/check": { POST: checkEndpoint },
+  "/stats": { GET: statsEndpoint },
 };
 
-async function handle(request: Request, env: Env): Promise<Response> {
+async function handle(request: Request, env: Env, ctx?: ExecutionContext): Promise<Response> {
   // The guest list comes first, before any endpoint runs.
   const origin = checkOrigin(request, env.ALLOWED_ORIGIN);
   if (origin.kind === "refused") {
@@ -65,7 +73,7 @@ async function handle(request: Request, env: Env): Promise<Response> {
     return json({ error: "method_not_allowed" }, 405, origin);
   }
 
-  const response = await endpoint(request, env, origin);
+  const response = await endpoint(request, env, origin, ctx);
   if (request.method === "HEAD") {
     return new Response(null, { status: response.status, headers: response.headers });
   }
@@ -76,5 +84,7 @@ export default {
   fetch: withErrorHandling(handle),
 } satisfies ExportedHandler<Env>;
 
-// The daily budget counter. Cloudflare needs it exported from this file.
+// The daily budget counter and the stats counter. Cloudflare needs them
+// exported from this file.
 export { BudgetKeeper } from "./budget";
+export { StatsKeeper } from "./stats";

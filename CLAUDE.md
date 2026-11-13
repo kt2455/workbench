@@ -54,8 +54,8 @@ Deploys run on GitHub, through the "Deploy" workflow (`.github/workflows/deploy.
 2. Kyle says to deploy, in that session.
 3. Start the "Deploy" workflow on `main` (Actions tab, or the GitHub tools).
 4. The workflow tests, publishes, then confirms the live Worker: both secrets still
-   listed, `/hello` answers, a foreign `Origin` gets 403, `/check` without a bot
-   token gets 403, and plain http redirects. A failed confirmation fails the run.
+   listed, `/hello` and `/stats` answer, a foreign `Origin` gets 403, `/check`
+   without a bot token gets 403, and plain http redirects. A failed confirmation fails the run.
 
 Rules:
 
