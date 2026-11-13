@@ -14,6 +14,9 @@ export default defineConfig({
       miniflare: {
         bindings: {
           MODEL_API_KEY: "placeholder-not-a-real-key",
+          // Tests start with the model switched off, whatever the live
+          // setting is. A test that needs it on says so explicitly.
+          MODEL_ENABLED: "false",
           TURNSTILE_SECRET_KEY: "placeholder-not-a-real-secret",
         },
       },

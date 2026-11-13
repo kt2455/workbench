@@ -23,9 +23,11 @@
     "ALLOWED_ORIGIN": "https://kyletebo.com",
 
     // The master switch for model calls. While this is "false" the Tells
-    // Checker runs its free rules only and the paid key is never used. It
-    // stays "false" until the spending guardrails (plan step 1.10) are built.
-    "MODEL_ENABLED": "false",
+    // Checker runs its free rules only and the paid key is never used.
+    // Switched on by Kyle on 2026-11-13, after the guardrails were deployed
+    // and the security review (plan step 1.14) was done. Setting it back to
+    // "false" and deploying is the quickest way to stop all model spending.
+    "MODEL_ENABLED": "true",
 
     // Which model the Tells Checker asks for. Changing model is a change to
     // this line and nothing else.
