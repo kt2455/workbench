@@ -30,6 +30,7 @@ security review is done, and there is no page on the website that calls it.
 | Address | What it does |
 |---|---|
 | `POST https://api.kyletebo.com/check` | Checks a draft for passages that sound machine-written. See `docs/tells-checker-design.md` for the exact reply. |
+| `GET https://api.kyletebo.com/stats` | Public totals for the Open Kitchen page. See "The public stats" below. |
 | `GET https://api.kyletebo.com/hello` | Returns a fixed reply. A health check: proof the Worker is up. |
 | Any other address | Returns `{"error": "not_found"}` |
 | An address with the wrong kind of request | Returns `{"error": "method_not_allowed"}` |
@@ -89,6 +90,7 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `src/guardrails.ts` | The size cap, the rate limit and the bot check | The door staff |
 | `src/budget.ts` | The daily budget counter | The bar tab |
 | `src/log.ts` | The one log line per request: time, tokens, cost, speed, guardrail | The till receipt |
+| `src/stats.ts` | The running totals behind `/stats` | The scoreboard |
 | `.github/workflows/checks.yml` | Runs the tests automatically on every pull request | The inspector who signs off before opening |
 | `.github/workflows/deploy.yml` | Publishes the Worker to Cloudflare when started by hand | The loading dock |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
@@ -103,6 +105,39 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 
 **Wrangler** is Cloudflare's command-line tool for Workers. It runs the Worker on
 your own computer for testing and publishes it to Cloudflare.
+
+## The public stats
+
+`GET /stats` returns running totals for the Open Kitchen page:
+
+```json
+{
+  "since": "2026-11-13",
+  "asOf": "2026-11-20",
+  "checks": { "total": 12, "full": 9, "quick": 3 },
+  "quickBecause": { "modelOff": 1, "dailyBudget": 0, "modelUnavailable": 2 },
+  "guardrails": { "sizeCap": 1, "botCheck": 4, "dailyBudget": 0 },
+  "model": { "calls": 11, "inputTokens": 26400, "outputTokens": 3300, "averageSeconds": 2.4 },
+  "cost": { "totalUsd": 0.00429, "perCheckUsd": 0.000358 }
+}
+```
+
+`since` and `asOf` are the first and last day (UTC) included. Both are `null`, and
+every number is 0, until there is something to show.
+
+Totals and averages only. Two rules stop anyone working out one visitor's request
+by reading the totals before and after it:
+
+1. **Finished days only.** Today's checks appear tomorrow at the earliest.
+2. **Batches only.** The totals move forward only once at least 5 checks
+   (`STATS_MIN_BATCH`) have built up since the last move. Like a ballot box that is
+   opened only when enough votes are in: any change shows a group, never one check.
+   With little traffic this means the numbers can lag by a few days.
+
+Not counted: requests turned away by the rate limit or the guest list, and malformed
+requests. A script can send those as fast as it likes, and the counter should not be
+something a script can keep busy. They still appear in the log. Reading `/stats` has
+its own rate limit, 20 times a minute per visitor.
 
 ## Secrets
 

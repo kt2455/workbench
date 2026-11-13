@@ -70,6 +70,7 @@ jobs:
           # Give the new version a moment to reach Cloudflare's network.
           sleep 15
           check "The health check answers" 200 https://api.kyletebo.com/hello
+          check "The public stats answer" 200 https://api.kyletebo.com/stats
           check "Another website is refused" 403 -H 'Origin: https://example.com' https://api.kyletebo.com/hello
           check "A check without a bot token is refused" 403 -X POST -H 'Content-Type: application/json' -d '{"text":"A deploy check."}' https://api.kyletebo.com/check
           check "Plain http is redirected to https" 301 http://api.kyletebo.com/hello

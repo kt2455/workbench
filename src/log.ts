@@ -214,6 +214,19 @@ export function logRefused(guardrail: Guardrail, status: number): void {
   }
 }
 
+/** Things that can fail without affecting a visitor, each logged as a fixed word. */
+export const FAILURES = ["stats_write_failed", "stats_read_failed"] as const;
+export type Failure = (typeof FAILURES)[number];
+
+/** Writes a fixed line saying something failed. The error itself is never logged. */
+export function logFailure(failure: Failure): void {
+  try {
+    write({ event: "failure", at: new Date().toISOString(), failure: oneOf(FAILURES, failure) });
+  } catch {
+    // As above.
+  }
+}
+
 function write(line: Record<string, unknown>): void {
   try {
     console.log(JSON.stringify(line));

@@ -246,8 +246,8 @@ the call went (`ok`, `refused`, `truncated`, `unavailable`, `unreadable_reply`).
 Left for the step 1.14 review: requests from another website, and requests that are
 not JSON, each write a line before the rate limit runs. A script sending many of them
 could fill the day's log allowance and crowd out real lines. They cost nothing else.
-The Worker cannot read its own log back, so the public stats (step 1.12) need their
-own counters.
+The Worker cannot read its own log back, so the public stats (step 1.12) keep their
+own counters, in `src/stats.ts`. They are described in the README.
 
 ## Decisions made while building (step 1.9)
 

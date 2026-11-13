@@ -1,15 +1,16 @@
 /**
  * The Workbench Worker: the "bouncer" between kyletebo.com and the model.
  *
- * It answers two addresses, listed in ROUTES below: GET /hello, a fixed reply
- * that proves the Worker is up, and POST /check, the Tells Checker
- * (src/check.ts). Every request first passes the guest list (src/cors.ts).
+ * It answers three addresses, listed in ROUTES below: GET /hello, a fixed
+ * reply that proves the Worker is up; POST /check, the Tells Checker
+ * (src/check.ts); and GET /stats, the public totals (src/stats.ts). Every request first passes the guest list (src/cors.ts).
  */
 
 import { checkEndpoint } from "./check";
 import { checkOrigin, preflightHeaders, type OriginCheck } from "./cors";
 import { BASE_HEADERS, json, withErrorHandling } from "./http";
 import { logRefused } from "./log";
+import { statsEndpoint } from "./stats";
 
 type Endpoint = (request: Request, env: Env, origin: OriginCheck) => Response | Promise<Response>;
 
@@ -31,6 +32,7 @@ const ROUTES: Record<string, Record<string, Endpoint>> = {
       ),
   },
   "/check": { POST: checkEndpoint },
+  "/stats": { GET: statsEndpoint },
 };
 
 async function handle(request: Request, env: Env): Promise<Response> {
@@ -76,5 +78,7 @@ export default {
   fetch: withErrorHandling(handle),
 } satisfies ExportedHandler<Env>;
 
-// The daily budget counter. Cloudflare needs it exported from this file.
+// The daily budget counter and the stats counter. Cloudflare needs them
+// exported from this file.
 export { BudgetKeeper } from "./budget";
+export { StatsKeeper } from "./stats";
