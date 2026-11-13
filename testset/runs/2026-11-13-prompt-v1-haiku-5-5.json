@@ -1,0 +1,1522 @@
+{
+  "step": "1.13",
+  "endpoint": "https://api.kyletebo.com/check",
+  "startedAt": "2026-11-13T15:54:04.917Z",
+  "finishedAt": "2026-11-13T16:06:03.291Z",
+  "results": [
+    {
+      "id": "s01",
+      "status": 200,
+      "ms": 7368,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as ordinary, if buzzword-heavy, workplace advice. The last two sentences take on a promotional, performed tone that a reader would notice.",
+        "findings": [
+          {
+            "quote": "Using these methods will help your team quickly align around creative ideas everyone can get excited about.",
+            "type": "stock_phrase",
+            "why": "The sentence uses a ready-made promotional claim about alignment and excitement that could sit in any article on this topic.",
+            "fix": "Replace the general promise with what your team actually did and what changed as a result.",
+            "start": 573,
+            "end": 680,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Turning boring meetings into fun workshops helps bring some variety and intrigue to your colleague’s days – and they’ll thank you for it!",
+            "type": "tidy_closer",
+            "why": "The closing line promises a warm reaction from colleagues in a slogan-like way, which reads as a rehearsed sign-off rather than a point the piece has earned.",
+            "fix": "Cut the final clause and end on a concrete result you have seen from these sessions.",
+            "start": 681,
+            "end": 818,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 819
+        }
+      }
+    },
+    {
+      "id": "s02",
+      "status": 200,
+      "ms": 2842,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain, conversational series introduction. The sentences vary naturally, the tone is candid rather than performed, and nothing in it has a rehearsed sound.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 484
+        }
+      }
+    },
+    {
+      "id": "s03",
+      "status": 200,
+      "ms": 3951,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "This reads like a services pitch built from stock phrases and balanced structures. The rehearsed rhythm runs through the whole piece, and it ends with a closing invitation.",
+        "findings": [
+          {
+            "quote": "Our team of seasoned experts brings deep industry knowledge and cutting-edge expertise to every engagement.",
+            "type": "stock_phrase",
+            "why": "'Seasoned experts', 'deep industry knowledge' and 'cutting-edge expertise' are ready-made credibility phrases that could sit in any services pitch.",
+            "fix": "Say who the team is and what they have done, with a number or a named sector.",
+            "start": 366,
+            "end": 473,
+            "foundBy": "model"
+          },
+          {
+            "quote": "What sets us apart? We don't just deliver recommendations — we partner with you every step of the way, ensuring seamless implementation and sustainable results.",
+            "type": "signpost",
+            "why": "The rhetorical question sets up a differentiator in a performed way, and the claim is then delivered as a contrast with a generic 'we partner' promise.",
+            "fix": "Name one specific thing your firm does after the recommendation that a competitor would not, with a concrete example.",
+            "start": 475,
+            "end": 635,
+            "foundBy": "both"
+          },
+          {
+            "quote": "Whether you're just beginning your AI journey or looking to scale existing initiatives, we're here to help you unlock the full potential of your data and empower your teams to thrive in an ever-evolving landscape.",
+            "type": "balanced_list",
+            "why": "The sentence balances two matched audiences and then stacks several inspirational stock phrases in a parallel run.",
+            "fix": "Cut the stock phrases and state what the assessment actually produces for a client at each stage.",
+            "start": 637,
+            "end": 850,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Ready to take the next step? Let's start the conversation.",
+            "type": "engagement_hook",
+            "why": "The closing pair is a generic call to action whose only purpose is to prompt a reply.",
+            "fix": "Replace it with a concrete next step, such as how to book the assessment or what information you need first.",
+            "start": 852,
+            "end": 910,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 911
+        }
+      }
+    },
+    {
+      "id": "s04",
+      "status": 200,
+      "ms": 2323,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a practitioner explaining a specific finding and a concrete mitigation. The sentences vary naturally, the parentheticals are functional, and nothing is set up for effect.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 865
+        }
+      }
+    },
+    {
+      "id": "s05",
+      "status": 200,
+      "ms": 6924,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "The draft is mostly plain, instructional and generic, which is normal for this kind of post. A handful of phrases carry a promotional, performed ring, mainly in the opening and the closing line.",
+        "findings": [
+          {
+            "quote": "since being thrust into the limelight during the COVID-19 pandemic",
+            "type": "stock_phrase",
+            "why": "The dramatic phrasing is a ready-made flourish that could open almost any piece about remote work.",
+            "fix": "State the change plainly, such as what these tools can now do that they could not before.",
+            "start": 108,
+            "end": 174,
+            "foundBy": "model"
+          },
+          {
+            "quote": "help facilitate engaging workshops, capture requirements, and unlock innovation",
+            "type": "balanced_list",
+            "why": "Three evenly built items with a matched rhythm, and 'unlock innovation' reads as a slogan rather than a task.",
+            "fix": "Name the one or two workshop uses you have actually seen work and drop the rest.",
+            "start": 232,
+            "end": 311,
+            "foundBy": "model"
+          },
+          {
+            "quote": "The features of the infinite virtual whiteboarding canvas help you capture some of the magic previously only possible when working in person.",
+            "type": "stock_phrase",
+            "why": "'Capture some of the magic' is a performed, inspirational phrase that says little about what the feature does.",
+            "fix": "Describe one concrete thing the canvas lets a group do that a physical room did, in plain terms.",
+            "start": 313,
+            "end": 454,
+            "foundBy": "model"
+          },
+          {
+            "quote": "you can become the meeting hero that saves your team from boring and unproductive virtual meetings",
+            "type": "stock_phrase",
+            "why": "The 'meeting hero' framing is a salesy closing flourish that promises a transformation the post does not show.",
+            "fix": "End on a specific, practical step the reader can take on their next call instead of a promise about their status.",
+            "start": 817,
+            "end": 915,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 917
+        }
+      }
+    },
+    {
+      "id": "s06",
+      "status": 200,
+      "ms": 4921,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads like a specific, observed complaint, with concrete details like the laundry aside and the counted participants. The ending is the one place where it performs a little, closing on a rhetorical question that sums up the complaint.",
+        "findings": [
+          {
+            "quote": "After over an hour, you’re left wondering: What did we accomplish?",
+            "type": "tidy_closer",
+            "why": "The rhetorical question sums up the whole complaint in a neat final beat, so it sounds crafted for effect rather than arising from the scene.",
+            "fix": "End on a concrete detail from the meeting, such as what was decided or left open, instead of a summarising question.",
+            "start": 603,
+            "end": 669,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 670
+        }
+      }
+    },
+    {
+      "id": "s07",
+      "status": 200,
+      "ms": 3285,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain professional post that reports a study and comments on it. The sentences vary naturally, and the closing line is conversational rather than a slogan or a prompt for replies.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 672
+        }
+      }
+    },
+    {
+      "id": "s08",
+      "status": 200,
+      "ms": 9123,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "The draft is smooth and generic, and its rhythm is rehearsed throughout: a stated balance, a stock conclusion, a knocked-down contrast and a closing line that sounds like a slogan. Each paragraph performs a move rather than making a specific point.",
+        "findings": [
+          {
+            "quote": "one thing is clear: there is no one-size-fits-all solution.",
+            "type": "signpost",
+            "why": "The phrase \"one thing is clear\" announces a verdict instead of making it, and the point it leads to is one any article on the topic could make.",
+            "fix": "State the position directly, or say what evidence or experience led you to it.",
+            "start": 141,
+            "end": 200,
+            "foundBy": "both"
+          },
+          {
+            "quote": "On one hand, remote work offers unparalleled flexibility, improved work-life balance, and access to a broader talent pool.",
+            "type": "balanced_list",
+            "why": "The two sides are built as parallel lists of three abstract benefits, which reads as a neat, evenly weighted set rather than a considered comparison.",
+            "fix": "Pick the one or two advantages that matter most in your case and give a concrete example of each.",
+            "start": 202,
+            "end": 324,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Hybrid models, when implemented thoughtfully, can offer the best of both worlds.",
+            "type": "stock_phrase",
+            "why": "\"The best of both worlds\" is a ready-made phrase with a polished, salesy ring that could appear in any piece on the subject.",
+            "fix": "Say what a thoughtful hybrid arrangement actually does differently from the two options it combines.",
+            "start": 524,
+            "end": 604,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Ultimately, the future of work isn't about location. It's about trust.",
+            "type": "contrast_turn",
+            "why": "The first idea exists only so it can be dismissed in favour of a tidy one-word alternative, which gives the lines a rehearsed, quotable shape.",
+            "fix": "Explain in plain sentences why trust matters more than location, drawing on something specific you have seen.",
+            "start": 781,
+            "end": 851,
+            "foundBy": "both"
+          },
+          {
+            "quote": "And only time will tell which organizations will rise to the challenge.",
+            "type": "tidy_closer",
+            "why": "The closing line is a stock sign-off that adds no new point and lands like a slogan.",
+            "fix": "End on the most specific claim in the piece, or on an example, rather than a general prediction.",
+            "start": 852,
+            "end": 923,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 924
+        }
+      }
+    },
+    {
+      "id": "s09",
+      "status": 200,
+      "ms": 5757,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "The opening reads like a practised LinkedIn post. The main sound comes from two signposting lines that promise a reveal and announce the post's contents, rather than simply making the point.",
+        "findings": [
+          {
+            "quote": "The secret is shifting your focus from judging the person to observing specific behaviors and their impact.",
+            "type": "signpost",
+            "why": "\"The secret is\" builds a reveal before the advice arrives, so the point is staged rather than stated.",
+            "fix": "State the shift directly, without the secret framing.",
+            "start": 611,
+            "end": 718,
+            "foundBy": "both"
+          },
+          {
+            "quote": "In this post, we will break down a simple, repeatable framework you can use to deliver constructive feedback that your colleagues will genuinely appreciate.",
+            "type": "signpost",
+            "why": "It announces what the post will do and promises a warm reception in stock terms, which reads as a hook rather than content.",
+            "fix": "Cut the announcement and let the framework appear in the post itself, and drop the promise about how colleagues will react.",
+            "start": 719,
+            "end": 875,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 876
+        }
+      }
+    },
+    {
+      "id": "s10",
+      "status": 200,
+      "ms": 8375,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this is plain, practical advice. The benefits paragraph is evenly balanced, the opening line sets up the point, and the last two sentences close on a slogan.",
+        "findings": [
+          {
+            "quote": "Start with the problem, not the product.",
+            "type": "contrast_turn",
+            "why": "The product is set up only so it can be dismissed in favour of the problem, which gives the line a rehearsed, catchy ring.",
+            "fix": "State the advice directly, such as which question to answer first, without contrasting it with a product you never mention.",
+            "start": 144,
+            "end": 184,
+            "foundBy": "model"
+          },
+          {
+            "quote": "It keeps the evaluation focused. It gives you real evidence instead of marketing claims. And it builds confidence across the team before a larger rollout.",
+            "type": "balanced_list",
+            "why": "Three parallel sentences of matching length and structure present the benefits as a neat set, the way a template would.",
+            "fix": "Keep only the benefit you can support with a detail from the test, and describe it in your own words.",
+            "start": 387,
+            "end": 541,
+            "foundBy": "model"
+          },
+          {
+            "quote": "The right tool is the one your team will use. Everything else is secondary.",
+            "type": "tidy_closer",
+            "why": "The ending states a moral in two tidy sentences, and the second one has the sound of a slogan that could close any piece about tools.",
+            "fix": "End on a specific point about your team's use, or on the next step, rather than a general rule.",
+            "start": 543,
+            "end": 618,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 619
+        }
+      }
+    },
+    {
+      "id": "s11",
+      "status": 200,
+      "ms": 4014,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a clear point of view, but the opening sets up a contrast and the closing line lands like a slogan. The final admission about tokenmaxxing sounds candid, so I've left it alone.",
+        "findings": [
+          {
+            "quote": "You can't train intuition into people. But you can teach them how the technology works, make room for the curiosity and imagination that build it, and give them the infrastructure to explore.",
+            "type": "contrast_turn",
+            "why": "The first sentence exists mainly to be knocked down by the second, which gives the opening a rehearsed, rhetorical rhythm.",
+            "fix": "Open with what the team should do, and drop the claim about what cannot be trained, unless you have an example that needs it.",
+            "start": 0,
+            "end": 191,
+            "foundBy": "model"
+          },
+          {
+            "quote": "That's what's going to drive AI adoption that actually pays off.",
+            "type": "tidy_closer",
+            "why": "It wraps the paragraph in a confident, slogan-like verdict that repeats the point instead of adding a new one.",
+            "fix": "Cut the sentence, or replace it with a concrete result you have seen from this approach.",
+            "start": 192,
+            "end": 256,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 324
+        }
+      }
+    },
+    {
+      "id": "s12",
+      "status": 200,
+      "ms": 5282,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as plain advice. The visual-aids paragraph leans on promotional wording and repeats 'always' in a way that sounds performed.",
+        "findings": [
+          {
+            "quote": "Having visual aids to help provide context and bring people up to speed quickly will always supercharge your meeting efficiency",
+            "type": "stock_phrase",
+            "why": "'Supercharge' and the absolute 'will always' give the sentence a salesy ring that could sit in any productivity piece.",
+            "fix": "Say what the visual aids actually changed in a meeting you ran, in plainer words.",
+            "start": 559,
+            "end": 686,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Having something to react to will always elicit more effective feedback and progress than trying to start from scratch.",
+            "type": "tidy_closer",
+            "why": "It restates the heading as a slogan-like absolute, which makes the paragraph end on a tidy moral rather than evidence.",
+            "fix": "Drop the sentence or replace the absolute claim with a specific example of feedback that improved.",
+            "start": 775,
+            "end": 894,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 895
+        }
+      }
+    },
+    {
+      "id": "s13",
+      "status": 200,
+      "ms": 4837,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of the draft reads as plain, if generic, business writing. The opening line and the list of abstract nouns in the second sentence have a rehearsed, slogan-like ring.",
+        "findings": [
+          {
+            "quote": "It's time to face facts that collaborating in the remote and hybrid world requires different ways of working together.",
+            "type": "stock_phrase",
+            "why": "\"It's time to face facts\" is a ready-made, dramatic opener that could introduce almost any post about remote work.",
+            "fix": "State the claim directly, such as what collaboration now needs, without the preamble about facing facts.",
+            "start": 0,
+            "end": 118,
+            "foundBy": "model"
+          },
+          {
+            "quote": "palaces of accountability, collaboration, and innovation",
+            "type": "balanced_list",
+            "why": "The three evenly matched abstract nouns and the grand metaphor give the line a polished, performed cadence rather than a specific observation.",
+            "fix": "Name the one thing the office actually did for accountability or collaboration, and drop the list.",
+            "start": 168,
+            "end": 224,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 561
+        }
+      }
+    },
+    {
+      "id": "s14",
+      "status": 200,
+      "ms": 5048,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads like a person describing what happened. The rhythm tightens into performance in the middle and at the end, where the sentences are arranged for effect rather than for the content.",
+        "findings": [
+          {
+            "quote": "Looking back",
+            "start": 95,
+            "end": 107,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "No slides. No brainteasers. Just real work.",
+            "type": "staccato",
+            "why": "Three clipped fragments in a row are stacked for rhythm, and the content would read just as well in one sentence.",
+            "fix": "Fold the three points into one plain sentence that says what the working session includes.",
+            "start": 388,
+            "end": 431,
+            "foundBy": "both"
+          },
+          {
+            "quote": "It's slower. It's more expensive. And it's the best hiring decision we've made.",
+            "type": "balanced_list",
+            "why": "The two matched concessions set up a payoff in a neat three-part cadence that sounds arranged rather than remembered.",
+            "fix": "State the cost and the benefit in your own words, with a specific example of what the change revealed.",
+            "start": 433,
+            "end": 512,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Hiring isn't about finding the perfect candidate. It's about finding out the truth, quickly, for both sides.",
+            "type": "contrast_turn",
+            "why": "A generic idea is set up only to be knocked down, then replaced with a slogan-like line that could close any hiring post.",
+            "fix": "Drop the general claim and end on what you learned about the hires themselves.",
+            "start": 514,
+            "end": 622,
+            "foundBy": "both"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 623
+        }
+      }
+    },
+    {
+      "id": "s15",
+      "status": 200,
+      "ms": 1400,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a standard product announcement. It is promotional and generic in places, but the sentences are built in ordinary ways and nothing has the rehearsed, performed rhythm this checker looks for.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 946
+        }
+      }
+    },
+    {
+      "id": "s16",
+      "status": 200,
+      "ms": 5713,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "This reads as a conventional event recap in plain corporate wording, which is fine. Two spots have a rehearsed, performed ring, mainly the stacked adjectives and the sweeping opening line about the industry.",
+        "findings": [
+          {
+            "quote": "inspired, energized, and more optimistic than ever",
+            "type": "balanced_list",
+            "why": "Three near-synonymous feelings in a matched set, with a superlative tacked on, sound like a rehearsed build-up rather than a specific reaction.",
+            "fix": "Name the one feeling you actually had and say what caused it, such as a session or a conversation.",
+            "start": 100,
+            "end": 150,
+            "foundBy": "model"
+          },
+          {
+            "quote": "in a world of rapid change, the ability to learn quickly is the ultimate competitive advantage",
+            "type": "stock_phrase",
+            "why": "The opening phrase and the aphoristic conclusion could sit in any event recap, and they read as a slogan rather than a point drawn from the sessions.",
+            "fix": "Say which session made the point about learning and what it showed, instead of stating a general principle.",
+            "start": 355,
+            "end": 449,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 920
+        }
+      }
+    },
+    {
+      "id": "s17",
+      "status": 200,
+      "ms": 4602,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "This is a plain internal announcement, and most of it reads like ordinary corporate email. Two phrases near the end have a salesy, rehearsed ring that a reader would notice.",
+        "findings": [
+          {
+            "quote": "By leveraging its powerful features, we'll be able to work smarter, not harder.",
+            "type": "stock_phrase",
+            "why": "The 'smarter, not harder' line is a ready-made slogan that could sit in any product pitch and says little about this tool.",
+            "fix": "Name one specific thing the platform will let the team do differently, such as where timelines will be visible.",
+            "start": 383,
+            "end": 462,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Your feedback is invaluable as we navigate this change together.",
+            "type": "stock_phrase",
+            "why": "'Invaluable' and 'navigate this change together' are performed reassurance that could close any rollout email.",
+            "fix": "Say who to send feedback to and by when, instead of calling it invaluable.",
+            "start": 760,
+            "end": 824,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 905
+        }
+      }
+    },
+    {
+      "id": "s18",
+      "status": 200,
+      "ms": 1827,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain personal account of a small coding success. The short sentences are used naturally, the humour is dry rather than performed, and the ending is a modest aside rather than a slogan.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 515
+        }
+      }
+    },
+    {
+      "id": "s19",
+      "status": 200,
+      "ms": 3921,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "The draft runs on stock openers, a knocked-down contrast, a three-part list of matched takeaways, a slogan-like close and a comment-bait question. The rehearsed sound runs through the whole piece.",
+        "findings": [
+          {
+            "quote": "AI adoption isn't just a technology decision — it's a cultural transformation.",
+            "type": "contrast_turn",
+            "why": "The first framing is set up only to be replaced by a grander one, a rhetorical turn that sounds performed rather than argued.",
+            "fix": "State the claim directly and say what a cultural change would look like in your team.",
+            "start": 42,
+            "end": 120,
+            "foundBy": "both"
+          },
+          {
+            "quote": "the companies that thrive aren't the ones with the biggest budgets. They're the ones that foster a culture of curiosity, experimentation, and continuous learning.",
+            "type": "contrast_turn",
+            "why": "A reversal framed around a stock list of virtues, with no example behind either side, reads as a ready-made line.",
+            "fix": "Name one organization or moment you actually saw, and say what they did differently.",
+            "start": 257,
+            "end": 419,
+            "foundBy": "both"
+          },
+          {
+            "quote": "Here are three",
+            "start": 421,
+            "end": 435,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "🔹 Start small, think big. Pilot projects build momentum and unlock buy-in.\n🔹 Empower your people. Tools don't transform organizations — people do.\n🔹 Measure what matters. Focus on outcomes, not outputs.",
+            "type": "balanced_list",
+            "why": "Three evenly built takeaways with matched phrasing and tidy slogans make the list feel templated.",
+            "fix": "Keep only the point you have evidence for and explain it in your own words.",
+            "start": 452,
+            "end": 657,
+            "foundBy": "both"
+          },
+          {
+            "quote": "The journey isn't always easy, but the rewards are truly transformative.",
+            "type": "tidy_closer",
+            "why": "A vague, inspirational wrap-up that could close any piece on any topic.",
+            "fix": "Cut it, or end on a concrete result you observed.",
+            "start": 659,
+            "end": 731,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 873
+        }
+      }
+    },
+    {
+      "id": "s20",
+      "status": 200,
+      "ms": 4764,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a practitioner explaining a workflow, which is fine. The closing invitation and the final punchline both have a rehearsed, performed sound.",
+        "findings": [
+          {
+            "quote": "No one likes a slop cannon.",
+            "type": "tidy_closer",
+            "why": "This one-line zinger lands like a slogan after the reasoned point, and it sounds written to be quoted rather than said.",
+            "fix": "Remove it, or replace it with a plain sentence saying what goes wrong when unchecked output ships.",
+            "start": 392,
+            "end": 419,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Follow along, tell me where I'm wrong, or tell me how you check your AI's work.",
+            "type": "engagement_hook",
+            "why": "The closing invitation asks for replies directly and has no link to the argument above it, so it reads as a prompt for comments.",
+            "fix": "Cut the call to action, or ask one specific question you actually want answered about the spot-checking step.",
+            "start": 421,
+            "end": 500,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 501
+        }
+      }
+    },
+    {
+      "id": "s21",
+      "status": 200,
+      "ms": 4926,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a considered, specific account from someone who has tried AI at work. The opening sets up a contrast and the middle announces its own turn, which give a few passages a slightly rehearsed sound.",
+        "findings": [
+          {
+            "quote": "There's no definitive guide to using AI in your daily work. Instead, it starts with a question: how could AI make this easier for me and my team?",
+            "type": "contrast_turn",
+            "why": "The paragraph first denies that a guide exists, then supplies the replacement, so the opening reads as a set-up for a knock-down rather than a direct claim.",
+            "fix": "State what the process involves without first rejecting a guide nobody mentioned.",
+            "start": 0,
+            "end": 145,
+            "foundBy": "model"
+          },
+          {
+            "quote": "The catch is, that intuition has a shelf life.",
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming before the point is made, and the rhythm is a familiar lead-in.",
+            "fix": "Open with the point itself, for example what happens to a conclusion drawn months earlier.",
+            "start": 403,
+            "end": 449,
+            "foundBy": "both"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 809
+        }
+      }
+    },
+    {
+      "id": "s22",
+      "status": 200,
+      "ms": 7975,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "This bio is written in a stock, promotional register from start to finish, with the same stock phrases recurring across all three paragraphs. The writing itself is grammatical, but it reads as assembled from ready-made lines rather than written about a specific person.",
+        "findings": [
+          {
+            "quote": "results-driven operations leader with over a decade of experience driving strategic initiatives and delivering measurable impact across diverse industries.",
+            "type": "stock_phrase",
+            "why": "Every noun phrase is a generic credential-booster that could describe almost anyone in operations, so the sentence reads as template copy.",
+            "fix": "Name the role, the years, and one concrete area of work or result that only applies to this person.",
+            "start": 18,
+            "end": 173,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Passionate about innovation and continuous improvement, Jordan has a proven track record of building high-performing teams and fostering cultures of excellence.",
+            "type": "stock_phrase",
+            "why": "The 'proven track record' and 'cultures of excellence' wording is performed praise with no evidence attached, so it sounds rehearsed rather than observed.",
+            "fix": "Replace the praise with one example of a team you built and what it did differently.",
+            "start": 174,
+            "end": 334,
+            "foundBy": "model"
+          },
+          {
+            "quote": "leveraging data-driven insights to optimize processes and unlock new opportunities for growth",
+            "type": "stock_phrase",
+            "why": "The chain of abstract verbs and outcomes ('optimize', 'unlock', 'growth') says nothing specific and has the polished ring of a stock line.",
+            "fix": "Say which process changed, what data was used, and what measurably moved as a result.",
+            "start": 424,
+            "end": 517,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Jordan thrives at the intersection of strategy and execution.",
+            "type": "stock_phrase",
+            "why": "'Thrives at the intersection of' is a familiar slogan-like flourish that announces a skill without showing it.",
+            "fix": "Describe a specific case where strategy and execution had to be connected, or cut the line.",
+            "start": 613,
+            "end": 674,
+            "foundBy": "model"
+          },
+          {
+            "quote": "is deeply committed to making a meaningful difference in every endeavor.",
+            "type": "stock_phrase",
+            "why": "The sentence ends on a sweeping, inspirational generality that could close any bio, so it sounds like a slogan.",
+            "fix": "End on a concrete fact about Jordan, such as a current role, a qualification, or a named area of interest.",
+            "start": 812,
+            "end": 884,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 885
+        }
+      }
+    },
+    {
+      "id": "s23",
+      "status": 200,
+      "ms": 3681,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "The draft runs on a consistent performed rhythm: a signpost, a contrast turn, a numbered set of parallel maxims, stock inspirational phrasing and a slogan-style sign-off. The overall shape reads as a rehearsed lesson-learned post rather than a specific account.",
+        "findings": [
+          {
+            "quote": "Here's what I learned.",
+            "type": "signpost",
+            "why": "It announces that a lesson is coming instead of giving the lesson, which is the opening move of a performed post.",
+            "fix": "Cut the line and start with what the team actually did or found.",
+            "start": 75,
+            "end": 97,
+            "foundBy": "both"
+          },
+          {
+            "quote": "It wasn't about the technology. It was about the people.",
+            "type": "contrast_turn",
+            "why": "A claim is set up only to be knocked down in favour of a tidier one, with the parallel structure giving it a quotable ring.",
+            "fix": "Say what the project depended on, using a concrete example from the six months.",
+            "start": 99,
+            "end": 155,
+            "foundBy": "both"
+          },
+          {
+            "quote": "Three lessons that will stay with me:\n\n1. Listen more than you speak.",
+            "type": "balanced_list",
+            "why": "The three lessons are parallel imperative maxims with matched sentence lengths, each followed by a neat aphorism, which reads as arranged rather than lived.",
+            "fix": "Keep only the lesson you can support with something that happened, and state it in your own words.",
+            "start": 317,
+            "end": 386,
+            "foundBy": "model"
+          },
+          {
+            "quote": "3. Celebrate small wins. Momentum is everything.",
+            "start": 517,
+            "end": 565,
+            "type": "staccato",
+            "why": "A run of very short sentences reads as a drumbeat written for effect.",
+            "fix": "Join them into one or two full sentences that say what you mean.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "This is a testament to what's possible when passionate people come together around a shared vision.",
+            "type": "stock_phrase",
+            "why": "The sentence is a ready-made inspirational line that could close any team post without referring to this project.",
+            "fix": "Thank the team by naming what a specific person did, or cut the paragraph.",
+            "start": 662,
+            "end": 761,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 785
+        }
+      }
+    },
+    {
+      "id": "s24",
+      "status": 200,
+      "ms": 6159,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a plain newsletter intro. Two spots have a rehearsed rhythm: a short set-up-and-knock-down line and a parallel run of three sentences. The reply invitation at the end is ordinary but a little formulaic.",
+        "findings": [
+          {
+            "quote": "It sounds simple. In practice, it's anything but.",
+            "type": "contrast_turn",
+            "why": "The first sentence exists only so the second can knock it down, which gives the line a performed, punchy rhythm.",
+            "fix": "Cut the set-up and state the difficulty directly, for example by naming the specific thing that makes measuring AI projects hard.",
+            "start": 169,
+            "end": 218,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Many teams track activity, such as logins and prompts sent, rather than outcomes. Others rely on anecdotes. Few have a clear baseline to compare against.",
+            "type": "balanced_list",
+            "why": "Three sentences open in the same 'Many / Others / Few' pattern, so the points are arranged evenly for effect rather than following from the argument.",
+            "fix": "Keep the most important one and say what it costs the team, or combine the three into one sentence that shows how they relate.",
+            "start": 219,
+            "end": 372,
+            "foundBy": "model"
+          },
+          {
+            "quote": "As always, we'd love to hear what's working for you. Just hit reply.",
+            "type": "engagement_hook",
+            "why": "The 'As always' and the flat instruction to reply read as a stock invitation whose main job is to prompt responses.",
+            "fix": "Keep a reply invitation if you want one, but make it specific to the issue's topic and drop 'As always'.",
+            "start": 544,
+            "end": 612,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 613
+        }
+      }
+    },
+    {
+      "id": "s25",
+      "status": 200,
+      "ms": 4188,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "The draft runs on stock phrasing and announcement-style openers throughout, with a balanced, promotional rhythm that never makes a specific claim. The rehearsed sound runs through the whole piece.",
+        "findings": [
+          {
+            "quote": "Prompt engineering has emerged as one of the most crucial skills in the modern workplace.",
+            "type": "stock_phrase",
+            "why": "The sentence opens with a ready-made claim of importance that could sit at the top of any article on any skill.",
+            "fix": "Open with a specific situation where prompt wording changed a result for you or your team.",
+            "start": 0,
+            "end": 89,
+            "foundBy": "model"
+          },
+          {
+            "quote": "As large language models continue to evolve at a remarkable pace, the ability to communicate effectively with these systems has become a pivotal differentiator for professionals across every industry.",
+            "type": "stock_phrase",
+            "why": "Stacked abstractions like 'remarkable pace' and 'pivotal differentiator' are performed rather than observed, and the sentence says nothing a reader could check.",
+            "fix": "Name one concrete change in the tools or your work that makes the topic matter now, in plain words.",
+            "start": 90,
+            "end": 290,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Whether you're a seasoned practitioner or just beginning your journey, this comprehensive guide will equip you with the tools you need to harness the full potential of AI.",
+            "type": "balanced_list",
+            "why": "The matched audience pair and the promise of tools and potential read as a generic blurb balanced for any reader.",
+            "fix": "Say who the post is for and what one specific thing they will be able to do afterwards.",
+            "start": 446,
+            "end": 617,
+            "foundBy": "model"
+          },
+          {
+            "quote": "It's important to note that prompt engineering is both an art and a science.",
+            "type": "signpost",
+            "why": "The phrase announces a point about the topic and then delivers the stock 'art and science' line instead of an actual claim.",
+            "fix": "Delete the signpost and state the specific tension you have seen between the two.",
+            "start": 619,
+            "end": 695,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Let's dive in.",
+            "type": "signpost",
+            "why": "This is a stock transition that adds no content and is used by many posts as a stand-in for a real opening.",
+            "fix": "Remove it and begin with the first concrete step or example.",
+            "start": 882,
+            "end": 896,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 897
+        }
+      }
+    },
+    {
+      "id": "s26",
+      "status": 200,
+      "ms": 4573,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a practical tip from someone who uses sub-agents, with conversational asides and concrete advice. Its one antithesis and its closing line are things the piece needs, so none of it has the rehearsed sound.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 908
+        }
+      }
+    },
+    {
+      "id": "s27",
+      "status": 200,
+      "ms": 6434,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this is standard new-job announcement wording and reads naturally. A few lines use stock enthusiasm phrases with a performed ring, which is where the rehearsed sound comes from.",
+        "findings": [
+          {
+            "quote": "I’m excited to share that I’ve started a new position",
+            "type": "stock_phrase",
+            "why": "The opening formula of excitement plus announcement is a ready-made LinkedIn opener that could sit in any new-job post.",
+            "fix": "State the start date and role plainly, and let the news carry the enthusiasm.",
+            "start": 0,
+            "end": 53,
+            "foundBy": "model"
+          },
+          {
+            "quote": "I’ve developed a deep appreciation for the systems and people that keep global commerce moving smoothly.",
+            "type": "stock_phrase",
+            "why": "The grand phrasing about global commerce and deep appreciation is inflated and interchangeable, with no detail about the actual work.",
+            "fix": "Name one concrete thing you did in supply chain coordination that led you here.",
+            "start": 169,
+            "end": 273,
+            "foundBy": "model"
+          },
+          {
+            "quote": "learning the ropes, supporting our warehouse and dispatch teams, and finding new ways to drive efficiency",
+            "type": "balanced_list",
+            "why": "Three parallel gerund phrases closing on a generic goal read as a tidy, expected list rather than specific plans.",
+            "fix": "Replace the general goal with one specific thing you expect to work on in the first months.",
+            "start": 698,
+            "end": 803,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 913
+        }
+      }
+    },
+    {
+      "id": "s28",
+      "status": 200,
+      "ms": 3127,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this is a plain status update that sounds like a person writing to a colleague. The closing lines and the transparency sentence have a stock, managed ring that reads as rehearsed.",
+        "findings": [
+          {
+            "quote": "I want to be transparent about the risks.",
+            "type": "signpost",
+            "why": "It announces openness instead of showing it, and the risk it then names is vague, so the line reads as a set-up for reassurance.",
+            "fix": "Cut the announcement and state the specific risk and what would trigger a new date.",
+            "start": 333,
+            "end": 374,
+            "foundBy": "model"
+          },
+          {
+            "quote": "please let me know if this timeline creates any challenges on your end, and we can explore options together.",
+            "type": "stock_phrase",
+            "why": "The 'explore options together' phrasing is a ready-made collaborative line that could sit in any project email and offers no concrete next step.",
+            "fix": "Name the specific decision you need from Priya or say you will call her, instead of offering to explore options.",
+            "start": 532,
+            "end": 640,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Thanks for your patience and understanding.",
+            "type": "tidy_closer",
+            "why": "The sign-off lands like a neat moral after the update, and it adds a sentiment the message has not earned.",
+            "fix": "End on the Friday update or drop the line and sign off.",
+            "start": 642,
+            "end": 685,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 691
+        }
+      }
+    },
+    {
+      "id": "s29",
+      "status": 200,
+      "ms": 1382,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This is a plain internal proposal with formal corporate wording and no performed rhythm, contrast turns or closing slogan. Its generic phrasing is how such emails are normally written, so nothing here reads as rehearsed.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 898
+        }
+      }
+    },
+    {
+      "id": "s30",
+      "status": 200,
+      "ms": 5908,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a direct opinion piece with a clear point of view. The closing lines lean toward a performed wink, which is where a reader would notice the rehearsed sound.",
+        "findings": [
+          {
+            "quote": "or ask your friendly neighborhood AI agent to do it for you",
+            "type": "stock_phrase",
+            "why": "\"Friendly neighborhood\" is a familiar stock phrase, and the parenthetical is a polished aside that sounds written for effect rather than said.",
+            "fix": "Cut the parenthetical or state the suggestion plainly, without the comic framing.",
+            "start": 557,
+            "end": 616,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Still figuring out: why every draft of this post got called \"really strong.\"",
+            "type": "tidy_closer",
+            "why": "The final line is a self-deprecating kicker that wraps the post with a neat ironic beat, which reads as a performed sign-off.",
+            "fix": "End on the substantive point, or drop the kicker if it adds nothing the post hasn't already said.",
+            "start": 620,
+            "end": 696,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 697
+        }
+      }
+    },
+    {
+      "id": "s31",
+      "status": 200,
+      "ms": 4127,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "The post mostly reads as a plain account of a change in how the writer works. Two passages have a rehearsed shape: a neat reversal near the middle and a closing question that asks for replies.",
+        "findings": [
+          {
+            "quote": "The results surprised me",
+            "start": 59,
+            "end": 83,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "I stopped typing and started listening. I asked better questions. I noticed when someone went quiet.",
+            "type": "balanced_list",
+            "why": "Three matched sentences with the same subject and pattern build a tidy rhythm that reads more like a prepared list than a recalled sequence.",
+            "fix": "Keep the one detail that really happened, such as the moment you noticed someone go quiet, and cut the rest.",
+            "start": 164,
+            "end": 264,
+            "foundBy": "model"
+          },
+          {
+            "quote": "It turns out the value wasn't in the transcript. It was in the attention I got back.",
+            "type": "contrast_turn",
+            "why": "The transcript is set up only so it can be replaced by a more quotable idea, which gives the line a polished, slogan-like ring.",
+            "fix": "Say what the notes actually gave you in concrete terms, or drop the reversal and state the benefit directly.",
+            "start": 266,
+            "end": 350,
+            "foundBy": "both"
+          },
+          {
+            "quote": "Have you tried it? What did you notice?",
+            "type": "engagement_hook",
+            "why": "The questions follow a personal account and exist to invite replies rather than to continue the point.",
+            "fix": "Remove the questions, or ask one specific thing you want to know about other people's meetings.",
+            "start": 548,
+            "end": 587,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 588
+        }
+      }
+    },
+    {
+      "id": "s32",
+      "status": 200,
+      "ms": 2430,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a plain description of what the newsletter covers. The closing pair of short fragments has a performed, slogan-like rhythm that a reader would notice.",
+        "findings": [
+          {
+            "quote": "No posting schedule and nothing to sell. Just figuring sh*t out in public while it's still worth figuring out.",
+            "type": "staccato",
+            "why": "The run of short negated and clipped phrases, ending on a neat reversal, is built for effect rather than informing the reader.",
+            "fix": "Say plainly what you will and won't do, in one ordinary sentence, without setting up a closing flourish.",
+            "start": 366,
+            "end": 476,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 477
+        }
+      }
+    },
+    {
+      "id": "s33",
+      "status": 200,
+      "ms": 3559,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain, personal author's note about the purpose and scope of a blog. It states its intent directly, and nothing in the rhythm or phrasing sounds rehearsed.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 849
+        }
+      }
+    },
+    {
+      "id": "s34",
+      "status": 200,
+      "ms": 3844,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads like a practitioner talking from experience, and the plain sentences carry it. The closing paragraph turns on a reveal that is a little too neat, so it reads more rehearsed than the rest.",
+        "findings": [
+          {
+            "quote": "The Monday copying is rarely the real complaint anyway. It's that nobody trusts the numbers once they've been copied.",
+            "type": "contrast_turn",
+            "why": "The first clause is set up only so the second can replace it with a more quotable point, which gives the paragraph a rehearsed reveal.",
+            "fix": "State the trust problem directly and drop the setup, or give one concrete case where someone stopped trusting a copied number.",
+            "start": 452,
+            "end": 569,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 570
+        }
+      }
+    },
+    {
+      "id": "s35",
+      "status": 200,
+      "ms": 1291,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This is a plain internal proposal with formal, generic wording but no rehearsed rhythm, false contrasts, or performed closing. It reads as an ordinary workplace email.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 876
+        }
+      }
+    },
+    {
+      "id": "s36",
+      "status": 200,
+      "ms": 6341,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a conventional workplace article with a few stock moves. The clearest tell is a knock-down contrast in the middle, and a few phrases sound ready-made rather than specific to the writer.",
+        "findings": [
+          {
+            "quote": "the way you communicate can make all the difference.",
+            "type": "stock_phrase",
+            "why": "'Make all the difference' is a generic line that could close any article on any topic and says nothing specific about feedback.",
+            "fix": "Replace the vague claim with one concrete effect of how the feedback was delivered.",
+            "start": 291,
+            "end": 343,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Useful feedback isn't about pointing out mistakes or telling someone what they're doing wrong. It's about helping colleagues understand their strengths, identify opportunities to improve, and feel confident about their next steps.",
+            "type": "contrast_turn",
+            "why": "The first idea, pointing out mistakes, exists only so it can be replaced by a neater alternative, which gives the passage a rehearsed, slogan-like shape.",
+            "fix": "State what useful feedback does, without first defining a version of it to reject.",
+            "start": 345,
+            "end": 575,
+            "foundBy": "model"
+          },
+          {
+            "quote": "So, how can we make feedback more constructive and meaningful?",
+            "type": "signpost",
+            "why": "The question is a lead-in that announces the point is coming rather than making it, a common scaffold in generated article text.",
+            "fix": "Cut the question and open the next paragraph with the actual advice.",
+            "start": 577,
+            "end": 639,
+            "foundBy": "model"
+          },
+          {
+            "quote": "The key is",
+            "start": 641,
+            "end": 651,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "feedback can become a powerful tool for building trust, improving performance, and creating a stronger workplace.",
+            "type": "balanced_list",
+            "why": "Three evenly matched abstract outcomes in a row, plus 'powerful tool', make the closing sentence sound tidy and promotional rather than argued.",
+            "fix": "Name the one outcome you have seen feedback produce and drop the list of three.",
+            "start": 793,
+            "end": 906,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 907
+        }
+      }
+    },
+    {
+      "id": "s37",
+      "status": 200,
+      "ms": 4135,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "This is a product announcement with a lot of stock promotional wording, such as 'easier than ever' and 'valuable insights'. The rehearsed sound comes mainly from the phrasing of the benefits and the upbeat closing, though the mechanics of the announcement are plain and clear.",
+        "findings": [
+          {
+            "quote": "designed to make it easier than ever to understand your business performance.",
+            "type": "stock_phrase",
+            "why": "'Easier than ever' and 'understand your business performance' are ready-made marketing lines that could sit in any product launch.",
+            "fix": "Say what the feature does for a specific task a customer already does, in plain terms.",
+            "start": 107,
+            "end": 184,
+            "foundBy": "model"
+          },
+          {
+            "quote": "you can generate clear, detailed reports, track important performance metrics, and gain valuable insights into your operations.",
+            "type": "balanced_list",
+            "why": "Three matched verb-object pairs with evenly weighted adjectives read as a tidy promotional triplet rather than a description of real capabilities.",
+            "fix": "Name the one or two reports customers can actually generate and drop the adjectives.",
+            "start": 211,
+            "end": 338,
+            "foundBy": "model"
+          },
+          {
+            "quote": "We've designed this feature with simplicity and convenience in mind, so you can access the information you need when you need it.",
+            "type": "stock_phrase",
+            "why": "The paired abstract nouns and the 'when you need it' rhythm are generic reassurance that says nothing specific about the feature.",
+            "fix": "Remove the sentence or replace it with where in the app the reports are accessed.",
+            "start": 501,
+            "end": 630,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Thank you for choosing us. We're always working to make your experience better!",
+            "type": "tidy_closer",
+            "why": "The closing line is a stock sign-off that works as a slogan and carries no information.",
+            "fix": "End on the practical next step of logging in and visiting Reports.",
+            "start": 777,
+            "end": 856,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 857
+        }
+      }
+    },
+    {
+      "id": "s38",
+      "status": 200,
+      "ms": 6527,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "This reads like a standard new-job post: warm and generic, with a few stock phrases and tidy lists. The closing line and the three-part lists have a rehearsed quality, though the post stays plain and personal enough to pass.",
+        "findings": [
+          {
+            "quote": "I'm excited to share that I've started a new chapter in my career as an Operations Manager at NorthStar Logistics!",
+            "type": "stock_phrase",
+            "why": "\"New chapter\" and \"excited to share\" are ready-made openers that could begin any career announcement without changing a word.",
+            "fix": "State the job, the company and the start date in plain words, and drop the framing about a chapter.",
+            "start": 0,
+            "end": 114,
+            "foundBy": "model"
+          },
+          {
+            "quote": "to improve processes, strengthen collaboration, and help deliver reliable, efficient logistics solutions for our customers.",
+            "type": "balanced_list",
+            "why": "Three evenly weighted verb phrases, each with a matched adjective pair, read as a neat set of goals rather than specific work.",
+            "fix": "Name one thing you expect to change in the first few months, in your own words.",
+            "start": 168,
+            "end": 291,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Throughout my career, I've developed a passion for problem-solving, operational excellence, and finding practical ways to make teams and businesses more effective.",
+            "type": "balanced_list",
+            "why": "The three abstract nouns are arranged in matching grammatical shapes, which reads as a polished list of virtues rather than a description of experience.",
+            "fix": "Cut the list to the one skill you can point to from past work, and give a brief example.",
+            "start": 293,
+            "end": 456,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Here's to new challenges, fresh opportunities, and continued growth!",
+            "type": "tidy_closer",
+            "why": "The triple of nouns and the toast-like ending work as a slogan that could close any post, and it adds nothing about this role.",
+            "fix": "End on something specific about the new job, or simply stop after the thank-you.",
+            "start": 721,
+            "end": 789,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v1",
+          "charactersChecked": 846
+        }
+      }
+    }
+  ]
+}
