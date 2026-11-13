@@ -24,8 +24,8 @@ The full build plan lives in the website repository under `docs/workbench/`.
 ## Where it is today
 
 **Phase 1: the Tells Checker, part built.** The Worker has its first real endpoint,
-`/check`. It is not switched on for visitors yet: the model stays off until the
-security review is done, and there is no page on the website that calls it.
+`/check`. The model was switched on on 2026-11-13, after the security review
+(`docs/security-review-1.14.md`). There is no page on the website that calls it yet.
 
 | Address | What it does |
 |---|---|
@@ -49,8 +49,10 @@ Two layers read the draft independently, and their results are combined.
 Nothing the model says reaches a visitor unchecked (`src/merge.ts`). A finding that
 quotes text which is not in the draft is thrown away.
 
-**The master switch.** `MODEL_ENABLED` in `wrangler.jsonc` is `"false"`. While it is,
-`/check` runs the rules alone, says so in its reply, and never touches the paid key.
+**The master switch.** `MODEL_ENABLED` in `wrangler.jsonc` is `"true"`. Set to
+`"false"`, `/check` runs the rules alone, says so in its reply, and never touches the
+paid key. Changing it back and deploying is the quickest way to stop all model
+spending. The tests always run with it off unless a test turns it on.
 
 ### What protects the budget
 

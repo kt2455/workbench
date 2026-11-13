@@ -77,9 +77,9 @@ Rules:
 - Do not add triggers to the deploy workflow, and do not use the `production`
   environment or its secrets in any other workflow.
 - There are two secrets on the Worker: `MODEL_API_KEY` and `TURNSTILE_SECRET_KEY`.
-- `MODEL_ENABLED` is the master switch for model calls. It stays `"false"` until the
-  guardrails have been deployed and the security review (plan step 1.14) is done.
-  Turning it on is Kyle's decision.
+- `MODEL_ENABLED` is the master switch for model calls. Kyle switched it on on
+  2026-11-13, after the guardrails were deployed and the security review (plan step
+  1.14) was done. Turning it on or off is Kyle's decision.
 - The prices in `wrangler.jsonc` must match the model named there. Change them in the
   same commit as the model.
 

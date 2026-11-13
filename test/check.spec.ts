@@ -285,8 +285,8 @@ describe("guardrail: the bot check", () => {
   });
 });
 
-describe("POST /check with the model switched off (the shipped setting)", () => {
-  it("has the switch off", () => {
+describe("POST /check with the model switched off", () => {
+  it("runs the tests with the switch off unless a test turns it on", () => {
     expect(env.MODEL_ENABLED).toBe("false");
   });
 
