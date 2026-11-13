@@ -310,6 +310,18 @@ The amount set aside for one check on the starting model is about $0.003. Its re
 cost is about $0.001. So $1.00 a day pays for roughly 800 full checks, and the day
 can never end more than one reservation over.
 
+## What the page must do (from the step 1.14 review)
+
+The model's `summary`, `why` and `fix` are written by the model, and a draft can steer
+them. The Worker limits their length and shape but not their content. So the Tells
+Checker page (step 1.15) must:
+
+- put `summary`, `why`, `fix` and `quote` on the page with `textContent` only, never
+  `innerHTML`;
+- never turn any of that text into a link;
+- build highlights from `start` and `end` on the visitor's own text;
+- send the draft in the request body only.
+
 ## Open questions for later steps
 
 - Whether the three rules still earn their place on new samples (Phase 2).

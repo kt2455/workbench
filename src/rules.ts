@@ -92,11 +92,15 @@ function staccatoRuns(text: string): Span[] {
 const CONTRAST =
   /\b(?:isn['’]t|wasn['’]t|aren['’]t|weren['’]t|don['’]t|doesn['’]t|not)\b[^.!?\n]{0,70}(?:[.!?]\s+|\s[—–-]\s?)(?:It['’]s|It was|They['’]re|That['’]s|we|people|It demands)\b/gi;
 
-/** Widens a match to the whole sentences it touches, so the quote reads well. */
-function widenToSentences(text: string, match: Span): Span {
+/**
+ * Widens a match to the whole sentences it touches, so the quote reads well.
+ * Takes the draft already split into sentences: splitting it again for every
+ * match made a crafted draft very slow.
+ */
+function widenToSentences(sentences: readonly Sentence[], match: Span): Span {
   let start = match.start;
   let end = match.end;
-  for (const sentence of paragraphs(text).flat()) {
+  for (const sentence of sentences) {
     if (sentence.start < match.end && match.start < sentence.end) {
       start = Math.min(start, sentence.start);
       end = Math.max(end, sentence.end);
@@ -106,8 +110,11 @@ function widenToSentences(text: string, match: Span): Span {
 }
 
 function contrastTurns(text: string): Span[] {
-  return [...text.matchAll(CONTRAST)].map((match) =>
-    widenToSentences(text, { start: match.index, end: match.index + match[0].length }),
+  const matches = [...text.matchAll(CONTRAST)];
+  if (matches.length === 0) return [];
+  const sentences = paragraphs(text).flat();
+  return matches.map((match) =>
+    widenToSentences(sentences, { start: match.index, end: match.index + match[0].length }),
   );
 }
 

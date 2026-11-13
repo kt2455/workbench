@@ -2,6 +2,7 @@ import { env, exports } from "cloudflare:workers";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Budget } from "../src/budget";
 import { checkDraft, checkEndpoint, type ModelAccess } from "../src/check";
+import { rateLimitKey } from "../src/guardrails";
 import type { ModelRequest, ModelResult } from "../src/provider";
 import { BOT_CHECK_PASS, CHECK_URL, fakeNetwork, newVisitor, ORIGIN, post, providerMessage } from "./helpers";
 
@@ -152,6 +153,38 @@ describe("guardrail: the size cap", () => {
     await expect(
       checkEndpoint(post({ text: "A draft." }), { ...env, MAX_DRAFT_CHARS: "lots" }, { kind: "allowed", origin: ORIGIN }),
     ).rejects.toThrow();
+  });
+});
+
+describe("the rate limit key", () => {
+  it("counts an IPv4 visitor by their address", () => {
+    expect(rateLimitKey("203.0.113.7")).toBe("203.0.113.7");
+  });
+
+  it("counts an IPv6 visitor by their /64 network, however the address is written", () => {
+    const key = "2001:db8:abcd:12::/64";
+    expect(rateLimitKey("2001:db8:abcd:12::1")).toBe(key);
+    expect(rateLimitKey("2001:0db8:abcd:0012:ffff:1:2:3")).toBe(key);
+    expect(rateLimitKey("2001:DB8:ABCD:12:0:0:0:9")).toBe(key);
+    expect(rateLimitKey("2001:db8::1")).toBe("2001:db8:0:0::/64");
+    expect(rateLimitKey("::1")).toBe("0:0:0:0::/64");
+  });
+
+  it("puts visitors with no address in one shared group", () => {
+    expect(rateLimitKey(null)).toBe("unknown");
+    expect(rateLimitKey("")).toBe("unknown");
+  });
+
+  it("limits one IPv6 network even when each request uses a different address", async () => {
+    fakeNetwork();
+    const network = `2001:db8:${(Date.now() % 65535).toString(16)}:7`;
+    const statuses: number[] = [];
+    for (let i = 1; i <= 6; i += 1) {
+      const response = await exports.default.fetch(post({ text: "A draft." }, {}, `${network}::${i}`));
+      statuses.push(response.status);
+    }
+    expect(statuses.slice(0, 5).every((status) => status === 200)).toBe(true);
+    expect(statuses[5]).toBe(429);
   });
 });
 
@@ -399,10 +432,22 @@ describe("guardrail: the daily budget", () => {
     expect(body).toMatchObject({ mode: "quick", notice: "model_unavailable" });
   });
 
-  it("settles a call that never reached the provider at nothing", async () => {
+  it("keeps the whole reservation when a call fails without a bill, since it may still be charged", async () => {
     const { access, ledger } = fakeAccess({ ok: false, reason: "unavailable" });
-    await checkDraft(DRAFT, access);
-    expect(ledger[1][2]).toBe(0);
+    const outcome = await checkDraft(DRAFT, access);
+    const [[, reserved], [, , settled]] = ledger;
+    expect(settled).toBe(reserved);
+    expect(outcome.costMicros).toBe(reserved);
+  });
+
+  it("sets aside enough for a draft of emoji and symbols that costs far more per character", async () => {
+    const { access, ledger } = fakeAccess(good);
+    const draft = "\u{1F600}\u2603\u2764\uFE0F ".repeat(1600);
+    await checkDraft(draft, access);
+    const reserved = ledger[0][1];
+    // Even at 2.5 tokens for every character JavaScript counts, plus a full reply.
+    const worst = Math.ceil((draft.length + 6000) * 2.5 * PRICES.inputMicrosPerToken + 4096 * PRICES.outputMicrosPerToken);
+    expect(reserved).toBeGreaterThan(worst);
   });
 
   it("still charges for a reply that was cut short or declined", async () => {

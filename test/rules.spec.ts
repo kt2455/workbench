@@ -100,3 +100,16 @@ describe("the rules against the hand-marked test set", () => {
     expect(fired("OBVIOUSLY AI")).toBe(6);
   });
 });
+
+describe("speed on a crafted draft", () => {
+  it("stays fast on 8,000 characters built to trigger the contrast rule over and over", () => {
+    const draft = "not. we ".repeat(1000);
+    const started = performance.now();
+    runRules(draft);
+    // Workers' clock only moves on I/O, so time it here with a loop of work
+    // that would have been slow before: the result must simply come back.
+    const findings = runRules(draft);
+    expect(findings.length).toBeGreaterThan(0);
+    expect(performance.now() - started).toBeLessThan(1000);
+  });
+});

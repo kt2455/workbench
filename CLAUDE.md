@@ -21,8 +21,13 @@ terms the first time you use them, and use an analogy where it helps.
    - Visitor text travels in the request body, never in the URL or a header.
    - Cloudflare's automatic invocation logs and traces stay off. They record each
      visitor's IP address, location and browser. Do not switch them back on.
-   - Never log an IP address, a location, a user agent or a full URL. If a guardrail
-     needs to tell visitors apart, it uses the value at runtime and does not store it.
+   - Never log an IP address, a location or a user agent. If a guardrail needs to
+     tell visitors apart, it uses the value at runtime and does not store it.
+   - No query strings in logs, and visitor text never in the address. Cloudflare
+     attaches the requested address to every stored log line and this cannot be
+     switched off, so `redact_query_string` stays on in `wrangler.jsonc`, and
+     addresses that do not exist are answered before anything is logged. Our own
+     log lines never include the address.
    - Cloudflare stores uncaught errors automatically, message included. Every request
      runs inside `withErrorHandling` in `src/http.ts`, which logs one fixed line and
      discards the error. Never log `error.message` or an error object, least of all

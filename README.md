@@ -56,10 +56,10 @@ quotes text which is not in the draft is thrown away.
 
 | Guardrail | What it does |
 |---|---|
-| Rate limit | 5 checks a minute for each visitor |
+| Rate limit | 5 checks a minute for each visitor (for IPv6, each /64 network). Approximate: a speed bump, not a wall |
 | Size cap | Drafts up to 8,000 characters, about 1,300 words |
 | Bot check | Cloudflare Turnstile, confirmed on every request |
-| Daily budget | $1.00 a day. When it is spent, checks use the free rules until midnight UTC |
+| Daily budget | $1.00 a day. When it is spent, checks use the free rules until midnight UTC. Each call sets aside a deliberately high estimate first, the real cost is always recorded in full, and a call that fails without a bill is counted at the full estimate |
 | Monthly cap | Set at the model provider, outside this code |
 
 If any of these breaks, it refuses rather than lets everything through.
@@ -95,6 +95,7 @@ Rate limits, a daily budget and a bot check (all in Phase 1) cover that.
 | `.github/workflows/deploy.yml` | Publishes the Worker to Cloudflare when started by hand | The loading dock |
 | `test/` | Automated checks that the code does what it should | A pre-flight checklist |
 | `testset/` | 38 writing samples and Kyle's hand-marked answer key | The marked exam paper |
+| `docs/security-review-1.14.md` | The security and abuse review before the model was switched on, and what was done about each finding | The inspection report |
 | `docs/tells-checker-design.md` | How the first tool works and the exact shape of its replies | The blueprint |
 | `prompts/` | The instructions given to the model, one numbered file per version | Recipe cards |
 | `wrangler.jsonc` | Settings: the Worker's name, address and non-secret options | The venue's licence on the wall |
@@ -196,6 +197,12 @@ anything else handed to it is left behind. If a missing setting stops the model 
 being called, `guardrail` is empty and `modelStep` says `settings_broken`. Tests send a draft with a made-up word in
 it and check that the word, the visitor's address and the bot check token appear in
 no line.
+
+Cloudflare adds a few fields of its own to every stored line, including the address
+that was requested (for example `https://api.kyletebo.com/check`). It cannot be
+switched off. Query strings are stripped from it (`redact_query_string`), visitor text
+never travels in the address, and a request for an address that does not exist is
+answered before anything is logged, so the address is always one of the Worker's own.
 
 To read the lines: Cloudflare dashboard, Workers, `workbench`, Logs. Filter by
 `event` or `guardrail`.

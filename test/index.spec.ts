@@ -31,6 +31,25 @@ describe("unknown paths", () => {
     expect(response.status).toBe(404);
     expect(await response.json()).toEqual({ error: "not_found" });
   });
+
+  it("answers another website's request for a made-up address with 404, and logs nothing", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {});
+    const response = await exports.default.fetch(
+      new Request(`${BASE}/made-up-by-a-visitor`, { headers: { origin: "https://example.com" } }),
+    );
+    expect(response.status).toBe(404);
+    expect(response.headers.get("access-control-allow-origin")).toBeNull();
+    expect(log).not.toHaveBeenCalled();
+    log.mockRestore();
+  });
+
+  it("still refuses another website at a real address, and logs that", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {});
+    const response = await exports.default.fetch(new Request(`${BASE}/hello`, { headers: { origin: "https://example.com" } }));
+    expect(response.status).toBe(403);
+    expect(log).toHaveBeenCalledTimes(1);
+    log.mockRestore();
+  });
 });
 
 describe("CORS: which websites may call the Worker from a browser", () => {

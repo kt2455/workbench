@@ -143,7 +143,10 @@ describe("the log line for each check", () => {
     const visitor = newVisitor();
     await checkEndpoint(post({ text: DRAFT }, {}, visitor), on, allowed);
     expectPrivate(log.lines()[0], visitor);
-    expect(log.entries()[0]).toMatchObject({ result: "quick", modelStep: "unavailable", inputTokens: null, costUsd: 0 });
+    // No bill came back, so the whole reservation is counted as spent.
+    const entry = log.entries()[0];
+    expect(entry).toMatchObject({ result: "quick", modelStep: "unavailable", inputTokens: null });
+    expect(entry.costMicros).toBeGreaterThan(0);
   });
 
   it.each([

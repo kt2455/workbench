@@ -52,17 +52,38 @@ export async function readJsonCapped(request: Request, maxBytes: number): Promis
 export const RATE_LIMIT_WINDOW_SECONDS = 60;
 
 /**
+ * The key a visitor is counted under: their IPv4 address, or for IPv6 the
+ * first half of the address (the /64 network). One IPv6 connection usually
+ * comes with a whole /64 of addresses, billions of them, so counting each
+ * address separately would let one person dodge the limit by switching.
+ */
+export function rateLimitKey(address: string | null): string {
+  if (address === null || address === "") return "unknown";
+  if (!address.includes(":")) return address;
+  const [head, tail = ""] = address.toLowerCase().split("::");
+  const front = head === "" ? [] : head.split(":");
+  const back = tail === "" ? [] : tail.split(":");
+  const missing = 8 - front.length - back.length;
+  const groups = address.includes("::") ? [...front, ...Array(Math.max(missing, 0)).fill("0"), ...back] : front;
+  return `${groups.slice(0, 4).map((group) => group.replace(/^0+(?=.)/, "")).join(":")}::/64`;
+}
+
+/**
  * True when this visitor is within the rate limit.
  *
- * Visitors are told apart by IP address. The address is handed to
- * Cloudflare's rate limiter, which keeps a short-lived count in memory. This
- * code does not store it, log it or pass it anywhere else.
+ * Visitors are told apart by IP address (see rateLimitKey). The key is handed
+ * to Cloudflare's rate limiter, which keeps a short-lived count in memory.
+ * This code does not store it, log it or pass it anywhere else.
+ *
+ * Cloudflare's limiter is approximate and counts separately in each of its
+ * locations, so this is a speed bump, not a wall. The bot check and the daily
+ * budget are what stop real spending.
  *
  * If the limiter itself fails, the request is refused: a broken guardrail
  * must not become an open door.
  */
 export async function withinRateLimit(request: Request, limiter: RateLimit): Promise<boolean> {
-  const visitor = request.headers.get("cf-connecting-ip") ?? "unknown";
+  const visitor = rateLimitKey(request.headers.get("cf-connecting-ip"));
   try {
     const { success } = await limiter.limit({ key: visitor });
     return success;
