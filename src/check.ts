@@ -124,10 +124,12 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
   });
   const modelMs = Date.now() - started;
 
-  // Swap the reservation for the real cost. A call that never reached the
-  // provider cost nothing.
+  // Swap the reservation for the real cost. When the call failed without a
+  // bill (an outage or a timeout), the provider may still have done the work
+  // and charged for it, so the whole reservation is kept: the budget must
+  // never count less than was really spent.
   const usage = "inputTokens" in result ? { inputTokens: result.inputTokens, outputTokens: result.outputTokens } : null;
-  const actual = usage === null ? 0 : costMicros(prices, usage.inputTokens, usage.outputTokens);
+  const actual = usage === null ? reserved : costMicros(prices, usage.inputTokens, usage.outputTokens);
   try {
     await budget.settle(reserved, actual);
   } catch {

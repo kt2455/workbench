@@ -54,14 +54,17 @@ export class BudgetKeeper extends DurableObject<Env> {
     return true;
   }
 
-  /** Replaces a reservation with what the call really cost. */
+  /**
+   * Replaces a reservation with what the call really cost. The real cost is
+   * recorded in full, even if it is more than was set aside, so the day's
+   * total is always the truth. A nonsense cost keeps the reservation.
+   */
   settle(day: string, reservedMicros: number, actualMicros: number): void {
     const actual = Number.isSafeInteger(actualMicros) && actualMicros >= 0 ? actualMicros : reservedMicros;
     this.ctx.storage.sql.exec(
       "UPDATE spend SET micros = MAX(0, micros - ? + ?) WHERE day = ?",
       reservedMicros,
-      // A call can never be settled for more than was set aside for it.
-      Math.min(actual, reservedMicros),
+      actual,
       day,
     );
   }
@@ -104,12 +107,14 @@ export function costMicros(settings: BudgetSettings, inputTokens: number, output
 }
 
 /**
- * A deliberately high guess at how many tokens some text is. Real text runs
- * at about four characters per token. Guessing two means the reservation is
- * always more than the real cost, so the budget errs towards stopping early.
+ * A deliberately high guess at how many tokens some text is. English runs at
+ * about four characters per token, but emoji, Chinese, Japanese and unusual
+ * symbols can take two or three tokens for each character JavaScript counts.
+ * Guessing three per character covers those, so the reservation is more than
+ * the real cost and the budget errs towards stopping early.
  */
 export function tokenCeiling(characters: number): number {
-  return Math.ceil(characters / 2);
+  return characters * 3;
 }
 
 /** What the check needs from the budget: set money aside, then settle up. */

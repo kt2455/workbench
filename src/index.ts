@@ -42,17 +42,21 @@ const ROUTES: Record<string, Record<string, Endpoint>> = {
 };
 
 async function handle(request: Request, env: Env, ctx?: ExecutionContext): Promise<Response> {
-  // The guest list comes first, before any endpoint runs.
   const origin = checkOrigin(request, env.ALLOWED_ORIGIN);
-  if (origin.kind === "refused") {
-    logRefused("origin", 403);
-    return json({ error: "origin_not_allowed" }, 403, origin);
-  }
 
+  // An address that does not exist gets "not found" before anything else, and
+  // writes nothing to the log. Cloudflare attaches the requested address to
+  // every log line, so this keeps made-up addresses out of the log.
   const url = new URL(request.url);
   const route = Object.hasOwn(ROUTES, url.pathname) ? ROUTES[url.pathname] : undefined;
   if (route === undefined) {
-    return json({ error: "not_found" }, 404, origin);
+    return json({ error: "not_found" }, 404, origin.kind === "refused" ? { kind: "none" } : origin);
+  }
+
+  // The guest list comes next, before any endpoint runs.
+  if (origin.kind === "refused") {
+    logRefused("origin", 403);
+    return json({ error: "origin_not_allowed" }, 403, origin);
   }
 
   const methods = Object.keys(route);

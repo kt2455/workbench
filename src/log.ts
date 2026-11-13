@@ -207,7 +207,10 @@ export const REFUSING_ENDPOINTS = ["stats"] as const;
 /**
  * Writes a line for a request turned away without a "check" line of its own:
  * a page on another website (no endpoint), or a reader of /stats over the
- * rate limit (endpoint "stats"). The address asked for is not recorded.
+ * rate limit (endpoint "stats"). This line does not record the address that
+ * was asked for. Cloudflare adds the address (without any query string) to
+ * every stored line itself, which is why unknown addresses are answered
+ * before anything is logged (src/index.ts).
  */
 export function logRefused(guardrail: Guardrail, status: number, endpoint?: (typeof REFUSING_ENDPOINTS)[number]): void {
   try {

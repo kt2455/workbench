@@ -49,11 +49,13 @@ describe("the daily budget counter", () => {
     expect(await counter.spent(DAY)).toBe(120);
   });
 
-  it("never settles for more than was set aside", async () => {
+  it("records the full real cost, even when it is more than was set aside", async () => {
     const counter = freshCounter();
     await counter.reserve(DAY, 300, 1000);
     await counter.settle(DAY, 300, 5000);
-    expect(await counter.spent(DAY)).toBe(300);
+    expect(await counter.spent(DAY)).toBe(5000);
+    // And the day is then over budget, so nothing more is allowed.
+    expect(await counter.reserve(DAY, 1, 1000)).toBe(false);
   });
 
   it("keeps the reservation if the real cost is nonsense", async () => {
@@ -122,8 +124,9 @@ describe("working out a cost", () => {
     expect(costMicros(prices, 1, 0)).toBe(1);
   });
 
-  it("guesses high when turning characters into tokens", () => {
-    expect(tokenCeiling(8000)).toBe(4000);
+  it("guesses high when turning characters into tokens: three per character", () => {
+    expect(tokenCeiling(8000)).toBe(24_000);
+    expect(tokenCeiling(0)).toBe(0);
   });
 
   it("names the day in UTC", () => {
