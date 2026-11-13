@@ -14,6 +14,9 @@ once by hand. After that, the tool's marking is compared with his.
 | `marking-sheet.md` | All 38 samples in one file, with the marking instructions. The blank form Kyle marked from. |
 | `key.json` | Where each sample came from. Kept apart from the samples so the marking could be done blind. |
 | `labels.json` | **The answer key.** Kyle's verdict for each sample and every passage he marked, with its exact position in the sample. |
+| `baseline.md` | The first scored run (plan step 1.13): the numbers every later change is compared with |
+| `runs/` | The tool's replies from each scored run, one file per run |
+| `score.py` | Scores a run against the answer key: `python3 -I testset/score.py testset/runs/<run>.json testset` |
 
 ## The mix
 
