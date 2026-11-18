@@ -124,5 +124,8 @@ skip or weaken a test to get a change through.
 
 ## Review
 
-Work is reviewed by a different model than the one that built it. Security and abuse
-reviews are separate steps in the plan and are not optional.
+Every pull request is reviewed by a fresh agent before it is merged: a new subagent or
+session that did not build the work and starts with no memory of it. It does not need
+to be a different model. Where a plan step names a model for a review (for example the
+security review), use that model. Security and abuse reviews are separate steps in the
+plan and are not optional.
