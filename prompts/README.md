@@ -18,9 +18,9 @@ The version in use, and the kinds of tell it may report, are set in `src/prompt.
 1. **The whole file is the prompt.** Everything in a version file is sent to the
    model as its system prompt. Notes for people go in this README, not in the file.
 2. **A version in use is frozen.** Once a version has been deployed or scored, it is
-   not edited. A change means a new file (`v2.md`), so a score can always be traced to
-   the exact words that produced it. Until `v1.md` is first deployed it is a draft and
-   can change.
+   not edited. A change means a new file (`v3.md`, and so on), so a score can always be
+   traced to the exact words that produced it. A new version is a draft, and can change,
+   until it is first deployed or scored.
 3. **Examples never come from the test set.** Anything in `testset/` is the exam
    paper. A prompt that quotes it has seen the answers, and its scores mean nothing.
    Examples are invented for the prompt.
@@ -50,7 +50,8 @@ samples Kyle marked clean were left clean. Frozen.
 **One change, measured on its own:** `stock_phrase`, `tidy_closer` and `balanced_list`
 are switched off. Their rows and guidance are removed, the "rhythm" paragraph no
 longer lists "an ending that lands like a slogan", and a short paragraph says the three
-patterns are out of scope, including under `other`. Everything else is word for word
+patterns are out of scope, including under `other`. The output section says "one of the
+types in the table" instead of "one of the nine types". Everything else is word for word
 v1, including "when you are unsure about a passage, leave it out".
 
 Why, from the baseline run (a finding "on a mark" overlaps a passage Kyle marked):
@@ -63,12 +64,20 @@ Why, from the baseline run (a finding "on a mark" overlaps a passage Kyle marked
 | All other kinds | 33 | 18 | 1 |
 
 Removing the three from the baseline's findings after the fact (a rough estimate: the
-model's verdicts were not re-run) leaves 13 of 14 clean samples clean, still flags 8 of
-9 "obviously AI" samples, and catches 18 of 55 marked passages instead of 27.
+model's verdicts were not re-run, and the five-finding cap was not re-applied) leaves 13
+of 14 clean samples clean, still flags 8 of 9 "obviously AI" samples, and catches about 18
+of 55 marked passages instead of 27. It may be 19: in one sample a rule finding on a
+marked passage was hidden by the cap and would now show.
 
 The switch-off is enforced in code as well as in the prompt: see `src/prompt.ts`. Code
 cannot stop the model reporting one of these patterns under `other`, so the scoring
 run counts `other` findings too.
+
+Known gap: if every finding the model gives is a switched-off kind, they are all
+dropped but the model's verdict stands, so a reply can say "a few tells" with nothing
+to show. The reply shape makes this unlikely, since the model cannot return those kinds.
+The same was already true when a quote could not be found. The scoring run will show
+whether it happens.
 
 **Not yet scored.** Next: v3 replaces "when unsure, leave it out" with explicit
 criteria and two to four invented examples, scored against v2. Then the three kinds

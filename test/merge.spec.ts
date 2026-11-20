@@ -25,6 +25,12 @@ describe("switching kinds of tell off (prompt v2)", () => {
     expect(schema).toContain('"other"');
   });
 
+  it("lists exactly the allowed kinds in the prompt's table", () => {
+    const inTable = [...PROMPT.text.matchAll(/^\| `(\w+)` \|/gm)].map((m) => m[1]);
+    expect(inTable.sort()).toEqual([...PROMPT.modelTypes].sort());
+    expect(PROMPT.text).not.toMatch(/\b(nine|eight|seven) types\b/);
+  });
+
   it("drops a switched-off kind instead of turning it into 'other'", () => {
     const output = parseModelOutput(
       reply({
