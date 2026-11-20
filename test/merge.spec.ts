@@ -14,11 +14,11 @@ const finding = (quote: string, extra: Record<string, unknown> = {}) => ({
   ...extra,
 });
 
-describe("switching kinds of tell off (prompt v2)", () => {
+describe("switching kinds of tell off (prompt v2 onwards)", () => {
   const OFF = ["stock_phrase", "tidy_closer", "balanced_list"];
 
   it("leaves the three noisy kinds out of what the model may return", () => {
-    expect(PROMPT.version).toBe("v2");
+    expect(PROMPT.version).toBe("v3");
     expect([...PROMPT.modelTypes].sort()).toEqual(TELL_TYPES.filter((t) => !OFF.includes(t)).sort());
     const schema = JSON.stringify(modelOutputSchema(PROMPT.modelTypes));
     for (const type of OFF) expect(schema).not.toContain(`"${type}"`);

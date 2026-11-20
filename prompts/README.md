@@ -9,7 +9,8 @@ changes, a new card is written and numbered. Nobody scribbles on the old one.
 | File | What it is |
 |---|---|
 | `tells-checker/v1.md` | The Tells Checker's first instructions (Layer 2 in `docs/tells-checker-design.md`). Frozen: scored in the baseline. |
-| `tells-checker/v2.md` | v1 with three noisy kinds of tell switched off. In use. Frozen: scored in `testset/score-v2.md`. |
+| `tells-checker/v2.md` | v1 with three noisy kinds of tell switched off. Frozen: scored in `testset/score-v2.md`. |
+| `tells-checker/v3.md` | v2 with explicit tests instead of "when unsure, leave it out". In use. |
 
 The version in use, and the kinds of tell it may report, are set in `src/prompt.ts`.
 
@@ -84,6 +85,67 @@ by hand): clean samples left clean rose from 3 of 14 to 13 of 14, and verdicts m
 Kyle's rose from 14 to 23 of 38. Marked passages caught fell from 27 to 16 of 55. Two of the four `other`
 findings were switched-off patterns under another name. Frozen.
 
-Next: v3 replaces "when unsure, leave it out" with explicit
-criteria and two to four invented examples, scored against v2. Then the three kinds
-come back one at a time, each with sharper criteria and its own scoring run.
+Next: v3. Then the three kinds come back one at a time, each with sharper criteria and
+its own scoring run.
+
+## Status of v3
+
+**One change, measured on its own:** the confidence rule ("when you are unsure about a
+passage, leave it out; when you are unsure about the whole draft, say it is clean")
+becomes explicit tests. Specifically:
+
+- A passage is reported when it matches a pattern in the table **and** it performs: it
+  is there for rhythm, emphasis or applause, and saying it plainly would lose nothing.
+- `staccato`, `signpost` and `engagement_hook` each get a short "counts / does not
+  count" test.
+- "Generic is not the same as AI-sounding" gains one sentence: a bland piece can still
+  contain a pattern, so flag the pattern, not the blandness.
+- Two invented worked examples are added: a short travel story with a clipped run and
+  a comment-bait ending (`a_few_tells`), and a plain community garden notice (`clean`).
+  The heading "Two worked examples" becomes "Worked examples".
+
+The switched-off kinds stay off. Everything else is word for word v2.
+
+**Why:** v2 fixed the false flags (13 of 14 clean samples left clean) but caught only
+16 of 55 marked passages. Two heavily edited "obviously AI" drafts (s18, s24) came back
+with nothing. What it missed, besides the switched-off kinds, was mostly clipped runs in
+personal stories, signposts and comment-bait endings. In s24 its summary excused a
+reply request as "the standard kind a newsletter uses". Most of v2's findings outside
+Kyle's marks looked like real tells he had not marked, so v3 aims at catching more, not
+at cutting those.
+
+**The examples were checked against the test set** (rule 3 above): no
+three-word run in the new text that carries meaning appears in any marked passage,
+and no example shares a sentence shape with one. Several
+first-draft examples were replaced before scoring:
+
+- Two `signpost` illustrations came straight from the samples.
+- The first fresh review found two examples with three overlaps. A meeting notice was
+  shaped like s29's closing request, and used a name from s28. A "first attempt at a
+  hobby" story mirrored s18, one of the misses v3 is meant to fix.
+- Their replacements leaked again, by shape rather than wording. A "No boats. No buses.
+  No signal." run copied the form of s14's marked "No slides. No brainteasers.", and an
+  "in the comments!" ending mirrored s19's marked closer. They are now a run of numbered
+  fragments and a poll-style ending, neither of which appears in any sample. A clause
+  about asking colleagues for feedback on a proposal described s29's ending, so it now
+  uses a different illustration.
+- The check that finally held compares three-word runs and sentence shapes, not only
+  four-word runs.
+
+**Known limit: no held-out set.** The tests were written after reading what v2 missed
+in these same 38 samples. Any gain will look better here than it would on new writing.
+To limit this, v3 states general tests: it does not name the kinds of piece v2 missed.
+New samples from Phase 2 step 2.1 are the real check.
+
+**The decision rule, set before scoring** (all 38 samples, compared with v2):
+
+| Result | Decision |
+|---|---|
+| Clean samples left clean stay at 13 or more of 14, and marked passages caught reach 19 or more of 55 | Keep v3 |
+| Catches reach 17 or 18 of 55 (within the noise of one run), or catches rise but one more clean sample is flagged (12 of 14) | Kyle decides |
+| 11 or fewer of 14 clean samples left clean, or catches do not rise | Go back to v2 (one line in `src/prompt.ts`) |
+
+One run of all 38 samples decides, s22 included. A rise of one or two catches is within
+the run-to-run noise of a single run, which is why 17 and 18 go to Kyle.
+
+**Not yet scored.**
