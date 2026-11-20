@@ -19,7 +19,6 @@
  * logged.
  */
 
-import promptV1 from "../prompts/tells-checker/v1.md";
 import {
   costMicros,
   MICROS_PER_DOLLAR,
@@ -33,13 +32,12 @@ import type { OriginCheck } from "./cors";
 import { passedBotCheck, RATE_LIMIT_WINDOW_SECONDS, readJsonCapped, withinRateLimit } from "./guardrails";
 import { json } from "./http";
 import { countFindings, emptyCheckLog, logCheck, type CheckLog, type Guardrail, type ModelStep } from "./log";
-import { locate, merge, MODEL_OUTPUT_SCHEMA, parseModelOutput } from "./merge";
+import { locate, merge, modelOutputSchema, parseModelOutput } from "./merge";
+import { PROMPT } from "./prompt";
 import { callModel, type ModelCaller } from "./provider";
 import { runRules } from "./rules";
 import { recordCheck } from "./stats";
 import type { CheckResponse, Notice } from "./tells";
-
-const PROMPT_VERSION = "v1";
 
 /** A ceiling on the model's reply, reasoning included. A ceiling on cost too. */
 const MAX_OUTPUT_TOKENS = 4096;
@@ -79,7 +77,7 @@ export interface CheckOutcome {
  */
 export async function checkDraft(text: string, access: ModelAccess | null): Promise<CheckOutcome> {
   const ruleFindings = runRules(text);
-  const meta = { promptVersion: PROMPT_VERSION, charactersChecked: text.length };
+  const meta = { promptVersion: PROMPT.version, charactersChecked: text.length };
 
   // The quick check: rules only. It reports what the rules found but gives no
   // verdict, because a verdict from rules alone would claim more than they know.
@@ -102,7 +100,7 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
 
   // Set aside the most this call could cost. If today's budget cannot cover
   // it, the visitor gets the quick check and is told why.
-  const reserved = costMicros(prices, tokenCeiling(promptV1.length + user.length), MAX_OUTPUT_TOKENS);
+  const reserved = costMicros(prices, tokenCeiling(PROMPT.text.length + user.length), MAX_OUTPUT_TOKENS);
   let granted: boolean;
   try {
     granted = await budget.reserve(reserved);
@@ -117,10 +115,10 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
   const started = Date.now();
   const result = await caller({
     model,
-    system: promptV1,
+    system: PROMPT.text,
     user,
     maxOutputTokens: MAX_OUTPUT_TOKENS,
-    jsonSchema: MODEL_OUTPUT_SCHEMA,
+    jsonSchema: modelOutputSchema(PROMPT.modelTypes),
   });
   const modelMs = Date.now() - started;
 
@@ -138,7 +136,7 @@ export async function checkDraft(text: string, access: ModelAccess | null): Prom
 
   const call = { usage, costMicros: actual, modelMs };
   if (!result.ok) return quick("model_unavailable", result.reason, call);
-  const output = parseModelOutput(result.text);
+  const output = parseModelOutput(result.text, PROMPT.modelTypes);
   if (output === null) return quick("model_unavailable", "unreadable_reply", call);
 
   const { verdict, findings } = merge(
@@ -281,7 +279,7 @@ async function handleCheck(request: Request, env: Env, origin: OriginCheck): Pro
       characters: text.length,
       modelStep: "skipped" in gate ? gate.skipped : outcome.modelStep,
       model: outcome.modelMs === null ? null : (access?.model ?? null),
-      promptVersion: PROMPT_VERSION,
+      promptVersion: PROMPT.version,
       modelMs: outcome.modelMs,
       inputTokens: outcome.usage?.inputTokens ?? null,
       outputTokens: outcome.usage?.outputTokens ?? null,

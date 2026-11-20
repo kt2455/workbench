@@ -8,7 +8,10 @@ changes, a new card is written and numbered. Nobody scribbles on the old one.
 
 | File | What it is |
 |---|---|
-| `tells-checker/v1.md` | The Tells Checker's instructions (Layer 2 in `docs/tells-checker-design.md`) |
+| `tells-checker/v1.md` | The Tells Checker's first instructions (Layer 2 in `docs/tells-checker-design.md`). Frozen: scored in the baseline. |
+| `tells-checker/v2.md` | v1 with three noisy kinds of tell switched off. In use. |
+
+The version in use, and the kinds of tell it may report, are set in `src/prompt.ts`.
 
 ## Rules
 
@@ -39,5 +42,34 @@ step 1.9 and are listed in `docs/tells-checker-design.md`:
 
 ## Status of v1
 
-Drafted in step 1.6. Not yet run against a model. Step 1.13 scores it against the
-test set for the first time.
+Drafted in step 1.6. Scored in step 1.13 (`testset/baseline.md`): only 3 of the 14
+samples Kyle marked clean were left clean. Frozen.
+
+## Status of v2
+
+**One change, measured on its own:** `stock_phrase`, `tidy_closer` and `balanced_list`
+are switched off. Their rows and guidance are removed, the "rhythm" paragraph no
+longer lists "an ending that lands like a slogan", and a short paragraph says the three
+patterns are out of scope, including under `other`. Everything else is word for word
+v1, including "when you are unsure about a passage, leave it out".
+
+Why, from the baseline run (a finding "on a mark" overlaps a passage Kyle marked):
+
+| Kind of tell | Findings | On a mark | In clean samples |
+|---|---|---|---|
+| `stock_phrase` | 27 | 2 | 17 |
+| `tidy_closer` | 12 | 2 | 7 |
+| `balanced_list` | 17 | 5 | 6 |
+| All other kinds | 33 | 18 | 1 |
+
+Removing the three from the baseline's findings after the fact (a rough estimate: the
+model's verdicts were not re-run) leaves 13 of 14 clean samples clean, still flags 8 of
+9 "obviously AI" samples, and catches 18 of 55 marked passages instead of 27.
+
+The switch-off is enforced in code as well as in the prompt: see `src/prompt.ts`. Code
+cannot stop the model reporting one of these patterns under `other`, so the scoring
+run counts `other` findings too.
+
+**Not yet scored.** Next: v3 replaces "when unsure, leave it out" with explicit
+criteria and two to four invented examples, scored against v2. Then the three kinds
+come back one at a time, each with sharper criteria and its own scoring run.

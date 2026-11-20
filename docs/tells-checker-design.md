@@ -182,6 +182,15 @@ used is removed, and `other` shows when a new one is needed.
 Only the model can return `tidy_closer`, `engagement_hook`, `stock_phrase`,
 `balanced_list`, `neat_story` and `other`. The rules return the first three.
 
+**Switched off from prompt v2:** `stock_phrase`, `tidy_closer` and `balanced_list`.
+In the baseline run they caused 30 of the 31 findings in samples Kyle marked clean,
+and few of their findings landed on a passage he marked (see `prompts/README.md`). The
+active prompt and its allowed types live together in `src/prompt.ts`. The reply shape
+sent to the model leaves the three out, and the parser drops them if they come back
+anyway. The types stay in `TELL_TYPES`, so the logs and stats remain comparable over
+time. Each comes back later, one at a time, with sharper criteria and its own scoring
+run.
+
 ### A house style note
 
 ```json

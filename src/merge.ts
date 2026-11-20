@@ -29,30 +29,35 @@ export interface ModelOutput {
   findings: ModelFinding[];
 }
 
-/** The shape the model is asked for, in the form the provider understands. */
-export const MODEL_OUTPUT_SCHEMA: Record<string, unknown> = {
-  type: "object",
-  properties: {
-    verdict: { type: "string", enum: [...VERDICTS] },
-    summary: { type: "string" },
-    findings: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          quote: { type: "string" },
-          type: { type: "string", enum: [...TELL_TYPES] },
-          why: { type: "string" },
-          fix: { type: "string" },
+/**
+ * The shape the model is asked for, in the form the provider understands.
+ * `types` is the list of kinds of tell the current prompt allows.
+ */
+export function modelOutputSchema(types: readonly TellType[]): Record<string, unknown> {
+  return {
+    type: "object",
+    properties: {
+      verdict: { type: "string", enum: [...VERDICTS] },
+      summary: { type: "string" },
+      findings: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            quote: { type: "string" },
+            type: { type: "string", enum: [...types] },
+            why: { type: "string" },
+            fix: { type: "string" },
+          },
+          required: ["quote", "type", "why", "fix"],
+          additionalProperties: false,
         },
-        required: ["quote", "type", "why", "fix"],
-        additionalProperties: false,
       },
     },
-  },
-  required: ["verdict", "summary", "findings"],
-  additionalProperties: false,
-};
+    required: ["verdict", "summary", "findings"],
+    additionalProperties: false,
+  };
+}
 
 /** The longest summary shown, in characters. */
 const MAX_SUMMARY_CHARS = 400;
@@ -75,9 +80,11 @@ function fit(text: string, limit: number): string {
  * which case the check falls back to the rules alone.
  *
  * A single malformed finding is dropped without failing the rest. A kind of
- * tell that is not on the list becomes "other".
+ * tell nobody has heard of becomes "other". A known kind that the current
+ * prompt has switched off (one missing from `allowed`) is dropped, so it
+ * cannot come back in disguise as "other".
  */
-export function parseModelOutput(raw: string): ModelOutput | null {
+export function parseModelOutput(raw: string, allowed: readonly TellType[]): ModelOutput | null {
   let value: unknown;
   try {
     // Some models wrap JSON in a code fence even when asked not to.
@@ -96,9 +103,11 @@ export function parseModelOutput(raw: string): ModelOutput | null {
     const { quote, type, why, fix } = item;
     if (typeof quote !== "string" || typeof why !== "string" || typeof fix !== "string") continue;
     if (quote.trim() === "" || why.trim() === "" || fix.trim() === "") continue;
+    const known = (TELL_TYPES as readonly string[]).includes(type as string);
+    if (known && !allowed.includes(type as TellType)) continue;
     kept.push({
       quote,
-      type: (TELL_TYPES as readonly string[]).includes(type as string) ? (type as TellType) : "other",
+      type: known ? (type as TellType) : "other",
       why: fit(why, MAX_EXPLANATION_CHARS),
       fix: fit(fix, MAX_EXPLANATION_CHARS),
     });
