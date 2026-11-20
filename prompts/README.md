@@ -79,9 +79,9 @@ to show. The reply shape makes this unlikely, since the model cannot return thos
 The same was already true when a quote could not be found. The scoring run will show
 whether it happens.
 
-**Scored 2026-11-20** (`testset/score-v2.md`, 37 of 38 samples): clean samples wrongly
-flagged fell from 10 of 13 to 1 of 13, and verdicts matching Kyle's rose from 14 to 22
-of 37. Marked passages caught fell from 27 to 16 of 55. Two of the four `other`
+**Scored 2026-11-20** (`testset/score-v2.md`; 37 samples from the eval page, s22 re-run
+by hand): clean samples left clean rose from 3 of 14 to 13 of 14, and verdicts matching
+Kyle's rose from 14 to 23 of 38. Marked passages caught fell from 27 to 16 of 55. Two of the four `other`
 findings were switched-off patterns under another name. Frozen.
 
 Next: v3 replaces "when unsure, leave it out" with explicit
