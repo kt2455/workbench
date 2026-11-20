@@ -156,6 +156,17 @@ describe("the stats counter", () => {
     expect(Object.keys(result.totals).sort()).toEqual([...STAT_NAMES].sort());
   });
 
+  it("keeps Not a tell counts, ignores unknown ones, and publishes them only with a batch of checks", async () => {
+    const counter = freshCounter();
+    await counter.record({ not_a_tell_staccato: 2, ["not_a_tell_made_up" as never]: 5 } as StatCounts, "2026-11-10");
+    // A day with only feedback is held back, like a day with only guardrails.
+    expect((await counter.published(5, "2026-11-11")).through).toBeNull();
+    await counter.record(checks(5), "2026-11-11");
+    const result = await counter.published(5, "2026-11-12");
+    expect(result.totals).toMatchObject({ not_a_tell_staccato: 2, checks_quick: 5 });
+    expect(Object.keys(result.totals)).not.toContain("not_a_tell_made_up");
+  });
+
   it("works out the next day across month and year ends", () => {
     expect(nextDay("2026-11-30")).toBe("2026-12-01");
     expect(nextDay("2026-12-31")).toBe("2027-01-01");

@@ -181,6 +181,60 @@ describe("POST /feedback: guardrails", () => {
   });
 });
 
+describe("POST /feedback: the bot check fails closed", () => {
+  it.each([
+    ["Cloudflare cannot be reached", () => vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("network down"))],
+    ["Cloudflare answers with an error", () => fakeNetwork({ botCheckStatus: 500 })],
+    ["the answer is not JSON", () => vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response("<html>oops</html>"))],
+    ["the token was made for another purpose", () => fakeNetwork({ botCheck: { success: true, hostname: "kyletebo.com", action: "signup" } })],
+    ["success is not exactly true", () => fakeNetwork({ botCheck: { success: "true", hostname: "kyletebo.com", action: "check" } })],
+  ])("refuses when %s, and counts nothing", async (_name, arrange) => {
+    arrange();
+    const stats = fakeStats();
+    const response = await feedbackEndpoint(send(valid()), stats.env, allowed);
+    expect(response.status).toBe(403);
+    expect(stats.recorded).toEqual([]);
+  });
+});
+
+describe("POST /feedback: guardrail order", () => {
+  const broken = { limit: async () => { throw new Error("limiter down"); } };
+
+  it("checks the content type before the rate limit", async () => {
+    fakeNetwork();
+    const response = await feedbackEndpoint(
+      send(valid(), { "content-type": "text/plain" }),
+      { ...fakeStats().env, FEEDBACK_LIMITER: broken } as unknown as Env,
+      allowed,
+    );
+    expect(response.status).toBe(400);
+  });
+
+  it("applies the rate limit before reading the body", async () => {
+    fakeNetwork();
+    const huge = send({ ...valid(), botCheckToken: "x".repeat(MAX_FEEDBACK_BYTES * 2) });
+    const response = await feedbackEndpoint(huge, { ...fakeStats().env, FEEDBACK_LIMITER: broken } as unknown as Env, allowed);
+    expect(response.status).toBe(429);
+  });
+});
+
+describe("POST /feedback: awkward bodies", () => {
+  it.each([
+    ["a __proto__ key", '{"kind":"not_a_tell","type":"staccato","botCheckToken":"t","__proto__":{"x":1}}'],
+    ["a constructor key", '{"kind":"not_a_tell","type":"staccato","botCheckToken":"t","constructor":"x"}'],
+    ["a type named after an object property", '{"kind":"not_a_tell","type":"toString","botCheckToken":"t"}'],
+    ["a look-alike type in another alphabet", '{"kind":"not_a_tell","type":"st\u0430ccato","botCheckToken":"t"}'],
+    ["a repeated kind whose last value is wrong", '{"kind":"not_a_tell","type":"staccato","botCheckToken":"t","kind":"other"}'],
+  ])("refuses %s", async (_name, raw) => {
+    const { calls } = fakeNetwork();
+    const stats = fakeStats();
+    const response = await feedbackEndpoint(send(raw), stats.env, allowed);
+    expect(response.status).toBe(400);
+    expect(stats.recorded).toEqual([]);
+    expect(calls.botCheck).toHaveLength(0);
+  });
+});
+
 describe("POST /feedback: the log", () => {
   it("writes one line with only the result, status, type and time", async () => {
     fakeNetwork();

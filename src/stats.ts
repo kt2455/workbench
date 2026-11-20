@@ -30,10 +30,18 @@
  * request was refused, never anything about a draft. The same goes for "Not a
  * tell" counts (POST /feedback): one can show as +1 for its type, which says
  * only that someone disagreed with one kind of flag, never which draft or
- * which words.
+ * which words. Like guardrail counts, they publish only when a batch of checks
+ * does, so a day with nothing but feedback waits for later checks.
+ *
+ * "Not a tell" counts are untrusted signal. A count is not tied to a real
+ * check or finding: anyone who passes a bot check can send one, up to the rate
+ * limit. They cost nothing and expose nothing, but they can be skewed, so treat
+ * them as a pointer to look at, never as a score.
  *
  * Not counted here: requests turned away by the rate limit or the guest list,
- * and malformed requests. A script can send those as fast as it likes, and
+ * malformed requests, and refused "Not a tell" requests (a failed bot check on
+ * /feedback is logged but not added to the public bot check count, which
+ * stays about checks). A script can send those as fast as it likes, and
  * each one written to the counter would cost something. They still appear in
  * the log (src/log.ts).
  */
