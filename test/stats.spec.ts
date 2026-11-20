@@ -156,6 +156,17 @@ describe("the stats counter", () => {
     expect(Object.keys(result.totals).sort()).toEqual([...STAT_NAMES].sort());
   });
 
+  it("keeps Not a tell counts, ignores unknown ones, and publishes them only with a batch of checks", async () => {
+    const counter = freshCounter();
+    await counter.record({ not_a_tell_staccato: 2, ["not_a_tell_made_up" as never]: 5 } as StatCounts, "2026-11-10");
+    // A day with only feedback is held back, like a day with only guardrails.
+    expect((await counter.published(5, "2026-11-11")).through).toBeNull();
+    await counter.record(checks(5), "2026-11-11");
+    const result = await counter.published(5, "2026-11-12");
+    expect(result.totals).toMatchObject({ not_a_tell_staccato: 2, checks_quick: 5 });
+    expect(Object.keys(result.totals)).not.toContain("not_a_tell_made_up");
+  });
+
   it("works out the next day across month and year ends", () => {
     expect(nextDay("2026-11-30")).toBe("2026-12-01");
     expect(nextDay("2026-12-31")).toBe("2027-01-01");
@@ -222,6 +233,20 @@ describe("the public reply", () => {
       guardrails: { sizeCap: 0, botCheck: 0, dailyBudget: 0 },
       model: { calls: 0, averageSeconds: null },
       cost: { totalUsd: 0, perModelCallUsd: null },
+      notATell: {
+        total: 0,
+        byType: {
+          staccato: 0,
+          contrast_turn: 0,
+          signpost: 0,
+          tidy_closer: 0,
+          engagement_hook: 0,
+          stock_phrase: 0,
+          balanced_list: 0,
+          neat_story: 0,
+          other: 0,
+        },
+      },
     });
 
     const busy = { ...totals, checks_full: 8, checks_quick: 2, model_calls: 8, model_ms: 20_123, cost_micros: 3_900, input_tokens: 19_200 };
@@ -264,7 +289,7 @@ describe("GET /stats", () => {
     expect(response.headers.get("access-control-allow-origin")).toBe(ORIGIN);
     expect(response.headers.get("cache-control")).toBe("no-store");
     const body = (await response.json()) as Record<string, unknown>;
-    expect(Object.keys(body).sort()).toEqual(["asOf", "checks", "cost", "guardrails", "model", "quickBecause", "since"]);
+    expect(Object.keys(body).sort()).toEqual(["asOf", "checks", "cost", "guardrails", "model", "notATell", "quickBecause", "since"]);
     expect(body.asOf === null || String(body.asOf) < today()).toBe(true);
   });
 

@@ -226,6 +226,35 @@ export function logRefused(guardrail: Guardrail, status: number, endpoint?: (typ
   }
 }
 
+/** How a "Not a tell" request ended. */
+export const FEEDBACK_RESULTS = ["counted", "invalid_request", "rate_limited", "bot_check_failed"] as const;
+export type FeedbackResult = (typeof FEEDBACK_RESULTS)[number];
+
+/** One line per request to /feedback. */
+export interface FeedbackLog {
+  result: FeedbackResult;
+  status: number;
+  /** The finding's type, from the fixed list, or null if the request didn't name a valid one. */
+  type: TellType | null;
+  durationMs: number;
+}
+
+/** Writes the one log line for a "Not a tell". Only fixed words and numbers. Never throws. */
+export function logFeedback(entry: FeedbackLog): void {
+  try {
+    write({
+      event: "feedback",
+      at: new Date().toISOString(),
+      result: oneOf(FEEDBACK_RESULTS, entry.result),
+      status: count(entry.status),
+      type: oneOf(TELL_TYPES, entry.type),
+      durationMs: count(entry.durationMs),
+    });
+  } catch {
+    // As above.
+  }
+}
+
 /** Things that can fail without affecting a visitor, each logged as a fixed word. */
 export const FAILURES = ["stats_write_failed", "stats_read_failed"] as const;
 export type Failure = (typeof FAILURES)[number];
