@@ -75,7 +75,7 @@ describe("the log line for each check", () => {
       characters: 100,
       modelStep: "switched_off",
       model: null,
-      promptVersion: "v1",
+      promptVersion: "v2",
       modelMs: null,
       inputTokens: null,
       outputTokens: null,

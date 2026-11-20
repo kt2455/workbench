@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { locate, merge, parseModelOutput } from "../src/merge";
-import type { Finding } from "../src/tells";
+import { locate, merge, modelOutputSchema, parseModelOutput } from "../src/merge";
+import { PROMPT } from "../src/prompt";
+import { TELL_TYPES, type Finding } from "../src/tells";
 
 const reply = (value: unknown) => JSON.stringify(value);
+/** Reads a reply with every kind of tell allowed. */
+const parse = (raw: string) => parseModelOutput(raw, TELL_TYPES);
 const finding = (quote: string, extra: Record<string, unknown> = {}) => ({
   quote,
   type: "tidy_closer",
@@ -11,15 +14,53 @@ const finding = (quote: string, extra: Record<string, unknown> = {}) => ({
   ...extra,
 });
 
+describe("switching kinds of tell off (prompt v2)", () => {
+  const OFF = ["stock_phrase", "tidy_closer", "balanced_list"];
+
+  it("leaves the three noisy kinds out of what the model may return", () => {
+    expect(PROMPT.version).toBe("v2");
+    expect([...PROMPT.modelTypes].sort()).toEqual(TELL_TYPES.filter((t) => !OFF.includes(t)).sort());
+    const schema = JSON.stringify(modelOutputSchema(PROMPT.modelTypes));
+    for (const type of OFF) expect(schema).not.toContain(`"${type}"`);
+    expect(schema).toContain('"other"');
+  });
+
+  it("lists exactly the allowed kinds in the prompt's table", () => {
+    const inTable = [...PROMPT.text.matchAll(/^\| `(\w+)` \|/gm)].map((m) => m[1]);
+    expect(inTable.sort()).toEqual([...PROMPT.modelTypes].sort());
+    expect(PROMPT.text).not.toMatch(/\b(nine|eight|seven) types\b/);
+  });
+
+  it("drops a switched-off kind instead of turning it into 'other'", () => {
+    const output = parseModelOutput(
+      reply({
+        verdict: "a_few_tells",
+        summary: "x",
+        findings: OFF.map((type) => finding(type, { type })).concat(finding("kept", { type: "signpost" })),
+      }),
+      PROMPT.modelTypes,
+    );
+    expect(output?.findings.map((f) => [f.quote, f.type])).toEqual([["kept", "signpost"]]);
+  });
+
+  it("still turns a kind nobody has heard of into 'other'", () => {
+    const output = parseModelOutput(
+      reply({ verdict: "a_few_tells", summary: "x", findings: [finding("q", { type: "robot_voice" })] }),
+      PROMPT.modelTypes,
+    );
+    expect(output?.findings[0].type).toBe("other");
+  });
+});
+
 describe("reading the model's reply", () => {
   it("accepts the expected shape", () => {
-    const output = parseModelOutput(reply({ verdict: "a_few_tells", summary: "Mostly fine.", findings: [finding("x")] }));
+    const output = parse(reply({ verdict: "a_few_tells", summary: "Mostly fine.", findings: [finding("x")] }));
     expect(output).toEqual({ verdict: "a_few_tells", summary: "Mostly fine.", findings: [finding("x")] });
   });
 
   it("accepts JSON wrapped in a code fence", () => {
     const raw = "```json\n" + reply({ verdict: "clean", summary: "Fine.", findings: [] }) + "\n```";
-    expect(parseModelOutput(raw)?.verdict).toBe("clean");
+    expect(parse(raw)?.verdict).toBe("clean");
   });
 
   it.each([
@@ -29,18 +70,18 @@ describe("reading the model's reply", () => {
     ["a missing summary", reply({ verdict: "clean", findings: [] })],
     ["findings that are not a list", reply({ verdict: "clean", summary: "x", findings: "none" })],
   ])("rejects %s", (_name, raw) => {
-    expect(parseModelOutput(raw)).toBeNull();
+    expect(parse(raw)).toBeNull();
   });
 
   it("drops a malformed finding and keeps the rest", () => {
-    const output = parseModelOutput(
+    const output = parse(
       reply({ verdict: "a_few_tells", summary: "x", findings: [{ quote: 5 }, "nonsense", finding(""), finding("kept")] }),
     );
     expect(output?.findings.map((f) => f.quote)).toEqual(["kept"]);
   });
 
   it("turns an unknown kind of tell into 'other'", () => {
-    const output = parseModelOutput(
+    const output = parse(
       reply({ verdict: "a_few_tells", summary: "x", findings: [finding("q", { type: "robot_voice" })] }),
     );
     expect(output?.findings[0].type).toBe("other");
@@ -48,7 +89,7 @@ describe("reading the model's reply", () => {
 
   it("shortens an over-long explanation at a word boundary", () => {
     const long = "word ".repeat(80);
-    const output = parseModelOutput(
+    const output = parse(
       reply({ verdict: "a_few_tells", summary: "x", findings: [finding("q", { why: long, fix: long })] }),
     );
     const { why, fix } = output!.findings[0];
