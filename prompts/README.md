@@ -9,7 +9,7 @@ changes, a new card is written and numbered. Nobody scribbles on the old one.
 | File | What it is |
 |---|---|
 | `tells-checker/v1.md` | The Tells Checker's first instructions (Layer 2 in `docs/tells-checker-design.md`). Frozen: scored in the baseline. |
-| `tells-checker/v2.md` | v1 with three noisy kinds of tell switched off. In use. |
+| `tells-checker/v2.md` | v1 with three noisy kinds of tell switched off. In use. Frozen: scored in `testset/score-v2.md`. |
 
 The version in use, and the kinds of tell it may report, are set in `src/prompt.ts`.
 
@@ -79,6 +79,11 @@ to show. The reply shape makes this unlikely, since the model cannot return thos
 The same was already true when a quote could not be found. The scoring run will show
 whether it happens.
 
-**Not yet scored.** Next: v3 replaces "when unsure, leave it out" with explicit
+**Scored 2026-11-20** (`testset/score-v2.md`, 37 of 38 samples): clean samples wrongly
+flagged fell from 10 of 13 to 1 of 13, and verdicts matching Kyle's rose from 14 to 22
+of 37. Marked passages caught fell from 27 to 16 of 55. Two of the four `other`
+findings were switched-off patterns under another name. Frozen.
+
+Next: v3 replaces "when unsure, leave it out" with explicit
 criteria and two to four invented examples, scored against v2. Then the three kinds
 come back one at a time, each with sharper criteria and its own scoring run.
