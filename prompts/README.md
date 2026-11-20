@@ -100,8 +100,9 @@ becomes explicit tests. Specifically:
   count" test.
 - "Generic is not the same as AI-sounding" gains one sentence: a bland piece can still
   contain a pattern, so flag the pattern, not the blandness.
-- Two invented worked examples are added: a short story with a clipped run and a
-  comment-bait ending (`a_few_tells`), and a plain meeting notice (`clean`).
+- Two invented worked examples are added: a short travel story with a clipped run and
+  a comment-bait ending (`a_few_tells`), and a plain community garden notice (`clean`).
+  The heading "Two worked examples" becomes "Worked examples".
 
 The switched-off kinds stay off. Everything else is word for word v2.
 
@@ -113,16 +114,30 @@ reply request as "the standard kind a newsletter uses". Most of v2's findings ou
 Kyle's marks looked like real tells he had not marked, so v3 aims at catching more, not
 at cutting those.
 
-**The examples were checked against the test set:** no five-word run in the new text
-appears in any sample. Two first-draft illustrations were replaced because they came
-from the samples.
+**The examples were checked against the test set** (rule 3 above): no
+four-word run in the new text appears in any sample or marked passage. Several
+first-draft examples were replaced before scoring:
+
+- Two `signpost` illustrations came straight from the samples.
+- The fresh review found three close paraphrases. A meeting notice was shaped like s29's
+  closing request, and used a name from s28. A "first attempt at a hobby" story mirrored
+  s18, one of the misses v3 is meant to fix.
+
+**Known limit: no held-out set.** The tests were written after reading what v2 missed
+in these same 38 samples. Any gain will look better here than it would on new writing.
+To limit this, v3 states general tests: it does not name the kinds of piece v2 missed.
+New samples from Phase 2 step 2.1 are the real check.
 
 **The decision rule, set before scoring** (all 38 samples, compared with v2):
 
 | Result | Decision |
 |---|---|
-| Clean samples left clean stay at 13 of 14, and marked passages caught rise above 16 of 55 | Keep v3 |
+| Clean samples left clean stay at 13 or more of 14, and marked passages caught rise above 16 of 55 | Keep v3 |
 | Catches rise, but one more clean sample is flagged (12 of 14) | Kyle decides |
 | 11 or fewer of 14 clean samples left clean, or catches do not rise | Go back to v2 (one line in `src/prompt.ts`) |
+
+One run of all 38 samples decides, s22 included. A rise of one or two catches is within
+the run-to-run noise of a single run, so a gain that small is reported as "no clear
+change" and Kyle decides.
 
 **Not yet scored.**
