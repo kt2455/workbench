@@ -313,7 +313,7 @@ describe("POST /check with the model switched off", () => {
       ],
       houseStyle: null,
       notice: "model_unavailable",
-      meta: { promptVersion: "v3", charactersChecked: DRAFT.length },
+      meta: { promptVersion: "v2", charactersChecked: DRAFT.length },
     });
     // The paid key is never used while the switch is off.
     expect(calls.model).toHaveLength(0);
@@ -354,7 +354,7 @@ describe("the full check", () => {
     const { body } = await checkDraft(DRAFT, access);
     expect(requests[0].system).toContain("**Out of scope.**");
     expect(JSON.stringify(requests[0].jsonSchema)).not.toContain('"tidy_closer"');
-    expect(body.meta.promptVersion).toBe("v3");
+    expect(body.meta.promptVersion).toBe("v2");
     // Only the rules' finding is left.
     expect(body.findings.map((f) => [f.type, f.foundBy])).toEqual([["signpost", "rule"]]);
   });
