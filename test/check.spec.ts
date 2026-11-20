@@ -313,7 +313,7 @@ describe("POST /check with the model switched off", () => {
       ],
       houseStyle: null,
       notice: "model_unavailable",
-      meta: { promptVersion: "v2", charactersChecked: DRAFT.length },
+      meta: { promptVersion: "v3", charactersChecked: DRAFT.length },
     });
     // The paid key is never used while the switch is off.
     expect(calls.model).toHaveLength(0);
@@ -348,13 +348,13 @@ describe("the full check", () => {
     expect(requests[0].jsonSchema).toBeDefined();
   });
 
-  it("asks for prompt v2's reply shape and drops a switched-off kind of tell", async () => {
+  it("asks for the current prompt's reply shape and drops a switched-off kind of tell", async () => {
     const offType = { ...closer, type: "tidy_closer" };
     const { access, requests } = fakeAccess({ verdict: "a_few_tells", summary: "x", findings: [offType] });
     const { body } = await checkDraft(DRAFT, access);
     expect(requests[0].system).toContain("**Out of scope.**");
     expect(JSON.stringify(requests[0].jsonSchema)).not.toContain('"tidy_closer"');
-    expect(body.meta.promptVersion).toBe("v2");
+    expect(body.meta.promptVersion).toBe("v3");
     // Only the rules' finding is left.
     expect(body.findings.map((f) => [f.type, f.foundBy])).toEqual([["signpost", "rule"]]);
   });
