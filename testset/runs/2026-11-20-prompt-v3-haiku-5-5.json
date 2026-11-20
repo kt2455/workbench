@@ -1,0 +1,1061 @@
+{
+  "step": "1.13",
+  "endpoint": "https://api.kyletebo.com/check",
+  "startedAt": "2026-11-20T18:31:13.671Z",
+  "finishedAt": "2026-11-20T18:47:17.573Z",
+  "results": [
+    {
+      "id": "s01",
+      "status": 200,
+      "ms": 3800,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a generic, promotional tip. It is stock corporate wording, but it has no clipped runs, knock-down contrasts, signposts or closing questions, so the rehearsed rhythm is absent.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 819
+        }
+      }
+    },
+    {
+      "id": "s02",
+      "status": 200,
+      "ms": 2879,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain series introduction written in a casual, personal voice. Its one fragment and its colon-led lead-in do real work, and nothing in it has a rehearsed rhythm.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 484
+        }
+      }
+    },
+    {
+      "id": "s03",
+      "status": 200,
+      "ms": 2099,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "The draft is stock promotional wording, but the rehearsed rhythm runs through it: a signposted question, a contrast set up to be knocked down, and a closing call to action. The whole piece reads as performed rather than written for a specific reader.",
+        "findings": [
+          {
+            "quote": "What sets us apart? We don't just deliver recommendations — we partner with you every step of the way, ensuring seamless implementation and sustainable results.",
+            "type": "contrast_turn",
+            "why": "The plain service is set up only so it can be knocked down in favour of a grander claim, which gives the line a performed, pitch-like ring.",
+            "fix": "State what the engagement includes and what the client receives, without first dismissing a weaker version of the service.",
+            "start": 475,
+            "end": 635,
+            "foundBy": "both"
+          },
+          {
+            "quote": "Ready to take the next step? Let's start the conversation.",
+            "type": "engagement_hook",
+            "why": "The closing question and invitation exist to prompt an enquiry, arriving in a neat, formulaic pattern after the pitch.",
+            "fix": "Replace it with a concrete next step, such as a named contact or a way to book a first call.",
+            "start": 852,
+            "end": 910,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 911
+        }
+      }
+    },
+    {
+      "id": "s04",
+      "status": 200,
+      "ms": 2359,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a practitioner explaining a finding and a fix in plain terms. The parenthetical analogies and the sub-agent description are specific and do their job, with no rehearsed rhythm or performed lines.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 865
+        }
+      }
+    },
+    {
+      "id": "s05",
+      "status": 200,
+      "ms": 1161,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a generic, promotional how-to list item. It is stock corporate wording, which this reader does not count as a tell, and none of the rhythm patterns (clipped runs, knocked-down contrasts, signposts, hooks or neat stories) show up in a performing way.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 917
+        }
+      }
+    },
+    {
+      "id": "s06",
+      "status": 200,
+      "ms": 2362,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a natural, if somewhat wry, complaint about meetings. Its rhythm is ordinary, the parenthetical aside is a real joke rather than a performance, and the closing question is rhetorical rather than a request for replies.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 670
+        }
+      }
+    },
+    {
+      "id": "s07",
+      "status": 200,
+      "ms": 2448,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain professional post that reports a study and draws a practical point from it. Its sentences vary in length without any clipped runs, it has no hook question or signposting, and its closing line makes a point rather than performing one.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 672
+        }
+      }
+    },
+    {
+      "id": "s08",
+      "status": 200,
+      "ms": 5463,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a generic overview of remote work. The main rehearsed moment is the closing pair, which sets up an idea only to replace it with a neat line.",
+        "findings": [
+          {
+            "quote": "one thing is clear",
+            "start": 141,
+            "end": 159,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "Ultimately, the future of work isn't about location. It's about trust.",
+            "type": "contrast_turn",
+            "why": "The location idea exists only to be swapped for a tidy slogan about trust, which gives the closing a performed, quotable ring.",
+            "fix": "State the trust point directly, with a concrete example of what trust means in your organisation, and drop the setup.",
+            "start": 781,
+            "end": 851,
+            "foundBy": "both"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 924
+        }
+      }
+    },
+    {
+      "id": "s09",
+      "status": 200,
+      "ms": 3368,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "This is a generic, formal opening about workplace feedback. It is bland in places, but no sentence performs for effect, and it has no clipped runs, staged reversals or closing prompt for replies.",
+        "findings": [
+          {
+            "quote": "The secret is",
+            "start": 611,
+            "end": 624,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 876
+        }
+      }
+    },
+    {
+      "id": "s10",
+      "status": 200,
+      "ms": 2881,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as practical advice in a plain register. The opening question and the closing line are both rehearsed, and the list of benefits is evenly balanced in a way that feels composed.",
+        "findings": [
+          {
+            "quote": "Choosing an AI tool for your team can feel overwhelming. There are hundreds of options, and new ones launch every week. So where do you start?",
+            "type": "signpost",
+            "why": "The question is a set-up that exists to introduce the advice, and it reads as a rhetorical lead-in rather than a real question the writer needs answered.",
+            "fix": "Open with the advice itself, such as the first step, and drop the rhetorical question.",
+            "start": 0,
+            "end": 142,
+            "foundBy": "model"
+          },
+          {
+            "quote": "The right tool is the one your team will use. Everything else is secondary.",
+            "type": "other",
+            "why": "This closing pair is a tidy, slogan-like moral that sums up the piece in a rehearsed way, and the second sentence adds only emphasis.",
+            "fix": "Cut the second sentence, or replace the line with a specific point about how the team will use the tool.",
+            "start": 543,
+            "end": 618,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 619
+        }
+      }
+    },
+    {
+      "id": "s11",
+      "status": 200,
+      "ms": 4405,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a plain opinion on AI adoption. The opening sets up a negation and then pivots to a tidy, quotable alternative, which gives the first lines a rehearsed ring.",
+        "findings": [
+          {
+            "quote": "You can't train intuition into people. But you can teach them how the technology works",
+            "type": "contrast_turn",
+            "why": "The first claim exists mainly so the 'But you can' pivot can land, and the parallel build gives it a rehearsed, speechlike cadence.",
+            "fix": "State what people can be taught in plain terms, without first denying an idea nobody has proposed.",
+            "start": 0,
+            "end": 86,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 324
+        }
+      }
+    },
+    {
+      "id": "s12",
+      "status": 200,
+      "ms": 3821,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This is plain, generic meeting advice. Its tone is promotional in places, with words like \"always\" and \"supercharge\", but it has no clipped runs, staged contrasts, signposts or closing prompts, so it does not read as rehearsed.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 895
+        }
+      }
+    },
+    {
+      "id": "s13",
+      "status": 200,
+      "ms": 5661,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as ordinary, generic workplace prose. One opening line performs emphasis without adding content, and it is the only passage with a rehearsed sound.",
+        "findings": [
+          {
+            "quote": "It's time to face facts that collaborating in the remote and hybrid world requires different ways of working together.",
+            "type": "signpost",
+            "why": "\"It's time to face facts\" announces a point rather than making it, and the plain claim after it would say the same thing without the build-up.",
+            "fix": "Cut the lead-in and state the claim directly, for example: Collaborating remotely and in hybrid teams needs different ways of working.",
+            "start": 0,
+            "end": 118,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 561
+        }
+      }
+    },
+    {
+      "id": "s14",
+      "status": 200,
+      "ms": 6191,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads like a plain account of a hiring change. Two rhythmic runs of short sentences and a set-up-and-knock-down closing line give it a rehearsed sound in places.",
+        "findings": [
+          {
+            "quote": "Looking back",
+            "start": 95,
+            "end": 107,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "No slides. No brainteasers. Just real work.",
+            "type": "staccato",
+            "why": "Three clipped fragments in a row are there for rhythm; one plain sentence would list the same things.",
+            "fix": "Describe the session in one sentence, such as what the candidates actually do.",
+            "start": 388,
+            "end": 431,
+            "foundBy": "both"
+          },
+          {
+            "quote": "It's slower. It's more expensive. And it's the best hiring decision we've made.",
+            "type": "staccato",
+            "why": "The run of short, parallel sentences builds a drumbeat that makes the verdict sound delivered for effect.",
+            "fix": "State the trade-off and the result in one sentence, with the evidence that supports the claim.",
+            "start": 433,
+            "end": 512,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Hiring isn't about finding the perfect candidate. It's about finding out the truth, quickly, for both sides.",
+            "type": "contrast_turn",
+            "why": "The idea of a perfect candidate exists only to be dismissed, which gives the closing line a polished, quotable turn.",
+            "fix": "Cut the rejected idea and say directly what the new process is meant to reveal.",
+            "start": 514,
+            "end": 622,
+            "foundBy": "both"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 623
+        }
+      }
+    },
+    {
+      "id": "s15",
+      "status": 200,
+      "ms": 1571,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a standard product announcement. It is promotional and generic, but the sentences are ordinary product copy and none of them has the rehearsed rhythm of the patterns this reader flags.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 946
+        }
+      }
+    },
+    {
+      "id": "s16",
+      "status": 200,
+      "ms": 1895,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This is a generic conference recap. It is bland and full of stock praise, but its sentences are built ordinarily, with no clipped runs, reversed contrasts, signposts or closing question aimed at replies.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 920
+        }
+      }
+    },
+    {
+      "id": "s17",
+      "status": 200,
+      "ms": 2323,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this is bland, formal internal-announcement wording, which is not itself a tell. One line has a clipped, performed rhythm and one sentence sets up a contrast it does not need.",
+        "findings": [
+          {
+            "quote": "By leveraging its powerful features, we'll be able to work smarter, not harder.",
+            "type": "contrast_turn",
+            "why": "The 'smarter, not harder' line is a rehearsed knock-down of an idea nobody proposed, and it reads as a slogan rather than a point.",
+            "fix": "Say which specific features will change how the team works and what they will do differently.",
+            "start": 383,
+            "end": 462,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 905
+        }
+      }
+    },
+    {
+      "id": "s18",
+      "status": 200,
+      "ms": 2122,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain personal account of learning to script. The short sentences are spread out and each does a job, and the ending is a light joke rather than a rehearsed punchline or a request for replies.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 515
+        }
+      }
+    },
+    {
+      "id": "s19",
+      "status": 200,
+      "ms": 3172,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "The rehearsed sound runs through the whole post: a contrast set up to be knocked down, a stack of stock takeaways, a clipped run of slogans, and a closing question that exists to collect comments.",
+        "findings": [
+          {
+            "quote": "AI adoption isn't just a technology decision — it's a cultural transformation.",
+            "type": "contrast_turn",
+            "why": "The first idea exists only so it can be knocked down in favour of a grander one, which gives the opening a rehearsed, quotable ring.",
+            "fix": "State the point directly, saying what changed in your own work, instead of contrasting it with a bigger claim.",
+            "start": 42,
+            "end": 120,
+            "foundBy": "both"
+          },
+          {
+            "quote": "the companies that thrive aren't the ones with the biggest budgets. They're the ones that foster a culture of curiosity, experimentation, and continuous learning.",
+            "type": "contrast_turn",
+            "why": "A budget myth is set up only to be replaced by a tidy list of virtues, performing an insight rather than reporting one.",
+            "fix": "Name a specific company or moment you saw, and say what it did differently.",
+            "start": 257,
+            "end": 419,
+            "foundBy": "both"
+          },
+          {
+            "quote": "Here are three",
+            "start": 421,
+            "end": 435,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "Start small, think big. Pilot projects build momentum and unlock buy-in.",
+            "type": "staccato",
+            "why": "Clipped, balanced imperatives paired with a slogan-like second line are there for rhythm, not for information.",
+            "fix": "Replace the slogan pairs with one concrete example of a pilot you ran and what it taught you.",
+            "start": 455,
+            "end": 527,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Tools don't transform organizations — people do.",
+            "start": 552,
+            "end": 600,
+            "type": "contrast_turn",
+            "why": "The first idea is set up only to be knocked down, which sounds rehearsed.",
+            "fix": "Say the point you believe in one plain sentence and drop the setup.",
+            "foundBy": "rule"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 873
+        }
+      }
+    },
+    {
+      "id": "s20",
+      "status": 200,
+      "ms": 3605,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "The argument reads as a practitioner's plain view of model review. The closing invitation to reply is the one passage that sounds performed for an audience rather than needed by the writer.",
+        "findings": [
+          {
+            "quote": "Follow along, tell me where I'm wrong, or tell me how you check your AI's work.",
+            "type": "engagement_hook",
+            "why": "The closing invitation asks readers to reply and comment, and it does not follow from the points made above.",
+            "fix": "Cut the invitation and end on the spot-checking point, or ask a question you actually want answered.",
+            "start": 421,
+            "end": 500,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 501
+        }
+      }
+    },
+    {
+      "id": "s21",
+      "status": 200,
+      "ms": 2376,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "This reads as a practical, conversational explanation from someone who has tried AI at work. The contrasts and the parenthetical list carry real information rather than performing for effect, and nothing sounds rehearsed.",
+        "findings": [
+          {
+            "quote": "The catch is",
+            "start": 403,
+            "end": 415,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 809
+        }
+      }
+    },
+    {
+      "id": "s22",
+      "status": 200,
+      "ms": 2583,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This is a generic professional bio full of stock phrasing, but it has none of the rhythmic patterns this reader treats as rehearsed. It has no clipped runs, knocked-down contrasts, signposts, closing hooks or convenient anecdotes, so it reads as ordinary if unremarkable self-promotion.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 885
+        }
+      }
+    },
+    {
+      "id": "s23",
+      "status": 200,
+      "ms": 3508,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "obviously_ai",
+        "summary": "The rehearsed sound runs through the whole post: a signpost opener, a knocked-down premise, a numbered lesson list with punchy fragments, and a closing run of praise and slogan. The overall shape of a lesson, a list and a sign-off is the giveaway.",
+        "findings": [
+          {
+            "quote": "Here's what I learned.",
+            "type": "signpost",
+            "why": "It announces that lessons are coming instead of stating them, and the post then makes the same move again.",
+            "fix": "Delete the line and open with the first concrete thing that happened in the project.",
+            "start": 75,
+            "end": 97,
+            "foundBy": "both"
+          },
+          {
+            "quote": "It wasn't about the technology. It was about the people.",
+            "type": "contrast_turn",
+            "why": "The technology idea exists only to be knocked down, giving the line a polished, quotable ring.",
+            "fix": "Say what the people problem actually was, using a specific example from the project.",
+            "start": 99,
+            "end": 155,
+            "foundBy": "both"
+          },
+          {
+            "quote": "Listen more than you speak. The best insights came from the quietest voices in the room.",
+            "type": "staccato",
+            "why": "Short imperative lines followed by a tidy moral read as a rehearsed lesson rather than something that happened.",
+            "fix": "Describe the one meeting where a quiet colleague changed the plan, and drop the general rule.",
+            "start": 359,
+            "end": 447,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Embrace the messy middle. Progress isn't linear, and that's okay.",
+            "type": "contrast_turn",
+            "why": "A slogan-like imperative is set against a reassuring denial, a stock pattern that performs rather than informs.",
+            "fix": "Say what the middle of the project looked like and what you did about it.",
+            "start": 451,
+            "end": 516,
+            "foundBy": "model"
+          },
+          {
+            "quote": "3. Celebrate small wins. Momentum is everything.",
+            "start": 517,
+            "end": 565,
+            "type": "staccato",
+            "why": "A run of very short sentences reads as a drumbeat written for effect.",
+            "fix": "Join them into one or two full sentences that say what you mean.",
+            "foundBy": "rule"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 785
+        }
+      }
+    },
+    {
+      "id": "s24",
+      "status": 200,
+      "ms": 2533,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a conventional newsletter intro with a plain agenda. Two spots have a rehearsed rhythm, and the closing invitation is there to draw replies.",
+        "findings": [
+          {
+            "quote": "It sounds simple. In practice, it's anything but.",
+            "type": "contrast_turn",
+            "why": "The first line is set up only so the second can knock it down, a rehearsed turn rather than new information.",
+            "fix": "State the difficulty directly, saying what makes measurement hard in practice.",
+            "start": 169,
+            "end": 218,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Many teams track activity, such as logins and prompts sent, rather than outcomes. Others rely on anecdotes. Few have a clear baseline to compare against.",
+            "type": "staccato",
+            "why": "Three short sentences in a row, each giving a parallel point, read as a drumbeat built for effect.",
+            "fix": "Combine these into one or two sentences that say which measures teams use and why they fall short.",
+            "start": 219,
+            "end": 372,
+            "foundBy": "model"
+          },
+          {
+            "quote": "As always, we'd love to hear what's working for you. Just hit reply.",
+            "type": "engagement_hook",
+            "why": "The invitation asks readers to respond to the newsletter, which serves collecting replies more than anything the writer needs.",
+            "fix": "Cut it, or ask a specific question you actually want answered.",
+            "start": 544,
+            "end": 612,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 613
+        }
+      }
+    },
+    {
+      "id": "s25",
+      "status": 200,
+      "ms": 2993,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "The draft is mostly generic corporate wording, which on its own is not a tell, but the opening and the signposting in the middle carry a rehearsed, announcing sound. The 'Let's dive in' line is a signpost that announces what comes next rather than making a point.",
+        "findings": [
+          {
+            "quote": "In this post, we'll delve into the fundamentals of prompt engineering, explore best practices, and provide actionable strategies you can implement today.",
+            "type": "signpost",
+            "why": "The sentence exists only to announce what the post will do, and the promised content is then delivered as a list of generic intentions.",
+            "fix": "Cut the roadmap and start with one concrete point about prompting that you actually want to make.",
+            "start": 292,
+            "end": 445,
+            "foundBy": "model"
+          },
+          {
+            "quote": "It's important to note that prompt engineering is both an art and a science.",
+            "type": "signpost",
+            "why": "The phrase 'It's important to note' announces an insight instead of stating it, and the 'art and science' line is a stock formula.",
+            "fix": "State the point directly, saying what in your experience makes prompting harder or easier than people expect.",
+            "start": 619,
+            "end": 695,
+            "foundBy": "model"
+          },
+          {
+            "quote": "Let's dive in.",
+            "type": "signpost",
+            "why": "It is a stock transition that announces the content rather than carrying any information of its own.",
+            "fix": "Delete it and let the first practical point begin the section.",
+            "start": 882,
+            "end": 896,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 897
+        }
+      }
+    },
+    {
+      "id": "s26",
+      "status": 200,
+      "ms": 3173,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain, practical tip post about using fresh reviewers and sub-agents. Its asides and caveats carry real information, and none of its sentences are set up for effect.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 908
+        }
+      }
+    },
+    {
+      "id": "s27",
+      "status": 200,
+      "ms": 4437,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "This is a standard new-job post. Its wording is generic but not rehearsed in rhythm, apart from a closing invitation that exists mainly to prompt replies.",
+        "findings": [
+          {
+            "quote": "If you’re in the logistics space or want to connect about supply chain operations, feel free to reach out!",
+            "type": "engagement_hook",
+            "why": "The closing invitation asks readers to get in touch and is not tied to anything the writer needs, so it reads as a prompt for replies.",
+            "fix": "Cut the closing line, or replace it with a specific request the writer actually needs, such as a named contact for a particular question.",
+            "start": 806,
+            "end": 912,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 913
+        }
+      }
+    },
+    {
+      "id": "s28",
+      "status": 200,
+      "ms": 1219,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This is a plain status update from one colleague to another. It is a little formulaic in its closing lines, but nothing in the rhythm or structure performs for effect, so it reads as ordinary workplace writing.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 691
+        }
+      }
+    },
+    {
+      "id": "s29",
+      "status": 200,
+      "ms": 1612,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain internal proposal with formal, somewhat generic wording, but no sentence is performing for rhythm or applause. The closing request for replies is a working request tied to a deadline rather than an engagement hook.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 898
+        }
+      }
+    },
+    {
+      "id": "s30",
+      "status": 200,
+      "ms": 5909,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a candid, opinionated post in a personal voice. The sentences vary in length and make real points, and nothing in it has the rehearsed, performed sound of a patterned draft.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 697
+        }
+      }
+    },
+    {
+      "id": "s31",
+      "status": 200,
+      "ms": 3709,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a plain account of a changed habit. The closing reflection is set up as a reveal, and the ending asks readers for replies rather than finishing the point.",
+        "findings": [
+          {
+            "quote": "The results surprised me",
+            "start": 59,
+            "end": 83,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          },
+          {
+            "quote": "It turns out the value wasn't in the transcript. It was in the attention I got back.",
+            "type": "contrast_turn",
+            "why": "The transcript is set up only so it can be knocked down for a neater line about attention, which gives the reflection a rehearsed ring.",
+            "fix": "Say plainly what the attention changed in your meetings, without first dismissing the transcript.",
+            "start": 266,
+            "end": 350,
+            "foundBy": "both"
+          },
+          {
+            "quote": "Have you tried it? What did you notice?",
+            "type": "engagement_hook",
+            "why": "The two questions follow nothing the writer needs and read as a prompt to collect comments from readers.",
+            "fix": "End on your own experience, or cut the questions if you do not need answers.",
+            "start": 548,
+            "end": 587,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 588
+        }
+      }
+    },
+    {
+      "id": "s32",
+      "status": 200,
+      "ms": 1568,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this reads as a plain description of what the newsletter covers. The closing line is a rehearsed, punchy fragment pair that performs a voice rather than adding information.",
+        "findings": [
+          {
+            "quote": "No posting schedule and nothing to sell. Just figuring sh*t out in public while it's still worth figuring out.",
+            "type": "staccato",
+            "why": "The two clipped fragments set up a tidy, quotable closing rhythm whose main job is to sound candid rather than to state anything new.",
+            "fix": "Say plainly how often you will publish and what you are not selling, in ordinary full sentences.",
+            "start": 366,
+            "end": 476,
+            "foundBy": "model"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 477
+        }
+      }
+    },
+    {
+      "id": "s33",
+      "status": 200,
+      "ms": 3640,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a personal blog preface. It explains what the posts are for in a direct, conversational voice, and nothing in it has the rehearsed rhythm of a performed hook.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 849
+        }
+      }
+    },
+    {
+      "id": "s34",
+      "status": 0,
+      "ms": 0,
+      "attempts": 1,
+      "reply": {
+        "error": "bot_check_not_issued"
+      }
+    },
+    {
+      "id": "s35",
+      "status": 200,
+      "ms": 2228,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain internal proposal with formal, somewhat stock wording, but no sentence is performed for rhythm or applause. It is generic rather than rehearsed, so nothing here needs changing for the tell.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 876
+        }
+      }
+    },
+    {
+      "id": "s36",
+      "status": 200,
+      "ms": 5682,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "a_few_tells",
+        "summary": "Most of this is generic advice that reads as competent but unremarkable. Two spots have a rehearsed sound: a negated setup that is knocked down, and a rhetorical question that only announces the next section.",
+        "findings": [
+          {
+            "quote": "Useful feedback isn't about pointing out mistakes or telling someone what they're doing wrong. It's about helping colleagues understand their strengths, identify opportunities to improve, and feel confident about their next steps.",
+            "type": "contrast_turn",
+            "why": "The first idea exists only so it can be rejected in favour of the second, and the second could be stated directly without losing anything.",
+            "fix": "State what useful feedback does and drop the sentence about what it is not.",
+            "start": 345,
+            "end": 575,
+            "foundBy": "model"
+          },
+          {
+            "quote": "So, how can we make feedback more constructive and meaningful?",
+            "type": "signpost",
+            "why": "The question does no work of its own and only announces that the practical advice is coming.",
+            "fix": "Start with the advice itself, for example by stating the first thing to focus on.",
+            "start": 577,
+            "end": 639,
+            "foundBy": "model"
+          },
+          {
+            "quote": "The key is",
+            "start": 641,
+            "end": 651,
+            "type": "signpost",
+            "why": "The phrase announces that a point is coming instead of making it.",
+            "fix": "Delete the phrase and start with the point itself.",
+            "foundBy": "rule"
+          }
+        ],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 907
+        }
+      }
+    },
+    {
+      "id": "s37",
+      "status": 200,
+      "ms": 1769,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a plain product announcement. It is promotional and generic in places, but it has no clipped runs, contrast turns, signposts or closing hook that sound rehearsed.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 857
+        }
+      }
+    },
+    {
+      "id": "s38",
+      "status": 200,
+      "ms": 2233,
+      "attempts": 1,
+      "reply": {
+        "mode": "full",
+        "verdict": "clean",
+        "summary": "This reads as a conventional new-job post. It is generic and promotional, but it has none of the rehearsed rhythms this check looks for: no clipped runs, no knocked-down setups, no signposting, no question aimed at replies, and no tidy anecdote.",
+        "findings": [],
+        "houseStyle": null,
+        "notice": null,
+        "meta": {
+          "promptVersion": "v3",
+          "charactersChecked": 846
+        }
+      }
+    }
+  ]
+}

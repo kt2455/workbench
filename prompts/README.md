@@ -9,8 +9,8 @@ changes, a new card is written and numbered. Nobody scribbles on the old one.
 | File | What it is |
 |---|---|
 | `tells-checker/v1.md` | The Tells Checker's first instructions (Layer 2 in `docs/tells-checker-design.md`). Frozen: scored in the baseline. |
-| `tells-checker/v2.md` | v1 with three noisy kinds of tell switched off. Frozen: scored in `testset/score-v2.md`. |
-| `tells-checker/v3.md` | v2 with explicit tests instead of "when unsure, leave it out". In use. |
+| `tells-checker/v2.md` | v1 with three noisy kinds of tell switched off. **In use.** Frozen: scored in `testset/score-v2.md`. |
+| `tells-checker/v3.md` | v2 with explicit tests instead of "when unsure, leave it out". Not in use: scored in `testset/score-v3.md`, and its decision rule sent v2 back into use. Frozen. |
 
 The version in use, and the kinds of tell it may report, are set in `src/prompt.ts`.
 
@@ -148,4 +148,12 @@ New samples from Phase 2 step 2.1 are the real check.
 One run of all 38 samples decides, s22 included. A rise of one or two catches is within
 the run-to-run noise of a single run, which is why 17 and 18 go to Kyle.
 
-**Not yet scored.**
+**Scored 2026-11-20** (`testset/score-v3.md`; s34's bot check failed, so 37 of 38, with
+all 14 clean samples checked). Marked passages caught rose from 15 to 21 of the 52
+both runs checked, but
+clean samples left clean fell from 13 to 11 of 14: s13 (Kyle's older article) and s27
+were newly flagged. **The rule says go back to v2, and v2 is back in use.** Frozen.
+
+`staccato` was the one kind with no false flags in v3, so it is the candidate for a v4
+on its own. Its gain was small (two new catches) and may depend on v3's other changes;
+scoring a v4 would show that.

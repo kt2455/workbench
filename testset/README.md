@@ -16,6 +16,7 @@ once by hand. After that, the tool's marking is compared with his.
 | `labels.json` | **The answer key.** Kyle's verdict for each sample and every passage he marked, with its exact position in the sample. |
 | `baseline.md` | The first scored run (plan step 1.13): the numbers every later change is compared with |
 | `score-v2.md` | Prompt v2 scored against the baseline |
+| `score-v3.md` | Prompt v3 scored against v2; its decision rule sent v2 back into use |
 | `runs/` | The tool's replies from each scored run, one file per run |
 | `score.py` | Scores a run against the answer key: `python3 -I testset/score.py testset/runs/<run>.json testset` |
 
