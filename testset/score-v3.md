@@ -12,8 +12,8 @@ before scoring (`prompts/README.md`, "Status of v3").
 | Date | 2026-11-20 |
 | Prompt | `prompts/tells-checker/v3.md` |
 | Model | `claude-haiku-5-5`, effort `medium` (unchanged) |
-| How it ran | All 38 samples sent to `https://api.kyletebo.com/check` from the private eval page, one at a time. **s34 failed before reaching the Worker** (`bot_check_not_issued`), so 37 were checked. s34 is an "obviously AI" sample, not a clean one, so all 14 clean samples were checked. The run file's `step` field still says 1.13, because the eval page fills it in. |
-| Replies | `runs/2026-11-20-prompt-v3-haiku-5-5.json` |
+| How it ran | All 38 samples sent to `https://api.kyletebo.com/check` from the private eval page, one at a time. **s34 failed before reaching the Worker** (`bot_check_not_issued`), so 37 were checked. s34 is an "obviously AI" sample, not a clean one, so all 14 clean samples were checked. Kyle ran all 38 again the same evening (see "A second run" below); that run checked s34. The run file's `step` field still says 1.13, because the eval page fills it in. |
+| Replies | `runs/2026-11-20-prompt-v3-haiku-5-5.json` (the run the rule was applied to) and `runs/2026-11-20-prompt-v3-haiku-5-5-run2.json` |
 | Scored with | `python3 -I testset/score.py testset/runs/2026-11-20-prompt-v3-haiku-5-5.json testset` |
 
 ## The decision: back to v2
@@ -27,6 +27,29 @@ before scoring (`prompts/README.md`, "Status of v3").
 v3 caught more of Kyle's marked passages, but it flagged two more clean samples. The
 rule, set before scoring, sends v2 back into use. v3
 stays in the repository, frozen as scored.
+
+## A second run
+
+Kyle ran all 38 samples through v3 a second time, with the same prompt, model and
+Worker. This time s31's bot check failed and s34 came through. The second run was not
+needed for the decision, but it shows how much a single run can be trusted.
+
+| | Run 1 | Run 2 |
+|---|---|---|
+| Samples checked | 37 (no s34) | 37 (no s31) |
+| Clean samples flagged | s11, s13, s27 | **s11, s13, s27** |
+| Marked passages caught, on the 36 both checked | 19 | 20 |
+| Verdicts that differ between the runs, of 36 | | 1 (s33: clean, then a few tells) |
+
+- **The false flags are stable.** The same three clean samples were flagged both times,
+  so they come from the prompt, not from chance.
+- **Catches move by about one** between runs on the same samples. That supports
+  treating a gain of one or two as noise in the decision rule.
+- **s34** ("obviously AI", 3 marks) came back clean in run 2, with none of its marks
+  caught. v2 caught 1 of them. Counting s34 from run 2, v3 catches 21 of 55 and flags 7
+  of 9 "obviously AI" samples, and its verdicts match Kyle's on 20 of 38.
+
+The decision stands: back to v2.
 
 ## The scores
 
