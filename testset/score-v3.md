@@ -25,7 +25,7 @@ before scoring (`prompts/README.md`, "Status of v3").
 | **Back to v2: 11 or fewer of 14 clean samples left clean, or catches do not rise** | **Met: 11 of 14** |
 
 v3 caught more of Kyle's marked passages, but it flagged two more clean samples. The
-rule says a false flag costs more than a missed tell, so v2 goes back into use. v3
+rule, set before scoring, sends v2 back into use. v3
 stays in the repository, frozen as scored.
 
 ## The scores
@@ -58,9 +58,9 @@ Like for like, on the 36 samples both eval-page runs checked (without s22 and s3
 | s27 | raw AI draft, a new-job post Kyle marked clean | `engagement_hook`: "If you’re in the logistics space or want to connect about supply chain operations, feel free to reach out!" |
 | s11 | Kyle's post (also flagged by v2) | `contrast_turn`: "You can't train intuition into people. But you can teach them..." |
 
-s13 is the sharpest: the older article is the cleanest human writing in the set. s27 was
-named as a risk by the fresh review before scoring. s29 and s38, the other two named
-risks, stayed clean.
+s13 is the sharpest: the older article is the cleanest human writing in the set. The
+fresh review of v3, before scoring, named s27, s29 and s38 as the samples to watch.
+s27 was flagged; s29 and s38 stayed clean.
 
 ## Which verdicts changed (36 samples)
 
@@ -92,20 +92,27 @@ name: s10's "Everything else is secondary.", a `tidy_closer`, which lands on a m
 - **Catching more and flagging less pull against each other.** v3 raised catches by six
   and the share of findings on a mark from 43% to 55%. It also flagged two more clean
   samples. Phase 2 step 2.2 measures both numbers for this reason.
-- **The `staccato` test worked.** 5 of its 7 findings land on a mark, and none are in a
-  clean sample. It caught s14's "It's slower. It's more expensive. And it's the best
-  hiring decision we've made." and s24's run of short sentences.
-- **The `signpost` and `engagement_hook` tests caused the new false flags.** "It's time
-  to face facts" and "feel free to reach out!" are routine human phrasing. The
-  "performs" test was not strict enough to protect them.
+- **`staccato` findings had no false flags,** but the gain is small. 5 of its 7
+  findings land on a mark, against 3 of 5 under v2. One of the 5 came from the rules
+  layer, so only two new catches came from the model: s14's "It's slower. It's more
+  expensive. And it's the best hiring decision we've made." and s24's run of short
+  sentences. These may depend on dropping "when unsure, leave it out" as much as on the
+  test itself.
+- **The new false flags came through `signpost` and `engagement_hook`.** "It's time to
+  face facts" and "feel free to reach out!" are routine human phrasing. Which part of v3
+  let them through cannot be told from one run: the type tests, the dropped confidence
+  rule, or the "performs" test. The `engagement_hook` test already excluded "a routine
+  closing line", and the model flagged one anyway.
 - **Small set, one run.** These are single changes in a few samples. The rule was set
   in advance so that this run decides, but a second run could move a sample either way.
 
 ## Where this leads
 
 1. **Back to v2,** with v3 kept as a scored, frozen record.
-2. **A possible v4:** v2 plus only the `staccato` test, the one part of v3 with no false
-   flags. One change, scored against v2 with its own decision rule.
-3. **The `signpost` and `engagement_hook` tests** need a narrower "does not count" before
-   they are tried again: routine openers ("It's time to") and routine sign-offs ("feel
-   free to reach out").
+2. **A possible v4:** v2 plus only the `staccato` test, the one kind with no false flags
+   in v3. One change, scored against v2 with its own decision rule. It may not repeat
+   v3's two staccato gains without v3's other changes, and that is what scoring it would
+   show.
+3. **The `signpost` and `engagement_hook` tests** should count less before they are tried
+   again, for example by excluding routine openers ("It's time to") and routine
+   sign-offs ("feel free to reach out").

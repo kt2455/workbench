@@ -149,9 +149,11 @@ One run of all 38 samples decides, s22 included. A rise of one or two catches is
 the run-to-run noise of a single run, which is why 17 and 18 go to Kyle.
 
 **Scored 2026-11-20** (`testset/score-v3.md`; s34's bot check failed, so 37 of 38, with
-all 14 clean samples checked). Marked passages caught rose from 16 to 21 of 55, but
+all 14 clean samples checked). Marked passages caught rose from 15 to 21 of the 52
+both runs checked, but
 clean samples left clean fell from 13 to 11 of 14: s13 (Kyle's older article) and s27
 were newly flagged. **The rule says go back to v2, and v2 is back in use.** Frozen.
 
-The `staccato` test was the one part with no false flags (5 of its 7 findings on a
-mark), so it is the candidate for a v4 on its own.
+`staccato` was the one kind with no false flags in v3, so it is the candidate for a v4
+on its own. Its gain was small (two new catches) and may depend on v3's other changes;
+scoring a v4 would show that.
