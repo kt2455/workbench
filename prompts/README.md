@@ -115,13 +115,22 @@ Kyle's marks looked like real tells he had not marked, so v3 aims at catching mo
 at cutting those.
 
 **The examples were checked against the test set** (rule 3 above): no
-four-word run in the new text appears in any sample or marked passage. Several
+three-word run in the new text that carries meaning appears in any marked passage,
+and no example shares a sentence shape with one. Several
 first-draft examples were replaced before scoring:
 
 - Two `signpost` illustrations came straight from the samples.
-- The fresh review found three close paraphrases. A meeting notice was shaped like s29's
-  closing request, and used a name from s28. A "first attempt at a hobby" story mirrored
-  s18, one of the misses v3 is meant to fix.
+- The first fresh review found two examples with three overlaps. A meeting notice was
+  shaped like s29's closing request, and used a name from s28. A "first attempt at a
+  hobby" story mirrored s18, one of the misses v3 is meant to fix.
+- Their replacements leaked again, by shape rather than wording. A "No boats. No buses.
+  No signal." run copied the form of s14's marked "No slides. No brainteasers.", and an
+  "in the comments!" ending mirrored s19's marked closer. They are now a run of numbered
+  fragments and a poll-style ending, neither of which appears in any sample. A clause
+  about asking colleagues for feedback on a proposal described s29's ending, so it now
+  uses a different illustration.
+- The check that finally held compares three-word runs and sentence shapes, not only
+  four-word runs.
 
 **Known limit: no held-out set.** The tests were written after reading what v2 missed
 in these same 38 samples. Any gain will look better here than it would on new writing.
@@ -132,12 +141,11 @@ New samples from Phase 2 step 2.1 are the real check.
 
 | Result | Decision |
 |---|---|
-| Clean samples left clean stay at 13 or more of 14, and marked passages caught rise above 16 of 55 | Keep v3 |
-| Catches rise, but one more clean sample is flagged (12 of 14) | Kyle decides |
+| Clean samples left clean stay at 13 or more of 14, and marked passages caught reach 19 or more of 55 | Keep v3 |
+| Catches reach 17 or 18 of 55 (within the noise of one run), or catches rise but one more clean sample is flagged (12 of 14) | Kyle decides |
 | 11 or fewer of 14 clean samples left clean, or catches do not rise | Go back to v2 (one line in `src/prompt.ts`) |
 
 One run of all 38 samples decides, s22 included. A rise of one or two catches is within
-the run-to-run noise of a single run, so a gain that small is reported as "no clear
-change" and Kyle decides.
+the run-to-run noise of a single run, which is why 17 and 18 go to Kyle.
 
 **Not yet scored.**
