@@ -5,10 +5,9 @@
 #
 # The Cloudflare access token is stored in the "production" environment below,
 # which accepts the main branch only, so no other workflow, branch or pull
-# request can read it. That environment can also be set to wait for Kyle's
-# approval before each run (Settings, Environments, production, Required
-# reviewers). That is switched off for now, by his choice, while deploys are
-# frequent.
+# request can read it. That environment also waits for Kyle's approval before
+# each run (Settings, Environments, production, Required reviewers), switched
+# on on 2026-11-20.
 name: Deploy
 
 on:

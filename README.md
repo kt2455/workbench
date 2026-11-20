@@ -233,9 +233,9 @@ That downloads the tools on the shopping list. After that:
 
 Publishing happens on GitHub, not from anyone's computer. The "Deploy" workflow in
 the Actions tab is started by hand, runs the tests, publishes, and then checks the
-live Worker. It can be set to wait for Kyle's approval first. That is off for now. The access token it uses is kept in
-GitHub's encrypted secrets store, which is separate from the files in this
-repository.
+live Worker. Each run waits for Kyle to approve it in GitHub before it starts. The
+access token it uses is kept in GitHub's encrypted secrets store, which is separate
+from the files in this repository.
 
 Most of the time Claude runs these in a session and Kyle reviews the pull request.
 GitHub also runs the type check and the tests on every pull request, and shows a
