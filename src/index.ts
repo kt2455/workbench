@@ -1,14 +1,16 @@
 /**
  * The Workbench Worker: the "bouncer" between kyletebo.com and the model.
  *
- * It answers three addresses, listed in ROUTES below: GET /hello, a fixed
+ * It answers four addresses, listed in ROUTES below: GET /hello, a fixed
  * reply that proves the Worker is up; POST /check, the Tells Checker
- * (src/check.ts); and GET /stats, the public totals (src/stats.ts). Every
+ * (src/check.ts); POST /feedback, a visitor's "Not a tell" on a finding
+ * (src/feedback.ts); and GET /stats, the public totals (src/stats.ts). Every
  * request first passes the guest list (src/cors.ts).
  */
 
 import { checkEndpoint } from "./check";
 import { checkOrigin, preflightHeaders, type OriginCheck } from "./cors";
+import { feedbackEndpoint } from "./feedback";
 import { BASE_HEADERS, json, withErrorHandling } from "./http";
 import { logRefused } from "./log";
 import { statsEndpoint } from "./stats";
@@ -38,6 +40,7 @@ const ROUTES: Record<string, Record<string, Endpoint>> = {
       ),
   },
   "/check": { POST: checkEndpoint },
+  "/feedback": { POST: feedbackEndpoint },
   "/stats": { GET: statsEndpoint },
 };
 

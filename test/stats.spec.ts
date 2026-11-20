@@ -222,6 +222,20 @@ describe("the public reply", () => {
       guardrails: { sizeCap: 0, botCheck: 0, dailyBudget: 0 },
       model: { calls: 0, averageSeconds: null },
       cost: { totalUsd: 0, perModelCallUsd: null },
+      notATell: {
+        total: 0,
+        byType: {
+          staccato: 0,
+          contrast_turn: 0,
+          signpost: 0,
+          tidy_closer: 0,
+          engagement_hook: 0,
+          stock_phrase: 0,
+          balanced_list: 0,
+          neat_story: 0,
+          other: 0,
+        },
+      },
     });
 
     const busy = { ...totals, checks_full: 8, checks_quick: 2, model_calls: 8, model_ms: 20_123, cost_micros: 3_900, input_tokens: 19_200 };
@@ -264,7 +278,7 @@ describe("GET /stats", () => {
     expect(response.headers.get("access-control-allow-origin")).toBe(ORIGIN);
     expect(response.headers.get("cache-control")).toBe("no-store");
     const body = (await response.json()) as Record<string, unknown>;
-    expect(Object.keys(body).sort()).toEqual(["asOf", "checks", "cost", "guardrails", "model", "quickBecause", "since"]);
+    expect(Object.keys(body).sort()).toEqual(["asOf", "checks", "cost", "guardrails", "model", "notATell", "quickBecause", "since"]);
     expect(body.asOf === null || String(body.asOf) < today()).toBe(true);
   });
 

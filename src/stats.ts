@@ -27,7 +27,10 @@
  *
  * One thing is not held back: a guardrail that fired on its own, such as one
  * bot check failure on a quiet day, can show as +1. It says only that some
- * request was refused, never anything about a draft.
+ * request was refused, never anything about a draft. The same goes for "Not a
+ * tell" counts (POST /feedback): one can show as +1 for its type, which says
+ * only that someone disagreed with one kind of flag, never which draft or
+ * which words.
  *
  * Not counted here: requests turned away by the rate limit or the guest list,
  * and malformed requests. A script can send those as fast as it likes, and
@@ -41,6 +44,7 @@ import type { OriginCheck } from "./cors";
 import { RATE_LIMIT_WINDOW_SECONDS, withinRateLimit } from "./guardrails";
 import { json } from "./http";
 import { logFailure, logRefused, type CheckLog } from "./log";
+import { TELL_TYPES, type TellType } from "./tells";
 
 /** The numbers kept for each day. Every one is a count or a sum. */
 export const STAT_NAMES = [
@@ -57,6 +61,16 @@ export const STAT_NAMES = [
   "input_tokens",
   "output_tokens",
   "cost_micros",
+  // "Not a tell" counts from POST /feedback, one per tell type (src/tells.ts).
+  "not_a_tell_staccato",
+  "not_a_tell_contrast_turn",
+  "not_a_tell_signpost",
+  "not_a_tell_tidy_closer",
+  "not_a_tell_engagement_hook",
+  "not_a_tell_stock_phrase",
+  "not_a_tell_balanced_list",
+  "not_a_tell_neat_story",
+  "not_a_tell_other",
 ] as const;
 export type StatName = (typeof STAT_NAMES)[number];
 export type StatCounts = Partial<Record<StatName, number>>;
@@ -236,6 +250,23 @@ export async function recordCheck(
   }
 }
 
+/** The stat name for a "Not a tell" on one type. */
+export function notATellStat(type: TellType): StatName {
+  return `not_a_tell_${type}` as StatName;
+}
+
+/**
+ * Adds one "Not a tell" for a type. As with checks, a failure never affects
+ * the visitor; it is noted in the log.
+ */
+export async function recordNotATell(namespace: DurableObjectNamespace<StatsKeeper>, type: TellType): Promise<void> {
+  try {
+    await keeper(namespace).record({ [notATellStat(type)]: 1 });
+  } catch {
+    logFailure("stats_write_failed");
+  }
+}
+
 /** Reads STATS_MIN_BATCH. Null if it is not a sensible number. */
 export function readMinBatch(value: string): number | null {
   const number = typeof value === "string" && /^\d+$/.test(value.trim()) ? Number(value) : Number.NaN;
@@ -276,6 +307,11 @@ export function statsReply(published: PublishedTotals) {
     cost: {
       totalUsd: round(t.cost_micros / 1_000_000, 2),
       perModelCallUsd: t.model_calls === 0 ? null : round(t.cost_micros / t.model_calls / 1_000_000, 4),
+    },
+    // Findings visitors marked "Not a tell", by type. Counts only.
+    notATell: {
+      total: TELL_TYPES.reduce((sum, type) => sum + t[notATellStat(type)], 0),
+      byType: Object.fromEntries(TELL_TYPES.map((type) => [type, t[notATellStat(type)]])) as Record<TellType, number>,
     },
   };
 }

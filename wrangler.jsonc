@@ -58,7 +58,9 @@
   "ratelimits": [
     { "name": "CHECK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } },
     // Reading the public stats: 20 times a minute for each visitor.
-    { "name": "STATS_LIMITER", "namespace_id": "1002", "simple": { "limit": 20, "period": 60 } }
+    { "name": "STATS_LIMITER", "namespace_id": "1002", "simple": { "limit": 20, "period": 60 } },
+    // "Not a tell" counts: 20 a minute for each visitor.
+    { "name": "FEEDBACK_LIMITER", "namespace_id": "1003", "simple": { "limit": 20, "period": 60 } }
   ],
 
   // The daily budget counter: a small piece of the Worker with its own
