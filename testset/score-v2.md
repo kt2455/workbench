@@ -9,7 +9,7 @@ The second scored run of the Tells Checker, compared with the baseline
 | Date | 2026-11-20 |
 | Prompt | `prompts/tells-checker/v2.md` |
 | Model | `claude-haiku-5-5`, effort `medium` (unchanged) |
-| How it ran | All 38 samples sent to `https://api.kyletebo.com/check` from the private page `kyletebo.com/workbench/eval/`, one at a time. **s22 failed before reaching the Worker** (`bot_check_not_issued`: the browser got no bot check token), so 37 were checked. The run file's `step` field still says 1.13, because the eval page fills it in. |
+| How it ran | All 38 samples sent to `https://api.kyletebo.com/check` from the private page `kyletebo.com/workbench/eval/`, one at a time. **s22 failed before reaching the Worker** (`bot_check_not_issued`: the browser got no bot check token), so 37 were checked. s22 was re-run by hand the same day (see below). The run file's `step` field still says 1.13, because the eval page fills it in. |
 | Replies | `runs/2026-11-20-prompt-v2-haiku-5-5.json` |
 | Scored with | `python3 -I testset/score.py testset/runs/2026-11-20-prompt-v2-haiku-5-5.json testset` |
 
@@ -98,22 +98,47 @@ makes on its own is the least reliable.
 - **No "a few tells" verdict came back with nothing to show.** The gap in
   `prompts/README.md` did not occur.
 
+## s22, re-run by hand
+
+Kyle re-ran s22 on 2026-11-20 through the public Tells Checker page, with the same
+prompt (v2), model and Worker. That page does not save a reply file, so this result is
+recorded from his screenshot and is not in the run file.
+
+| | |
+|---|---|
+| Verdict | clean ("Nothing stood out") |
+| Findings | none, so no `other` finding either |
+| Summary | "This is a generic professional bio full of stock praise, but it has no rhythmic performance such as clipped runs, knocked-down contrasts, signposts or hooks. The wording is promotional rather than rehearsed in sentence shape, so it reads as an ordinary bio." |
+
+This was v2's hardest case: a bio written entirely in stock corporate wording, which
+v1 called "obviously AI" with five `stock_phrase` findings. Kyle marked it clean. Like
+s01, the summary names the stock wording and then rightly dismisses it.
+
+With s22 included, over all 38 samples:
+
+| Measure | Baseline (v1) | v2 |
+|---|---|---|
+| Clean samples with no findings | 3 of 14 | **13 of 14** |
+| Verdict matches Kyle's | 14 of 38 (37%) | **23 of 38 (61%)** |
+
+The other measures do not change: s22 has no marked passages and is not an "obviously
+AI" sample.
+
 ## Speed
 
 | | |
 |---|---|
 | Time per check | median 3.9 seconds, slowest 7.5 seconds (baseline: 4.6 and 9.1) |
-| Failures | one bot check not issued (s22); every check that reached the Worker was a full check |
+| Failures | one bot check not issued (s22, re-run by hand); every check that reached the Worker was a full check |
 
 Cost was not taken from the Worker's log lines for this run.
 
 ## Where this leads
 
-1. **Re-run s22** so the record covers all 38 samples.
-2. **v3** (explicit criteria and invented examples) aims at the two remaining
+1. **v3** (explicit criteria and invented examples) aims at the two remaining
    weaknesses: `engagement_hook` and `signpost` findings that land off Kyle's marks, and
    the switched-off patterns leaking through `other`.
-3. **The catches lost are all on AI drafts:** 6 on raw drafts (s08, s09, s17, s19 twice,
+2. **The catches lost are all on AI drafts:** 6 on raw drafts (s08, s09, s17, s19 twice,
    s36) and 5 on edited drafts (s10, s14, s24 twice, s31). None are on Kyle's own posts,
    which caught as much as before. So v2 stopped flagging clean writing without losing
    anything on the human samples. Bringing a switched-off kind back, one at a time with
