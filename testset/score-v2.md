@@ -15,8 +15,9 @@ The second scored run of the Tells Checker, compared with the baseline
 
 ## The scores, like for like
 
-s22 is a clean sample that the baseline called "obviously AI", so leaving it out
-would flatter v2. Both runs are scored here on the same 37 samples.
+s22 is a clean sample that the baseline wrongly called "obviously AI". Comparing v2's
+37 samples with the baseline's 38 would flatter v2, so both runs are scored here on the
+same 37.
 
 | Measure | Baseline (v1) | v2 | The bar from step 1.3 |
 |---|---|---|---|
@@ -35,8 +36,9 @@ to 1 of 13. The one left is s11, an excerpt from Kyle's own post, flagged for on
 more "obviously AI" sample (s24) now comes back clean. The estimate made before the
 run predicted about 18 catches and 8 of 9.
 
-**It still misses the bar** on two counts: s11 is flagged, and s18 and s24 (both
-heavily edited AI drafts) come back clean.
+**It still misses the bar** on three counts: s11 is flagged; s18 and s24 (both
+heavily edited AI drafts) come back clean; and on the "a few tells" samples, where the
+bar asks for most marked passages, it catches 4 of 23 (the baseline caught 7).
 
 How Kyle's verdicts compare with the tool's (37 samples):
 
@@ -55,7 +57,7 @@ How Kyle's verdicts compare with the tool's (37 samples):
 | s02 | a few tells | clean | a few tells | better |
 | s25 | a few tells | obviously AI | a few tells | better |
 | s10, s17, s28 | a few tells | a few tells | clean | worse |
-| s24 | obviously AI | a few tells | clean | still wrong |
+| s24 | obviously AI | a few tells | clean | worse: two levels off now, and 0 of its 3 marks caught (was 2) |
 
 All five excerpts from the older article, written before AI tools, are now clean. That
 was the sharpest complaint about v1.
@@ -76,14 +78,23 @@ makes on its own is the least reliable.
 
 ## The gaps named before the run
 
-- **Switched-off patterns came back as `other`, as predicted.** Of the four `other`
-  findings, two are switched-off patterns under another name: s03 ("evenly balanced
-  clauses", a `balanced_list`) and s23 ("Onward and upward. 🚀", a `tidy_closer`). s16
-  reads close to a `stock_phrase`. None of the four landed in a clean sample or on a
-  marked passage. Code cannot close this gap; v3's wording can try.
-- **The summary can still mention them.** The s11 summary calls the closing line "the
-  sort of slogan line a reader would skim past" although no finding says so. The
-  summary is shown to the visitor.
+- **Switched-off patterns came back as `other`, as predicted.** The four `other`
+  findings, one by one:
+  - s03, "evenly balanced clauses": a `balanced_list` under another name.
+  - s23, "Onward and upward. 🚀": a `tidy_closer` under another name.
+  - s16, a "headline-style takeaway": close to a `stock_phrase`.
+  - s08, "The answer, perhaps unsurprisingly, lies somewhere in the middle.": a hedged
+    reveal, also close to a `stock_phrase`.
+
+  So two are clearly switched-off patterns and the other two are borderline. None of
+  the four landed in a clean sample or on a marked passage. Code cannot close this gap;
+  v3's wording can try.
+- **The summary can still mention them.** At least two summaries describe a
+  switched-off pattern that no finding backs up: s11 calls the closing line "the sort of
+  slogan line that a reader would skim past", and s16 says "the closing thanks are
+  formulaic". The s01 summary (a clean sample, verdict clean) also mentions "stock
+  wording" and "an upbeat closing line" before dismissing them. The summary is shown to
+  the visitor.
 - **No "a few tells" verdict came back with nothing to show.** The gap in
   `prompts/README.md` did not occur.
 
@@ -102,6 +113,9 @@ Cost was not taken from the Worker's log lines for this run.
 2. **v3** (explicit criteria and invented examples) aims at the two remaining
    weaknesses: `engagement_hook` and `signpost` findings that land off Kyle's marks, and
    the switched-off patterns leaking through `other`.
-3. **The catches lost** are mostly on Kyle's own posts and the edited drafts (s10, s17,
-   s28 now clean). Bringing a switched-off kind back, one at a time with sharp
-   criteria, is how to win some of them back without the false flags.
+3. **The catches lost are all on AI drafts:** 6 on raw drafts (s08, s09, s17, s19 twice,
+   s36) and 5 on edited drafts (s10, s14, s24 twice, s31). None are on Kyle's own posts,
+   which caught as much as before. So v2 stopped flagging clean writing without losing
+   anything on the human samples. Bringing a switched-off kind back, one at a time with
+   sharp criteria, is how to win back catches on the AI drafts without the false
+   flags.
