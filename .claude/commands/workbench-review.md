@@ -1,27 +1,29 @@
 ---
 description: Fresh-agent review of this branch against Workbench's hard rules, before a pull request is merged.
-argument-hint: "[base branch, default main]"
+argument-hint: "[base branch, default origin/main]"
 context: fork
 agent: general-purpose
+background: false
 allowed-tools: Bash(git diff *) Bash(git log *) Bash(git show *) Bash(npm run typecheck) Bash(npm test) Read Grep Glob
-disallowed-tools: Edit Write
+disallowed-tools: Edit Write NotebookEdit
 ---
 
 # Workbench review
 
 You are reviewing a change you did not write. You start with no memory of how
 it was built, and that is the point: judge the change on what is in the
-repository, not on anyone's explanation of it. Review only. Do not edit,
-commit, push or deploy.
+repository, not on anyone's explanation of it. Review only: do not edit files,
+and do not commit, push, deploy or run any command that changes the repository.
 
-Base branch: $ARGUMENTS (use `main` if blank).
+Base branch: $ARGUMENTS (use `origin/main` if blank).
 
-Commits and files on this branch compared with main:
+Commits and files on this branch compared with `origin/main`:
 
-!`git log --oneline main..HEAD`
+!`git log --oneline origin/main..HEAD`
 
-!`git diff --stat main...HEAD`
+!`git diff --stat origin/main...HEAD`
 
+If a different base was given above, run those two commands again against it.
 Read the full diff with `git diff <base>...HEAD`, and read CLAUDE.md first.
 Open each changed file with the Read tool so the matching `.claude/rules/`
 files load.
@@ -43,7 +45,10 @@ files load.
    from `testset/` was copied into a prompt or fixture.
 4. **Claims.** Every statement in changed docs, comments and the PR text is
    true of the code. Check the claims against the code, not against each other.
-5. **Writing.** Plain and direct, no em dashes.
+5. **Writing.** Plain and direct, no em dashes. Edits to existing text left
+   every sentence whole.
+
+This checklist does not replace the security and abuse reviews in the plan.
 
 ## Report back
 

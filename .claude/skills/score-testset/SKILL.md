@@ -1,17 +1,19 @@
 ---
 name: score-testset
-description: Score a Tells Checker run against Kyle's answer key in testset/ and report the headline numbers, compared with the last scored version. Use when asked to score a run, or to compare a new prompt or model run with an earlier one.
+description: Score a Tells Checker run against Kyle's answer key in testset/ and report the headline numbers, compared with the previous prompt version's scored run. Use when asked to score a run, or to compare a new prompt or model run with an earlier one.
 argument-hint: "[run file in testset/runs/, e.g. 2026-11-20-prompt-v2-haiku-5-5.json]"
 context: fork
 agent: Explore
-allowed-tools: Bash(python3 -I testset/score.py *) Read Glob
-disallowed-tools: Edit Write
+background: false
+allowed-tools: Bash(ls testset/runs) Bash(python3 -I testset/score.py *) Read Glob
+disallowed-tools: Edit Write NotebookEdit
 ---
 
 # Score a test set run
 
 You are scoring one Tells Checker run against Kyle's answer key. You work
-read-only and report back a short summary. The full table stays with you.
+read-only: run nothing except the commands below, and change no files. Send
+back a short summary, not the script's full table.
 
 Runs available now:
 
@@ -21,25 +23,32 @@ Run to score: $ARGUMENTS
 
 ## Steps
 
-1. Pick the run file. If the run above is empty, use the newest file in the
-   list and say that you did. Accept a bare file name or a path under
+1. Pick the run file. If the run above is blank, use the last file in the list
+   and say that you did. Accept a bare file name or a path under
    `testset/runs/`.
 2. Run exactly:
    `python3 -I testset/score.py testset/runs/<file> testset`
-3. Read the most recent `testset/score-*.md` write-up (or `testset/baseline.md`
-   if there is none) for the numbers to compare against. Compare like for like:
-   if the two runs scored different samples, say so.
+3. Find the comparison. The run's file name names its prompt version (v1, v2,
+   ...). Compare with the write-up for the version before it: `baseline.md` for
+   v1, otherwise `score-v<N>.md` for the previous version N, as listed in
+   `prompts/README.md`. For v1 itself, compare with nothing and say so. Compare
+   like for like: if the two runs scored different samples, say which.
 
-## Report back (keep it under 20 lines)
+## Report back (under 20 lines)
 
 - Which run, and which earlier version it is compared with.
-- A table of the five headline numbers for both: verdict agreement, clean
-  samples left clean, "obviously AI" samples with a finding, marked passages
-  caught, findings outside any marked passage.
+- A table of five numbers for both runs, worded as the write-ups word them:
+  - Verdict agreement (from "Verdict agreement").
+  - Clean samples left clean: clean samples that got a verdict, minus those
+    with any finding. Leave out clean samples that errored, and say which.
+  - "Obviously AI" samples with at least one finding.
+  - Marked passages caught.
+  - Findings inside a marked passage: total findings minus "Findings outside
+    any marked passage".
 - The ids of clean samples that were flagged, and of samples that errored.
-- One plain sentence on what moved. If a decision rule for this version is
-  written in `prompts/README.md`, say which outcome it points to. Do not make
-  the decision: that is Kyle's.
+- One plain sentence on what moved. If `prompts/README.md` has a decision rule
+  for this version, say which outcome it points to. Do not make the decision:
+  that is Kyle's.
 
 ## Rules
 
