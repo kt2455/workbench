@@ -92,10 +92,13 @@ Rules:
 - Writing in docs and comments is plain and direct, with no em dashes.
 - Cloudflare APIs change often. Check the current documentation before relying on
   memory.
+- Keep dependencies few and add one only when it clearly earns its place.
+- Open a file with the Read tool before changing it, so its rules load. Reading it
+  through a shell command such as `sed` may not load them.
 
 The detailed conventions live in `.claude/rules/`. Each file loads only when Claude
-reads or edits a file that matches its `paths` list, so this file stays short. The
-hard rules above apply everywhere and stay here.
+opens or edits a file that matches its `paths` list with its file tools, so this
+file stays short. The hard rules above apply everywhere and stay here.
 
 | Rule file | Loads for | Covers |
 |---|---|---|
