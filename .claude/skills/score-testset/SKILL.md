@@ -29,9 +29,10 @@ Run to score: $ARGUMENTS
 2. Run exactly:
    `python3 -I testset/score.py testset/runs/<file> testset`
 3. Find the comparison. The run's file name names its prompt version (v1, v2,
-   ...). Compare with the write-up for the version before it: `baseline.md` for
-   v1, otherwise `score-v<N>.md` for the previous version N, as listed in
-   `prompts/README.md`. For v1 itself, compare with nothing and say so. Compare
+   ...). Compare with the write-up for the version before it: if the previous
+   version is v1, use `baseline.md`; otherwise use `score-v<N>.md` for that
+   previous version N, as listed in `prompts/README.md`. If the run being
+   scored is v1, there is nothing earlier: compare with nothing and say so. Compare
    like for like: if the two runs scored different samples, say which.
 
 ## Report back (under 20 lines)
