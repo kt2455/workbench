@@ -135,3 +135,13 @@ session that did not build the work and starts with no memory of it. It does not
 to be a different model. Where a plan step names a model for a review (for example the
 security review), use that model. Security and abuse reviews are separate steps in the
 plan and are not optional.
+
+`/workbench-review` runs the standard checklist in a forked subagent that starts with
+no memory of the work. It does not replace the security or abuse reviews.
+
+Project commands and skills, shared through git:
+
+| Command | What it does |
+|---|---|
+| `/workbench-review [base]` | Fresh-agent review of the branch against the hard rules (`.claude/commands/`) |
+| `/score-testset [run file]` | Scores a run in `testset/runs/` and reports the headline numbers (`.claude/skills/`) |
