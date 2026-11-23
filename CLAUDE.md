@@ -89,25 +89,24 @@ Rules:
 
 ## Conventions
 
-- TypeScript, one Worker, no web framework. Keep dependencies few and add one only
-  when it clearly earns its place.
-- Settings go in `wrangler.jsonc`. Non-secret values go under `vars`.
-- Never hand-write the `Env` type. Run `npm run types` after changing
-  `wrangler.jsonc`. The generated `worker-configuration.d.ts` is not committed.
-  Secrets are declared by name under `secrets.required` so they appear in `Env`.
-- The model provider's library is imported in `src/provider.ts` and nowhere else.
-- Code that needs a model takes a `ModelCaller` as an argument, so tests pass a
-  stand-in. No test may reach a real provider.
-- Every endpoint replies in JSON, with an `error` code on failure.
-- Endpoints are listed in the `ROUTES` table in `src/index.ts` with the methods each
-  accepts. Preflight answers are built from that table, so they never advertise a
-  method that does not exist.
-- Every reply carries the headers in `BASE_HEADERS`. Build replies with `json()`.
-- Prompts are versioned files in the repository, not strings buried in code.
-- Log structured JSON: `console.log(JSON.stringify({ ... }))`.
+- Writing in docs and comments is plain and direct, with no em dashes.
 - Cloudflare APIs change often. Check the current documentation before relying on
   memory.
-- Writing in docs and comments is plain and direct, with no em dashes.
+
+The detailed conventions live in `.claude/rules/`. Each file loads only when Claude
+reads or edits a file that matches its `paths` list, so this file stays short. The
+hard rules above apply everywhere and stay here.
+
+| Rule file | Loads for | Covers |
+|---|---|---|
+| `worker-code.md` | `src/**` | Routes, replies, error handling, logging, the provider |
+| `testing.md` | `test/**`, `vitest.config.ts` | Stand-in models, fixtures, what every test must cover |
+| `prompts.md` | `prompts/**`, `src/prompt.ts` | Frozen versions, invented examples, decision rules |
+| `testset.md` | `testset/**` | The answer key is never edited or copied |
+| `config.md` | `wrangler.jsonc`, `package.json` | `vars`, secrets, `npm run types`, prices, logging settings |
+
+Deploy rules stay in this file, not in a rule file. A deploy starts from a
+conversation, not from opening a file, so a path rule might never load in time.
 
 ## Verifying changes
 
